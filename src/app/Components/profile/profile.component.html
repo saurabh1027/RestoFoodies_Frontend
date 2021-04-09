@@ -1,0 +1,88 @@
+<app-header></app-header>
+<div class="container">
+    <div class="profile">
+        <i class="fas fa-bars" (click)='toggleSlideBar(true)' title="Task-Bar"></i>
+        <div class="img">
+            <a href="assets/images/user_pictures/{{user.profile}}" target="_blank"><img src="assets/images/user_pictures/{{user.profile}}"></a>
+        </div>
+        <p class="fullname">{{user.fullname}}</p>
+    </div>
+</div>
+<app-restaurant-pending [user]='user'></app-restaurant-pending>
+
+
+
+
+
+<form id="UserProfileModel">
+    <div class="close" (click)='toggleUserProfileModel(false)'>
+        <i class="fas fa-times"></i>
+    </div>
+    <h1 style="text-align: center;">User Information</h1>
+    <div class="input">
+        <input type="text" name="username1" placeholder="Enter Username of user">
+        <div class="buttons">
+            <input type="button" (click)='getUserByUsername()' value="Search">
+            <input type="button" id="deleteBtn" (click)='deleteUser()' value="Delete">
+        </div>
+    </div>
+    <div id="UserEditProfileModel">
+        <label for="password1" class="password">
+            <input type="password" name="password" [(ngModel)]='user1.password' placeholder="Enter Password" id="password1">
+            <i class="fas fa-eye" (click)='togglePasswordVisibility1()'></i>
+        </label>
+        <input type="text" name="fullname" [(ngModel)]="user1.fullname" placeholder="Enter Fullname">
+        <select name="role" [(ngModel)]='user1.role'>
+            <option value="Customer">Customer</option>
+            <option value="Owner">Owner</option>
+            <option value="Delivery Boy">Delivery Boy</option>
+            <option value="Admin">Admin</option>
+        </select>
+        <input type="file" name="userpic1" accept="image/*">
+        <input type="text" name="email" [(ngModel)]='user1.email' placeholder="Enter Email">
+        <textarea name="address" [(ngModel)]='user1.address' cols="30" rows="5">Address</textarea>
+        <div class="buttons">
+            <input type="button" (click)='updateUser1()' value="Submit">
+            <input type="reset" (click)='toggleUserProfileModel(false)' value="Cancel">
+        </div>
+    </div>
+</form>
+<div id="slidebar">
+    <p class="title">Task Bar</p>
+    <i class="fas fa-times" (click)='toggleSlideBar(false)'></i>
+    <ul class="action-list">
+        <li (click)='toggleEditUserProfileModel(true)'>Update Profile</li>
+        <li (click)='deleteAccount()'>Delete Account</li>
+        <a routerLink="/Profile/My-Basket" *ngIf='getRole()=="Customer"'><li>My Orders</li></a>
+        <a routerLink="/My-Restaurants" *ngIf='getRole()=="Owner"'><li>Restaurants</li></a>
+        <li (click)='toggleUserProfileModel(true)' *ngIf='getRole()=="Admin"'>Update User Account</li>
+    </ul>
+</div>
+<div id="EditUserProfileModel">
+    <input type="text" name="username" [(ngModel)]='user.username' placeholder="Enter Username">
+    <div class="password">
+        <input type="password" name="password" [(ngModel)]='user.password' placeholder="Enter Password" id="password">
+        <i class="fas fa-eye" (click)='togglePasswordVisibility()'></i>
+    </div>
+    <input type="text" name="fullname" [(ngModel)]="user.fullname" placeholder="Enter Fullname">
+    <input type="file" accept="image/*">
+    <input type="text" name="email" [(ngModel)]='user.email' placeholder="Enter Email">
+    <textarea name="address" [(ngModel)]='user.address' cols="30" rows="5">Address</textarea>
+    <div class="buttons">
+        <input type="button" (click)='updateUserProfile()' value="Update">
+        <input type="reset" (click)='toggleEditUserProfileModel(false)' value="Cancel">
+    </div>
+</div>
+
+
+
+
+<!--<div *ngIf='getRole()=="Owner"'>
+    <app-owner-profile [user]='user'></app-owner-profile>
+</div>
+<div *ngIf='getRole()=="Admin"'>
+    <app-admin-profile></app-admin-profile>
+</div>
+<div *ngIf='getRole()=="Customer"'>
+    <app-customer-profile></app-customer-profile>
+</div>-->

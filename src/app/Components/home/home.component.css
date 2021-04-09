@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre&display=swap');
+*{
+    font-family: 'poppins',sans-serif;
+}
+#map{
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: none;
+    background: #eee;
+    color: #fff;
+}
+/*--------------------------------------------------Profile-container-start---------------------------------------------*/
+.profile-container{
+    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.profile-container .container{
+    height: auto;
+    width: 100%;
+}
+.profile-container .container img{
+    width: 100%;
+    -webkit-user-drag: none;
+}
+.profile-container .container .title{
+    position: absolute;
+    user-select: none;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%,-60%);
+    font-size: 80px;
+    font-weight: 600;
+    text-align: center;
+    color: white;
+    font-family: 'Averia Serif Libre', cursive;
+}
+@media screen and (max-width:1200px){
+    .profile-container .container .title{
+        font-size: 65px;
+        top: 45%;
+    }
+}
+@media screen and (max-width:1000px){
+    .profile-container .container .title{
+        transform: translate(-50%,-40%);
+        top: 40%;
+    }
+}
+@media screen and (max-width:850px){
+    .profile-container .container .title{
+        font-size: 50px;
+        transform: translate(-50%,-30%);
+        top: 30%;
+    }
+}
+@media screen and (max-width:650px){
+    .profile-container .container .title{
+        font-size: 40px;
+        transform: translate(-50%,-25%);
+        top: 25%;
+    }
+}
+@media screen and (max-width:500px){
+    .profile-container .container .title{
+        font-size: 30px;
+        transform: translate(-50%,-20%);
+        top: 20%;
+    }
+}
+@media screen and (max-width:400px){
+    .profile-container .container .title{
+        font-size: 25px;
+    }
+}
+/*--------------------------------------------Profile-container-end---------------------------------------------------*/
+
+
+/*---------------------------------------------Food-container-start--------------------------------------------------------*/
+.food-container{
+    width: 100%;
+    padding: 5vh 5vw;
+    background-image: linear-gradient(to right, #111 0%, #222 25%, #111 50%, #222 75%, #111 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 20px;
+}
+.food-container p.title{
+    color: white;
+    font-family: 'Averia Serif Libre', cursive;
+    text-align: center;
+    font-size: 60px;
+}
+.food-container .top-food-items{
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto;
+    row-gap: 20px;
+    column-gap: 20px;
+}
+.food-container .top-food-items .item{
+    width: 300px;
+    height: 200px;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.food-container .top-food-items .item img{
+    width: 100%;
+}
+.food-container .explore{
+    padding: 5px 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    background: #fd1d1d;
+    text-transform: uppercase;
+    border: none;
+    outline: none;
+    letter-spacing: 1px;
+    color: #fff;
+    border-radius: 22px;
+}
+@media screen and (max-width:800px){
+    .food-container .top-food-items .item{
+        width: 200px;
+        height: 132px;
+    }
+    .food-container p.title{
+        font-size: 50px;
+    }
+}
+@media screen and (max-width:500px){
+    .food-container .top-food-items{
+        grid-template-rows: auto auto auto auto;
+        grid-template-columns: auto;
+    }
+    .food-container .top-food-items .item{
+        width: 300px;
+        height: 200px;
+    }
+    .food-container p.title{
+        font-size: 40px;
+    }
+}
+@media screen and (max-width:400px){
+    .food-container .top-food-items .item{
+        width: 200px;
+        height: 132px;
+    }
+    .food-container p.title{
+        font-size: 30px;
+    }
+}
+
+
+/*---------------------------------------------Food-container-end--------------------------------------------------------*/

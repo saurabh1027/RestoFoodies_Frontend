@@ -1,0 +1,114 @@
+<app-header></app-header>
+<div class="container">
+    <div class="select">
+        <select name="select-restaurants" id="select-restaurants" (change)='onSelectChange()' title="Select Restaurant">
+            <option value="{{name}}" *ngFor="let name of names">{{name}}</option>
+        </select>
+        <i class="fa fa-trash-alt" (click)='deleteRestaurant(restaurant.rid)' title="Delete Restaurant-{{restaurant.name}}"></i>
+    </div>
+    <div class="profile">
+        <i class="fas fa-edit" (click)='toggleRestoUpdateForm(true)'></i>
+        <img src="assets/images/restaurants/banner1.jpg" alt="banner">
+        <span class="name">{{restaurant.name}}</span>
+        <span class="branch">Branch - {{restaurant.branch}}</span>
+    </div>
+    <div class="row">
+        <div class="col1">
+            <div class="images">
+                <a href='assets/images/restaurants/{{rImages[index]}}' target="_blank" class="img">
+                    <img src="assets/images/restaurants/{{rImages[index]}}" alt="{{rImages[index]}}">
+                </a>
+                <div class="dirButtons">
+                    <i class="fas fa-chevron-circle-left previous" (click)='rImagesSlider(false)'></i>
+                    <i class="fas fa-chevron-circle-right next" (click)='rImagesSlider(true)'></i>
+                </div>
+            </div>
+            <div class="buttons">
+                <button (click)='toggleImageModule()' style='background: rgb(20, 106, 187);'>Add Images</button>
+                <button (click)='deleteRImage(rImages[index])' style='background: #f00;'>Delete</button>
+            </div>
+            <div id="imageModule">
+                <span class="title">Select Images to add</span>
+                <input type="file" title="Select Images" id="rImages" multiple accept="image/jpg,image/png,image/jpeg">
+                <div class="buttons">
+                    <button type="button" (click)='addImages()'>Submit</button>
+                    <button type="reset" (click)='toggleImageModule()'>Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div class="map">
+            <agm-map [latitude]='getLatLng(true)' [longitude]='getLatLng(false)' [zoom]='7' [fullscreenControl]='true'>
+                <agm-marker [latitude]='getLatLng(true)' [longitude]='getLatLng(false)'></agm-marker>
+            </agm-map>
+        </div>
+    </div>
+    <div class="menu">
+        <div class="topbar">
+            <p class="title">Menu</p>
+            <button class="btn" (click)="toggleCategoryModule()">Add Category</button>
+        </div>
+        <div class="category-list">
+            <div class="category-box">
+                <span class="category-name selected" title="All verieties of food items" (click)='getFoodItems("All")'>All</span>
+                <span class="category-name" title="{{category.description}}" (click)='getFoodItems(category.cname)' *ngFor="let category of restCategories">{{category.cname}}</span>
+            </div>
+        </div>
+        <div class="food-items">
+            <app-menu [food_items]='food_items' [restaurant]='restaurant' [user]='user' [restCategories]='restCategories'></app-menu>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<form id="RestoUpdateForm">
+    <input type="text" class="textfield" name="name" [(ngModel)]='restaurant.name' placeholder="Enter Name">
+    <input type="text" class="textfield" name="contact" [(ngModel)]='restaurant.contact' placeholder="Enter Contact">
+    <input type="email" class="textfield" name="email" [(ngModel)]='restaurant.email' placeholder="Enter Email">
+    <input type="text" class="textfield" name="branch" [(ngModel)]='restaurant.branch' placeholder="Enter Branch">
+    <label for="mapbtn" class="mapbtn" (click)='toggleMap1()'>Location<i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
+    <label for="opening_time1">Opening Time: <input type="time" name="opening_time" [(ngModel)]="restaurant.opening_time" class="timefield" id="opening_time1"></label>
+    <label for="closing_time1">Closing Time: <input type="time" name="closing_time" [(ngModel)]="restaurant.closing_time" class="timefield" id="closing_time1"></label>
+    <div class="buttons">
+        <input type="submit" value="Submit" (click)="updateRestaurant(restaurant)">
+        <input type="button" value="Cancel" (click)="toggleRestoUpdateForm(false)">
+    </div>
+</form>
+<div class="form">
+    <form id="RestoForm">
+        <input type="text" name="name" class="textfield" [(ngModel)]="rest.name" placeholder="Name Of Restaurant">
+        <input type="text" name="contact" class="textfield" [(ngModel)]='rest.contact' placeholder="Contact">
+        <input type="email" name="email" class="textfield" [(ngModel)]="rest.email" placeholder="Enter Email-address">
+        <input type="text" name="branch" class="textfield" [(ngModel)]="rest.branch" placeholder="Enter Branch">
+        <label for="mapbtn" class="mapbtn" (click)='toggleMap1()'>Location<i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
+        <label for="opening_time">Opening Time: <input type="time" name="opening_time" [(ngModel)]="rest.opening_time" class="timefield" id="opening_time"></label>
+        <label for="closing_time">Closing Time: <input type="time" name="closing_time" [(ngModel)]="rest.closing_time" class="timefield" id="closing_time"></label>
+        <div class="buttons">
+            <input type="submit" value="Submit" class="btn" (click)="addRestaurant()">
+            <input type="button" value="Cancel" (click)="toggleRestoModule()">
+        </div>
+    </form>
+</div>
+<div id="map">
+    <agm-map [latitude]='selectedLatitude' [longitude]='selectedLongitude' [zoom]='6' (mapClick)='locationChosen($event,true)'>
+        <agm-marker [latitude]='selectedLatitude' [longitude]='selectedLongitude' [markerDraggable]="true"></agm-marker>
+    </agm-map>
+    <button (click)="toggleMap()" class="choosebtn">Choose this location</button>
+</div>
+<div id="map1">
+    <agm-map [latitude]='getLatLng(true)' [longitude]='getLatLng(false)' [zoom]='6' (mapClick)='locationChosen($event,false)'>
+        <agm-marker [latitude]='getLatLng(true)' [longitude]='getLatLng(false)' [markerDraggable]="true"></agm-marker>
+    </agm-map>
+    <button (click)="toggleMap1()" class="choosebtn">Choose this location</button>
+</div>
+<div id="CategoryModule">
+    <div class="row">
+        <p class="title">Categories</p>
+        <button (click)="updateCategoriesOfRestaurant()">Update Categories</button>
+    </div>
+    <div class="categories">
+        <span *ngFor="let category of categories" class="category" (click)="addCategory(category.cname)" title="{{category.description}}">{{category.cname}}</span>
+    </div>
+</div>

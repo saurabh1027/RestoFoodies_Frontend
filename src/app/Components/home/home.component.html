@@ -1,0 +1,19 @@
+<app-header></app-header>
+<div class="profile-container">
+    <div class="container">
+        <img src="assets/images/profile_bg.jpg" alt="profile_bg.jpg">
+        <span class="title">Resto<br>Foodies</span>
+    </div>
+</div>
+<app-offers></app-offers>
+<div class="food-container">
+    <p class="title">Food Items</p>
+    <div *ngIf='top_food_items.length>0' class="top-food-items">
+        <div class="item" *ngFor='let item of top_food_items'>
+            <a href="assets/images/food_items/{{item.pic}}" target="_blank">
+                <img src="assets/images/food_items/{{item.pic}}" alt="{{item.pic}}">
+            </a>
+        </div>
+    </div>
+    <a class="explore" routerLink='/Items/All'>Explore</a>
+</div>

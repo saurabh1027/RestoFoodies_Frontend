@@ -1,0 +1,33 @@
+<header>
+    <div class="logo">
+        <img src="assets/images/logo.jpg" alt="logo-icon">
+    </div>
+    <nav id="nav">
+        <li><a routerLink='/Home'>Home</a></li>
+        <li><a routerLink='/News'>News</a></li>
+        <li><a routerLink='/About'>About</a></li>
+        <li><a routerLink='/Contact'>Contact</a></li>
+        <i class="fas fa-times" (click)='toggleNavbar(false)'></i>
+    </nav>
+    <div class="icons">
+        <a *ngIf='loggedIn' class="user-icon" title="{{fullname}}" routerLink='/Profile'><i class="fas fa-user-cog"></i></a>
+        <i class="fas fa-search" title="Search Items" (click)='toggleSearchBar()'></i>
+        <div class="auth">
+            <a *ngIf="!loggedIn" routerLink="/Authentication/Login" title="Login"><i class="fas fa-sign-in-alt"></i></a>
+            <a *ngIf="loggedIn" routerLink="/Authentication/Login" title="Logout" (click)="logout()"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+        <i class="fas fa-bars" (click)='toggleNavbar(true)'></i>
+    </div>
+    <div id="searchbar">
+        <select name="cat" id="cat" (change)='getKeywordsByCategory()'>
+            <option value="All">All</option>
+            <option value="{{cname}}" *ngFor='let cname of categories'>{{cname}}</option>
+        </select>
+        <input type="text" name="searchbar" id="search-input" placeholder="Enter something..." (keyup)='toggleSearchResultModel()'>
+        <div id="SearchResult">
+            <a (click)='reload()' routerLink="/Items/{{k}}" *ngFor='let k of resultedKeywords'> 
+                <div class="searchedItem">{{k}}</div>
+            </a>
+        </div>
+    </div>
+</header>

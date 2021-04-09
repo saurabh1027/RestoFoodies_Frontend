@@ -1,0 +1,42 @@
+<app-header></app-header>
+<div class="container">
+    <div class="items">
+        <p class="title">Search Results</p>
+        <div class="item" *ngFor='let item of items'>
+            <div *ngIf='item.vegeterian' class="type veg"></div>
+            <div *ngIf='!item.vegeterian' class="type nonveg"></div>
+            <div class="row">
+                <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}" alt="Item-Pic"></a>
+                <div class="details">
+                    <span class="name">{{item.fname}}</span>
+                    <span class="price">{{item.price}}&#8377;</span>
+                    <span class="ingredients">{{item.ingredients}}</span>
+                </div>
+            </div>
+            <div class="row1" *ngIf='user.role=="Customer" && user.username!=""'>
+                <span class="quantity">Quantity: {{item.quantity}}</span>
+                <button (click)='toggleAddBasketModel(true,item)'>Add to Basket</button>
+            </div>
+        </div>
+    </div>
+    <div class="orders" *ngIf='user.role=="Customer"'>
+        <div *ngIf='user.username===""' class="login">
+            <span class="title">Make sure to login</span>
+            <a href="/Authentication/Login">Login</a>
+        </div>
+        <div *ngIf='orders.length>0' class="all-orders">
+            <a routerLink="/Profile/My-Basket"><p class="title">Your Orders</p></a>
+            <div class="order" *ngFor='let order of orders'>
+                <a routerLink="/Profile/My-Basket/{{order.name.replaceAll(' ','_')}}"><p class="title">{{order.name}} - {{order.total_price}}</p></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="AddBasketModel">
+    <i class="close fas fa-times" (click)='toggleAddBasketModel(false,null)'></i>
+    <select name="order">
+        <option value="{{order.oid}}" *ngFor='let order of orders'>{{order.name}}</option>
+    </select>
+    <button (click)='addItemToBasket()'>Add item to Basket</button>
+</div>

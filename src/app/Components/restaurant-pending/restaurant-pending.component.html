@@ -1,0 +1,16 @@
+<div class="topbar">
+    <span>Pending Orders</span>
+    <select name="restSelect" id="restSelect" (change)='getOrdersOfRestaurant()'>
+        <option value="{{r.rid}}" *ngFor='let r of restaurants'>{{r.name}}</option>
+    </select>
+</div>
+<agm-map id="map1" [latitude]='lat' [longitude]='lng' [zoom]='7' [fullscreenControl]='true'>
+    <agm-marker [latitude]='o.location.substring(0,o.location.indexOf(","))' [longitude]='o.location.substring(o.location.indexOf(",")+1,o.location.length)'
+        *ngFor='let o of orders'>
+        <agm-info-window>
+            <span style="font-weight: 600;">{{o.name}}</span><br>
+            <span class="price" style="margin-top: 5px;">{{o.total_price}}&#8377;</span><br>
+            <a class="view-more" (click)='toggleOrderModel(o.oid)' class='viewBtn'> View More</a>
+        </agm-info-window>
+    </agm-marker>
+</agm-map>

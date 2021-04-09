@@ -1,0 +1,59 @@
+<div id="map">
+    <agm-map [latitude]='lat' [longitude]='lng' [fullscreenControl]='true' [zoom]='6' (mapClick)='locationChosen($event)'>
+        <agm-marker [latitude]='lat' [longitude]='lng' [markerDraggable]='true'></agm-marker>
+    </agm-map>
+    <button (click)='chooseLocation()'>Choose</button>
+</div>
+<div id="map1">
+    <agm-map [latitude]='lat1' [longitude]='lng1' [fullscreenControl]='true' [zoom]='6'>
+        <agm-marker [latitude]='lat1' [longitude]='lng1'></agm-marker>
+    </agm-map>
+    <button (click)='toggleMap1(false)'>Close</button>
+</div>
+<app-header></app-header>
+<div class="container">
+    <div class="basket">
+        <div class="header">
+            <div class="left">
+                <a routerLink="/Profile"><i class="fas fa-shopping-basket" title="Back to profile"></i></a>
+                Orders : {{orders.length}}
+            </div>
+            <div class="right">
+                <p class="price">{{price}}&#8377;</p>
+                <i (click)='toggleBasketMenuModel()' class="fas fa-ellipsis-v"></i>
+                <ul id="BasketMenuModel">
+                    <li (click)='toggleAddOrderModel(true)'>Add Order</li>
+                </ul>
+                <div id="AddOrderModel">
+                    <input type="text" placeholder="Enter Name of Order" [(ngModel)]='order.name' name='name'>
+                    <span class="dest">
+                        Location: <i class="fas fa-map-marker-alt" (click)='toggleMap(true)'></i>
+                    </span>
+                    <div class="buttons1">
+                        <input type="button" value="Submit" (click)='addOrderByUsername()'>
+                        <input type="reset" value="Cancel" (click)='toggleAddOrderModel(false)'>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="orders" id="OrdersModel">
+            <div *ngIf='!(orders.length>0)' class="nothing">
+                Nothing to show!
+            </div>
+            <div class="order" *ngFor='let order of orders'>
+                <div class="card">
+                    <a href="/Profile/My-Basket/{{order.name.replace(' ','_')}}">
+                        <span class="name">{{order.name}} <i (click)=deleteOrder(order.oid) style="color: #f00;" class="fas fa-trash-alt"></i></span>
+                    </a>
+                    <span class="status">Status: {{order.status}}</span>
+                    <button (click)='checkLocation(order.location)'>Check Location on map</button>
+                    <span class="price">{{order.total_price}}&#8377;</span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf='orders.length > 3' class="buttons" id="buttons">
+            <i class="fas fa-arrow-left" (click)='moveOrders(false)'></i>
+            <i class="fas fa-arrow-right" (click)='moveOrders(true)'></i>
+        </div>
+    </div>
+</div>

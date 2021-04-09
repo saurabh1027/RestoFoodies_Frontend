@@ -1,0 +1,270 @@
+app-restaurant-pending{
+    font-family: 'poppins',sans-serif;
+}
+
+/*--------------------------------------------Models--------------------------------------------*/
+#UserProfileModel{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 50vw;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #111;
+    display: none;
+}
+#UserProfileModel .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 15px;
+    font-size: 25px;
+}
+#UserProfileModel .input{
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+}
+#UserProfileModel .input .buttons{
+    display: flex;
+    column-gap: 20px;
+}
+#UserProfileModel .input .buttons input{
+    cursor: pointer;
+    color: #fff;
+    width: 100px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+}
+#UserProfileModel .input .buttons #deleteBtn{
+    background: #ff0000;
+}
+#UserProfileModel .input .buttons input[type='button']{
+    background: #1f84bf;
+}
+#UserProfileModel .input input[name="username1"]{
+    width: 90%;
+    padding: 10px;
+    outline: none;
+    border-radius: 4px;
+    border: 1px solid;
+}
+#UserEditProfileModel{
+    border: 1px solid #111;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+    display: none;
+}
+#UserEditProfileModel input[type="file"]{
+    cursor: pointer;
+}
+#UserEditProfileModel .password{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+#UserEditProfileModel .password i.fas{
+    position: absolute;
+    right: 30px;
+}
+#UserEditProfileModel select[name="role"]{
+    cursor: pointer;
+}
+#UserEditProfileModel input[type="text"],#UserEditProfileModel input[type="password"]{
+    width: 90%;
+    padding: 10px;
+    outline: none;
+    border-radius: 4px;
+    border: 1px solid;
+}
+#UserEditProfileModel textarea{
+    width: 90%;
+    resize: none;
+    padding: 10px;
+    outline: none;
+}
+#UserEditProfileModel .buttons{
+    display: flex;
+    column-gap: 20px;
+}
+#UserEditProfileModel .buttons input{
+    cursor: pointer;
+    color: #fff;
+    width: 100px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    border-radius: 4px;
+}
+#UserEditProfileModel .buttons input[type="button"]{
+    background: #1f84bf;
+}
+#UserEditProfileModel .buttons input[type="reset"]{
+    background: #ff0000;
+}
+
+#slidebar{
+    height: 100vh;
+    position: fixed;
+    width: 300px;
+    top: 0;
+    right: 100vw;
+    background: #fff;
+    border: 1px solid;
+    transition: 0.5s ease-out;
+    padding-top: 70px;
+}
+#slidebar.active{
+    transform: translateX(100%);
+}
+#slidebar .title{
+    position: absolute;
+    font-size: 20px;
+    font-family: 'Poppins',sans-serif;
+    top: 20px;
+    left: 20px;
+    font-weight: 600;
+}
+#slidebar .fa-times{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+}
+#slidebar ul li{
+    display: block;
+    text-align: center;
+    padding: 10px 0;
+    font-family: 'Poppins',sans-serif;
+    cursor: pointer;
+    background: #ddd;
+    margin: 5px 0;
+}
+#EditUserProfileModel{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: 0.2s ease-out;
+    width: 0;
+    height: 0;
+    border: 0;
+    background: #fff;
+}
+#EditUserProfileModel.active{
+    border: 1px solid;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+#EditUserProfileModel input[type="text"],
+#EditUserProfileModel input[type="password"]{
+    width: 90%;
+    padding: 10px;
+    outline: none;
+    border-radius: 4px;
+    border: 1px solid;
+}
+#EditUserProfileModel .password{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+#EditUserProfileModel .password i{
+    position: absolute;
+    right: 25px;
+}
+#EditUserProfileModel input[type="file"]{
+    width: 90%;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #111;
+    border-radius: 5px;
+}
+#EditUserProfileModel textarea{
+    width: 90%;
+    padding: 5px;
+    resize: none;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #111;
+}
+#EditUserProfileModel .buttons{
+    display: flex;
+    column-gap: 10px;
+}
+#EditUserProfileModel .buttons input{
+    padding: 10px;
+    width: 80px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    outline: none;
+}
+#EditUserProfileModel .buttons input[type="button"]{
+    background: #2778c4;
+}
+#EditUserProfileModel .buttons input[type="reset"]{
+    background: #ff0000;
+}
+
+
+
+
+/*------------------------------------------Normal-----------------------------------------------------*/
+.container .profile{
+    background-color: #ddd;
+    height: 60vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.container .profile i{
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    font-size: 30px;
+}
+.container .profile .img{
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 50%;
+    overflow: hidden;
+    height: 210px;
+    width: 210px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container .profile .img img{
+    width: 200px;
+    height: 200px;
+    -webkit-user-drag: none;
+}
+.container .profile .fullname{
+    font-size: 20px;
+    font-family: 'poppins',sans-serif;
+}

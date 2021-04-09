@@ -1,0 +1,54 @@
+<div *ngIf='!(food_items.length>0)' class="nothing">
+    <p>No items added yet!</p>
+</div>
+<div *ngIf='food_items.length>0' class="menu">
+    <div class="item" *ngFor='let item of food_items'>
+        <div class="details">
+            <div class="left-box">
+                <span class="item-name">{{item.fname}}({{item.quantity}})</span>
+                <span *ngIf='item.ingredients!=""' class="ingredients" title="Used Ingredients">{{item.ingredients.substring(0,20)}}...</span>
+                <span *ngIf='item.description!=""' class="description" title="More Information">{{item.description.substring(0,20)}}...</span>
+            </div>
+            <div class="right-box">
+                <span *ngIf='item.vegeterian' class="veg-nonveg veg" title="{{item.vegeterian}}"></span>
+                <span *ngIf='!item.vegeterian' class="veg-nonveg non-veg" title="{{item.vegeterian}}"></span>
+                <span class="price" title="Price">{{item.price}} &#8377;</span>
+            </div>
+        </div>
+        <div class="img">
+            <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
+        </div>
+        <div class="buttons">
+            <button name="edit" title="no action is added yet">Edit</button>
+            <button name="delete" title="Delete this food-item permanently" (click)='deleteFoodItem(item.fid)'>Delete</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="foodBtn" (click)='toggleFoodModule()'>
+    <i class="fas fa-plus" title="Add Food Item"></i>
+</div>
+<form id="FoodModule" (submit)='addFoodItem()'>
+    <input type="text" name="fname" [(ngModel)]='food_item.fname' placeholder="Name of the Food Item" required>
+    <div style="column-gap: 10px;display: flex;">
+        <label for="price" title="Price currency should be Indian Rupee">Price(&#8377;): <input id="price" type="number" name="price" [(ngModel)]='food_item.price'></label>
+        <label for="quantity">Quantity: <input id="quantity" type="number" name="quantity" [(ngModel)]='food_item.quantity'></label>
+    </div>
+    <select name="category" [(ngModel)]="food_item.cname">
+        <option value="{{category.cname}}" *ngFor='let category of restCategories'>{{category.cname}}</option>
+    </select>
+    <input type="file" name="pic" accept="image/*">
+    <input type="text" name="keywords" [(ngModel)]='food_item.keywords' placeholder="Keywords of the Food Item">
+    <input type="text" name="ingredients" [(ngModel)]='food_item.ingredients' placeholder="Ingredients of the Food Item">
+    <input type="text" name="description" [(ngModel)]='food_item.description' placeholder="Description of the Food Item">
+    <label for="vegeterian"><input type="checkbox" name="vegeterian" [(ngModel)]='food_item.vegeterian' id='vegeterian'>  Veg-Food</label>
+    <div class="buttons">
+        <input type="submit" value="Submit">
+        <input type="button" style="background: #f00;" (click)='toggleFoodModule()' value="Cancel">
+    </div>
+</form>

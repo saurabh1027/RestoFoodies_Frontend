@@ -1,0 +1,231 @@
+.container{
+    display:flex;
+    width: 100vw;
+    height: auto;
+    position: relative;
+    column-gap: 2vw;
+    font-family: 'poppins',sans-serif;
+}
+.container .items{
+    width: 69vw;
+    height: 100%;
+    padding: 20px;
+}
+.container .items .title{
+    font-size: 25px;
+    font-weight: 600;
+    padding: 10px;
+}
+.container .items .item{
+    padding: 20px;
+    background-color: #ddd;
+    margin-bottom: 20px;
+    position: relative;
+}
+.container .items .item:last-child{
+    margin-bottom: 0;
+}
+.container .items .item .row{
+    column-gap: 20px;
+    display: flex;
+}
+.container .items .item img{
+    width: 200px;
+}
+.container .items .item .type{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 5px;
+    right: 5px;
+    border-radius: 50%;
+}
+.veg{
+    background-color: rgb(13, 182, 13);
+}
+.nonveg{
+    background-color: #f00;
+}
+.container .items .item .details{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    word-break: break-word;
+}
+.container .items .item .details .name{
+    font-size: 20px;
+    font-weight: 600;
+}
+.container .items .item .details .price{
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+.container .items .item .details .ingredients{
+    font-size: 16px;
+}
+.container .orders{
+    width: 29vw;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding: 10px;
+    height: 100%;
+    padding: 20px;
+}
+.container .orders .login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.container .orders .login .title{
+    font-size: 25px;
+    font-weight: 600;
+}
+.container .orders .login a{
+    padding: 10px 30px;
+    color: white;
+    background-color: #2378e6;
+    margin-bottom: 20px;
+    border-radius: 12px;
+}
+.container .items .item .row1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 20px;
+    margin-top: 10px;
+}
+.container .items .item .row1 button{
+    padding: 10px;
+    outline: none;
+    color: #fff;
+    background-color: #2378e6;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+.container .items .item .row1 .quantity input{
+    width: 100px;
+    padding: 7px;
+    outline: none;
+}
+@media screen and (max-width:850px){
+    .container .items .item .details .price{
+        position: relative;
+        top: 0;
+        right: 0;
+    }
+    .container{
+        column-gap: 0;
+        flex-direction: column;
+    }
+    .container .items{
+        width: 100%;
+    }
+    .container .orders{
+        width: 100%;
+    }
+}
+@media screen and (max-width:600px){
+    .container .items .item{
+        padding: 8px;
+    }
+    .container .items .item img{
+        width: 140px;
+    }
+    .container .items .item .details .name{
+        font-size: 18px;
+    }
+    .container .items .item .details .price{
+        font-size: 16px;
+    }
+    .container .items .item .details .ingredients{
+        font-size: 14px;
+    }
+    .container .items .item .type{
+        width: 10px;
+        height: 10px;
+    }
+}
+@media screen and (max-width:450px){
+    .container .items .item .row{
+        column-gap: 10px;
+    }
+    .container .items .item img{
+        width: 100px;
+    }
+    .container .items .item .details .name{
+        font-size: 14px;
+    }
+    .container .items .item .details .price{
+        font-size: 12px;
+    }
+    .container .items .item .details .ingredients{
+        font-size: 10px;
+    }
+    .container .items .item .row1{
+        column-gap: 10px;
+    }
+    .container .items .item .row1 button{
+        padding: 5px;
+        border-radius: 0;
+        font-size: 12px;
+    }
+    .container .items .item .row1 .quantity{
+        font-size: 12px;
+    }
+    .container .items .item .row1 .quantity input{
+        padding: 2px 5px;
+        width: 80px;
+    }
+}
+
+#AddBasketModel{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border: 1px solid #111;
+    background-color: #fff;
+    align-items: center;
+    justify-content: center;
+    row-gap: 10px;
+    flex-direction: column;
+    display: none;
+    padding: 20px 40px;
+}
+#AddBasketModel .close{
+    top: 0;
+    position: absolute;
+    right: 0;
+    margin: 10px;
+}
+#AddBasketModel select[name="order"]{
+    min-width: 200px;
+    padding: 5px;
+    outline: none;
+}
+#AddBasketModel button{
+    padding: 10px;
+    outline: none;
+    color: #fff;
+    background-color: #2378e6;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+.container .all-orders .title{
+    font-size: 25px;
+    font-weight: 600;
+    padding: 10px;
+}
+.container .all-orders .order .title{
+    font-size: 18px;
+    font-weight: 600;
+}
