@@ -3,6 +3,9 @@
 </div>
 <div *ngIf='food_items.length>0' class="menu">
     <div class="item" *ngFor='let item of food_items'>
+        <div class="img">
+            <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
+        </div>
         <div class="details">
             <div class="left-box">
                 <span class="item-name">{{item.fname}}({{item.quantity}})</span>
@@ -15,40 +18,126 @@
                 <span class="price" title="Price">{{item.price}} &#8377;</span>
             </div>
         </div>
-        <div class="img">
-            <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
-        </div>
         <div class="buttons">
-            <button name="edit" title="no action is added yet">Edit</button>
+            <button name="edit" (click)='toggleItemModel("UpdateItemForm",item,true)'>Edit</button>
             <button name="delete" title="Delete this food-item permanently" (click)='deleteFoodItem(item.fid)'>Delete</button>
         </div>
     </div>
 </div>
-
-
-
-
-
-
-<div class="foodBtn" (click)='toggleFoodModule()'>
+<div class="foodBtn" (click)='toggleModel("AddItemForm",true)'>
     <i class="fas fa-plus" title="Add Food Item"></i>
 </div>
-<form id="FoodModule" (submit)='addFoodItem()'>
-    <input type="text" name="fname" [(ngModel)]='food_item.fname' placeholder="Name of the Food Item" required>
-    <div style="column-gap: 10px;display: flex;">
-        <label for="price" title="Price currency should be Indian Rupee">Price(&#8377;): <input id="price" type="number" name="price" [(ngModel)]='food_item.price'></label>
-        <label for="quantity">Quantity: <input id="quantity" type="number" name="quantity" [(ngModel)]='food_item.quantity'></label>
+
+
+
+<form id="AddItemForm" #AddItemForm='ngForm' (ngSubmit)='addFoodItem()'>
+    <p class="heading">Food-Item Details</p>
+    <div class="group">
+        <label>Name of the food item:</label>
+        <input type="text" #fname='ngModel' class="textfield" name="fname" pattern="[A-Z a-z]{1,20}" [(ngModel)]='food_item.fname' required>
+        <div *ngIf='fname.errors && (fname.invalid && fname.touched)'>
+            <small *ngIf='fname.errors.required'>Food name cannot be empty.</small>
+            <small *ngIf='fname.errors.pattern'>Food name length should be 1-20 characters.</small>
+        </div>
     </div>
-    <select name="category" [(ngModel)]="food_item.cname">
-        <option value="{{category.cname}}" *ngFor='let category of restCategories'>{{category.cname}}</option>
-    </select>
-    <input type="file" name="pic" accept="image/*">
-    <input type="text" name="keywords" [(ngModel)]='food_item.keywords' placeholder="Keywords of the Food Item">
-    <input type="text" name="ingredients" [(ngModel)]='food_item.ingredients' placeholder="Ingredients of the Food Item">
-    <input type="text" name="description" [(ngModel)]='food_item.description' placeholder="Description of the Food Item">
-    <label for="vegeterian"><input type="checkbox" name="vegeterian" [(ngModel)]='food_item.vegeterian' id='vegeterian'>  Veg-Food</label>
+    <div class="group">
+        <div class="flex-group numbers">
+            <label for="price">Price(&#8377;): <input id="price" min="0" type="number" #price='ngModel' name="price" [(ngModel)]='food_item.price'></label>
+            <label for="quantity">Quantity: <input id="quantity" min="0" type="number" name="quantity" #quantity='ngModel' [(ngModel)]='food_item.quantity'></label>
+        </div>
+        <small *ngIf='!(price.value>0) && price.touched'>Price should be greater than zero.</small>
+        <small *ngIf='!(quantity.value>0) && quantity.touched'>Quantity should be greater than zero.</small>
+    </div>
+    <div class="group">
+        <select class="textfield" style="cursor: pointer;" name="category" #category='ngModel' [(ngModel)]="food_item.cname" [class.invalid]='category.invalid && category.touched' required [class.valid]='category.valid || category.untouched'>
+            <option value="" selected>Select Category</option>
+            <option value="{{category.cname}}" *ngFor='let category of categories'>{{category.cname}}</option>
+        </select>
+        <small [class.d-none]='category.valid || category.untouched'>Please select a category.</small>
+    </div>
+    <div class="group">
+        <input type="file" class="textfield" #pic='ngModel' ngModel name="pic" accept="image/*" required (change)='validateSize($event)'>
+        <small [class.d-none]='pic.valid || pic.untouched'>Please select an image.</small>
+        <small [class.d-none]='!fileSizeExceeded'>Image size should be less than 500KB.</small>
+    </div>
+    <div class="group">
+        <label>Keywords:</label>
+        <input type="text" name="keywords" class="textfield" [(ngModel)]='food_item.keywords' pattern='[A-Za-z,]{0,200}[,]' #keywords='ngModel'>
+        <small [class.d-none]='keywords.valid || keywords.untouched'>Enter comma after each keyword and only comma is allowed.</small>
+    </div>
+    <div class="group">
+        <label>Ingredients:</label>
+        <input type="text" name="ingredients" class="textfield" #ingredients='ngModel' [(ngModel)]='food_item.ingredients'>
+    </div>
+    <div class="group">
+        <label>Description:</label>
+        <input type="text" name="description" class="textfield" #description='ngModel' [(ngModel)]='food_item.description'>
+    </div>
+    <div class="group">
+        <label for="vegeterian">
+        <input type="checkbox" name="vegeterian" [(ngModel)]='food_item.vegeterian' id='vegeterian'>  Veg</label>
+    </div>
     <div class="buttons">
-        <input type="submit" value="Submit">
-        <input type="button" style="background: #f00;" (click)='toggleFoodModule()' value="Cancel">
+        <input type="submit" [disabled]='AddItemForm.invalid || fileSizeExceeded' class="btn submitbtn" value="Submit">
+        <input type="button" class="btn cancelbtn" (click)='toggleModel("AddItemForm",false)' value="Cancel">
+    </div>
+</form>
+
+<form #UpdateItemForm='ngForm' (ngSubmit)='updateItem(item)' id="UpdateItemForm">
+    <p class="heading">Food-Item Details</p>
+    <div class="group">
+        <label>Name of the food item:</label>
+        <input type="text" #fname1='ngModel' class="textfield" name="fname" pattern="[A-Z a-z]{1,20}" [(ngModel)]='item.fname' required>
+        <div *ngIf='fname1.errors && (fname1.invalid && fname1.touched)'>
+            <small *ngIf='fname1.errors.required'>Food name cannot be empty.</small>
+            <small *ngIf='fname1.errors.pattern'>Food name length should be 1-20 characters.</small>
+        </div>
+    </div>
+    <div class="group">
+        <div class="flex-group numbers">
+            <label for="price1">Price(&#8377;): <input id="price1" min="0" type="number" #price1='ngModel' name="price" [(ngModel)]='item.price'></label>
+            <label for="quantity1">Quantity: <input id="quantity1" min="0" type="number" name="quantity" #quantity1='ngModel' [(ngModel)]='item.quantity'></label>
+        </div>
+        <small *ngIf='!(price1.value>0) && price1.touched'>Price should be greater than zero.</small>
+        <small *ngIf='!(quantity1.value>0) && quantity1.touched'>Quantity should be greater than zero.</small>
+    </div>
+    <div class="group">
+        <label>Category: </label>
+        <select class="textfield" style="cursor: pointer;" name="category" #category1='ngModel' [(ngModel)]="item.cname" [class.invalid]='category1.invalid && category1.touched' required [class.valid]='category1.valid || category1.untouched'>
+            <option value="{{category.cname}}" *ngFor='let category of categories'>{{category.cname}}</option>
+        </select>
+        <small [class.d-none]='category1.valid || category1.untouched'>Please select a category.</small>
+    </div>
+    <div class="group">
+        <label>Status: </label>
+        <select class="textfield" style="cursor: pointer;" name="category" [(ngModel)]="item.status">
+            <option value="Available" selected>Available</option>
+            <option value="Out Of Stock">Out Of Stock</option>
+        </select>
+    </div>
+    <div class="group">
+        <input type="file" class="textfield" #pic1='ngModel' ngModel name="pic" accept="image/*" (change)='validateSize($event)'>
+        <small [class.d-none]='!fileSizeExceeded'>Image size should be less than 500KB.</small>
+    </div>
+    <div class="group">
+        <label>Keywords:</label>
+        <input type="text" name="keywords" class="textfield" [(ngModel)]='item.keywords' pattern='[A-Za-z,]{0,200}[,]' #keywords1='ngModel'>
+        <small [class.d-none]='keywords1.valid || keywords1.untouched'>Enter comma after each keyword and only comma is allowed.</small>
+    </div>
+    <div class="group">
+        <label>Ingredients:</label>
+        <input type="text" name="ingredients" class="textfield" #ingredients1='ngModel' [(ngModel)]='item.ingredients'>
+    </div>
+    <div class="group">
+        <label>Description:</label>
+        <input type="text" name="description" class="textfield" #description1='ngModel' [(ngModel)]='item.description'>
+    </div>
+    <div class="group">
+        <label for="vegeterian1">
+        <input type="checkbox" name="vegeterian" [(ngModel)]='item.vegeterian' id='vegeterian1'>  Veg</label>
+    </div>
+    <div class="buttons">
+        <input type="submit" [disabled]='UpdateItemForm.invalid || fileSizeExceeded' class="btn submitbtn" value="Submit">
+        <input type="button" class="btn cancelbtn" (click)='toggleItemModel("UpdateItemForm",null,false)' value="Cancel">
     </div>
 </form>

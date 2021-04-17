@@ -8,9 +8,10 @@
             <div class="row">
                 <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}" alt="Item-Pic"></a>
                 <div class="details">
-                    <span class="name">{{item.fname}}</span>
+                    <span class="name" title="{{item.status}}">{{item.fname}}</span>
                     <span class="price">{{item.price}}&#8377;</span>
                     <span class="ingredients">{{item.ingredients}}</span>
+                    <span class="ingredients">{{item.description}}</span>
                 </div>
             </div>
             <div class="row1" *ngIf='user.role=="Customer" && user.username!=""'>
@@ -29,6 +30,10 @@
             <div class="order" *ngFor='let order of orders'>
                 <a routerLink="/Profile/My-Basket/{{order.name.replaceAll(' ','_')}}"><p class="title">{{order.name}} - {{order.total_price}}</p></a>
             </div>
+        </div>
+        <div *ngIf='!(orders.length) && !(user.username==="")' class="no-orders">
+            <span>You have no orders!</span>
+            <a routerLink='/Profile/My-Basket'>Add Orders</a>
         </div>
     </div>
 </div>

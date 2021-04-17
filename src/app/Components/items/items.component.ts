@@ -15,7 +15,7 @@ import * as $ from 'jquery';
   styleUrls: ['./items.component.css']
 })
 export class ItemsComponent implements OnInit {
-  user:User=new User(0,'','','','Customer','','','user.jpg');
+  user:User=new User(0,'','','','Customer','','','','user.jpg');
   keyword:string='';
   orders:Order[]=[];
   items:Food_Item[]=[];
@@ -26,7 +26,7 @@ export class ItemsComponent implements OnInit {
 
   ngOnInit(): void {
     this.keyword = this.activeRouter.snapshot.paramMap.get('keyword');
-    this.restService.getItemsOfKeywords(this.keyword).subscribe(data=>this.items=data);
+    this.restService.getItemsOfKeywords(this.keyword,this.user.city).subscribe(data=>this.items=data);
     this.getUserByToken();
   }
 

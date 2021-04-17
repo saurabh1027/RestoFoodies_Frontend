@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="topbar">
+        <span class="title">List Of Selected Orders</span>
+        <select #select (change)='getListOrdersOfRestaurant()'>
+            <option value="{{r.rid}}" *ngFor='let r of restaurants'>{{r.name}}({{r.branch}})</option>
+        </select>
+    </div>
+    <div class="list">
+        <div class="nothing" *ngIf='!(orders.length>0)'>
+            <span>No orders added!</span>
+        </div>
+        <div class="orders" *ngIf='orders.length>0'>
+            <div class="order" *ngFor='let order of orders'>
+                <div class="header">
+                    <div class="left">
+                        <span class="name">{{order.name}} - </span>
+                        <span class="price">{{order.total_price}}&#8377;</span>
+                    </div>
+                    <button (click)='toggleModel("items",true)'>Display Items</button>
+                </div>
+                <div id="items">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 .nothing{
-    height: 500px;
+    height: 350px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -8,7 +8,8 @@
 .nothing p{
     font-size: 25px;
     font-weight: 600;
-    color: #333;
+    color: #666;
+    user-select: none;
 }
 
 .foodBtn{
@@ -25,46 +26,100 @@
     color: white;
     cursor: pointer;
 }
-#FoodModule{
+
+.invalid{
+    border-color: #f00;
+}
+.d-none{
+    display: none;
+}
+#AddItemForm,#UpdateItemForm{
+    border: 1px solid;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    border: 1px solid #111;
-    background: #fff;
+    background-color: #fff;
+    padding: 30px;
+    z-index: 1;
+    width: 90vw;
+    max-width: 700px;
+    overflow-y: auto;
+    height: 80vh;
+    display: none;
+}
+#AddItemForm .group,#UpdateItemForm .group{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    row-gap: 10px;
-    display: none;
-    z-index: 1;
+    row-gap: 5px;
+    margin: 20px 0;
 }
-#FoodModule input[type='text']{
-    padding: 10px;
-    width: 300px;
-    outline: none;
-}
-#FoodModule input[type='number']{
-    width: 50px;
-    text-align: center;
-    outline: none;
-}
-#FoodModule input[type='number']::-webkit-inner-spin-button,
-#FoodModule input[type='number']::-webkit-outer-spin-button{
-    cursor: pointer;
-}
-#FoodModule .buttons{
+#AddItemForm .flex-group,#UpdateItemForm .flex-group{
     display: flex;
-    column-gap: 10px;
+    column-gap: 20px;
 }
-#FoodModule .buttons input[type="button"],#FoodModule .buttons input[type="submit"]{
-    cursor: pointer;
-    padding: 5px 10px;
-    color: white;
+#AddItemForm .flex-group.numbers,#UpdateItemForm .flex-group.numbers{
+    justify-content: center;
+    align-items: center;
+}
+#AddItemForm .flex-group.numbers input[type="number"],#UpdateItemForm .flex-group.numbers input[type="number"]{
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #555;
+}
+#AddItemForm .heading,#UpdateItemForm .heading{
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+#AddItemForm .textfield,#UpdateItemForm .textfield{
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #555;
+}
+#AddItemForm small,#UpdateItemForm small{
+    color: #f00;
+}
+#AddItemForm .buttons,#UpdateItemForm .buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 30px;
+}
+#AddItemForm .buttons .btn,#UpdateItemForm .buttons .btn{
+    outline: none;
+    padding: 10px 30px;
+    color: #fff;
+    border-radius: 5px;
     border: none;
-    background: rgb(14, 103, 155);
+    cursor: pointer;
 }
+#AddItemForm .buttons .btn.submitbtn,#UpdateItemForm .buttons .btn.submitbtn{
+    background: #1c74e0;
+}
+#AddItemForm .buttons .btn.cancelbtn,#UpdateItemForm .buttons .btn.cancelbtn{
+    background: #f00;
+}
+#AddItemForm input[type="file"],#UpdateItemForm input[type="file"]{
+    border: none;
+    padding-left: 0;
+    width: fit-content;
+    cursor: pointer;
+}
+@media screen and (max-width:700px){
+    #AddItemForm .flex-group.numbers,#UpdateItemForm .flex-group.numbers{
+        flex-direction: column;
+        column-gap: 0;
+        row-gap: 10px;
+        align-items: baseline;
+    }
+}
+
 
 
 
@@ -80,16 +135,29 @@
     grid-auto-columns: auto;
 }
 .menu .item{
-    border: 1px solid #111;
-    position: relative;
-    padding: 10px;
-    padding-top: 50%;
+    border: 1px solid #777;
     width: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.menu .item .img{
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+.menu .item .img img{
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
 }
 .menu .item .details{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px;
 }
 .menu .item .left-box{
     display: flex;
@@ -132,28 +200,12 @@
     justify-content: center;
     row-gap: 5px;
 }
-.menu .item .img{
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    overflow: hidden;
-    display: block;
-    margin: auto;
-    position: absolute;
-}
-.menu .item .img img{
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-}
 .menu .item .buttons{
     display: flex;
     justify-content: center;
     align-items: center;
     column-gap: 10px;
+    padding: 10px;
 }
 .menu .item .buttons button{
     padding: 5px 0;

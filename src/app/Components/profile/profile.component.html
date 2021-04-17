@@ -1,19 +1,16 @@
-<app-header></app-header>
 <div class="container">
     <div class="profile">
         <i class="fas fa-bars" (click)='toggleSlideBar(true)' title="Task-Bar"></i>
-        <div class="img">
+        <div class="details">
+            <div>
+                <p class="fullname">{{user.fullname}}</p>
+                <p class="role">{{user.role}}</p>
+            </div>
             <a href="assets/images/user_pictures/{{user.profile}}" target="_blank"><img src="assets/images/user_pictures/{{user.profile}}"></a>
         </div>
-        <p class="fullname">{{user.fullname}}</p>
     </div>
 </div>
-<app-restaurant-pending [user]='user'></app-restaurant-pending>
-
-
-
-
-
+<router-outlet></router-outlet>
 <form id="UserProfileModel">
     <div class="close" (click)='toggleUserProfileModel(false)'>
         <i class="fas fa-times"></i>
@@ -34,7 +31,7 @@
         <input type="text" name="fullname" [(ngModel)]="user1.fullname" placeholder="Enter Fullname">
         <select name="role" [(ngModel)]='user1.role'>
             <option value="Customer">Customer</option>
-            <option value="Owner">Owner</option>
+            <option value="Owner">Vendor</option>
             <option value="Delivery Boy">Delivery Boy</option>
             <option value="Admin">Admin</option>
         </select>
@@ -53,9 +50,11 @@
     <ul class="action-list">
         <li (click)='toggleEditUserProfileModel(true)'>Update Profile</li>
         <li (click)='deleteAccount()'>Delete Account</li>
-        <a routerLink="/Profile/My-Basket" *ngIf='getRole()=="Customer"'><li>My Orders</li></a>
-        <a routerLink="/My-Restaurants" *ngIf='getRole()=="Owner"'><li>Restaurants</li></a>
+        <a routerLink="/Profile/My-Basket" *ngIf='getRole()=="Customer"'><li>Basket</li></a>
+        <a (click)='toggleSlideBar(false)' routerLink="/Profile/My-Restaurants" *ngIf='getRole()=="Vendor"'><li>Restaurants</li></a>
         <li (click)='toggleUserProfileModel(true)' *ngIf='getRole()=="Admin"'>Update User Account</li>
+        <a routerLink="/Profile/pending-orders" (click)='toggleSlideBar(false)' *ngIf='getRole()=="Vendor"'><li>Pending Orders</li></a>
+        <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='getRole()=="Vendor"'><li>List</li></a>
     </ul>
 </div>
 <div id="EditUserProfileModel">
@@ -65,6 +64,7 @@
         <i class="fas fa-eye" (click)='togglePasswordVisibility()'></i>
     </div>
     <input type="text" name="fullname" [(ngModel)]="user.fullname" placeholder="Enter Fullname">
+    <input type="text" name="city" [(ngModel)]="user.city" placeholder="Enter City">
     <input type="file" accept="image/*">
     <input type="text" name="email" [(ngModel)]='user.email' placeholder="Enter Email">
     <textarea name="address" [(ngModel)]='user.address' cols="30" rows="5">Address</textarea>
@@ -73,16 +73,3 @@
         <input type="reset" (click)='toggleEditUserProfileModel(false)' value="Cancel">
     </div>
 </div>
-
-
-
-
-<!--<div *ngIf='getRole()=="Owner"'>
-    <app-owner-profile [user]='user'></app-owner-profile>
-</div>
-<div *ngIf='getRole()=="Admin"'>
-    <app-admin-profile></app-admin-profile>
-</div>
-<div *ngIf='getRole()=="Customer"'>
-    <app-customer-profile></app-customer-profile>
-</div>-->

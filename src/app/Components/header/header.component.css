@@ -108,6 +108,7 @@ nav.active{
     outline: none;
     background-color: #444;
     color: white;
+    cursor: pointer;
 }
 #searchbar input{
     height: 40px;

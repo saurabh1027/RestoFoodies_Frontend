@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Category } from '../Models/Category';
 import { Food_Item } from '../Models/Food_Item';
+import { Order } from '../Models/Order';
 import { Restaurant } from '../Models/Restaurant';
 
 @Injectable({
@@ -12,6 +13,30 @@ export class RestaurantService {
   baseUrl : string = 'http://localhost:8080/';
 
   constructor(private http:HttpClient) { }
+
+  public changeStatusOfItems(fid:number[]){
+    return this.http.post(this.baseUrl+'change-status-items',fid,{responseType:'text'});
+  }
+
+  public getListOrdersOfRestaurant(rid:number):Observable<Order[]>{
+    return this.http.post<Order[]>(this.baseUrl+'get-list-orders',rid);
+  }
+
+  public addOrderToList(oid:number,rid:number){
+    return this.http.post(this.baseUrl+'add-list-order',oid+','+rid,{responseType:'text'});
+  }
+
+  public getAvailableItemsOfRestaurant(oid:number,rid:number):Observable<Food_Item[]>{
+    return this.http.post<Food_Item[]>(this.baseUrl+'get-available-restaurant-items',oid+':'+rid);
+  }
+
+  public updateFoodItem(item:Food_Item){
+    return this.http.post(this.baseUrl+'update-item',item,{responseType:'text'});
+  }
+
+  public addCategory(category:Category){
+    return this.http.post(this.baseUrl+'add-category',category,{responseType:'text'});
+  }
 
   public addRestaurant(restaurant:Restaurant){
     return this.http.post(this.baseUrl+'add-restaurant',restaurant,{responseType:"text"});
@@ -27,18 +52,6 @@ export class RestaurantService {
 
   public getRestaurantByName(rest:Restaurant):Observable<Restaurant>{
     return this.http.post<Restaurant>(this.baseUrl+'get-restaurant',rest);
-  }
-
-  public saveRestaurantImages(files:FileList,rid:number){
-    let formdata : FormData = new FormData();
-    for(let i=0;i<files.length;i++){
-      formdata.append('file',files[i],files[i].name);
-    }
-    return this.http.post(this.baseUrl+'save-restaurant-images/'+rid,formdata,{responseType:'text'});
-  }
-
-  public deleteImageOfRestaurant(img:string,rid:number){
-    return this.http.post(this.baseUrl+"delete-restaurant-image/"+rid,img,{responseType:"text"});
   }
 
   public deleteRestaurant(rid:number,username:string){
@@ -84,12 +97,19 @@ export class RestaurantService {
     return this.http.post<Food_Item[]>(this.baseUrl+'top-food-items',null);
   }
 
-  public getAllItems():Observable<Food_Item[]>{
-    return this.http.post<Food_Item[]>(this.baseUrl+'get-all-items',null);
+  public getAllItems(city:string):Observable<Food_Item[]>{
+    return (city==='')? this.http.post<Food_Item[]>(this.baseUrl+'get-all-items',null):
+      this.http.post<Food_Item[]>(this.baseUrl+'get-all-city-items',city);
   }
 
-  public getItemsOfKeywords(keyword:string):Observable<Food_Item[]>{
-    return this.http.post<Food_Item[]>(this.baseUrl+'get-keyword-items',keyword);
+  public getItemsOfKeywords(keyword:string,city:string):Observable<Food_Item[]>{
+    return (city==='')?this.http.post<Food_Item[]>(this.baseUrl+'get-keyword-items/'+keyword,null):
+      this.http.post<Food_Item[]>(this.baseUrl+'get-city-keyword-items/'+keyword,city);
   }
+
+  public deleteItem(fid:number){
+    return this.http.post(this.baseUrl+'delete-item',fid,{responseType:'text'});
+  }
+
 
 }

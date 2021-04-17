@@ -1,3 +1,8 @@
+.container{
+    font-family: 'poppins',sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+}
 .topbar{
     padding: 30px;
     display: flex;
@@ -8,9 +13,24 @@
     font-size: 25px;
     font-weight: 600;
 }
-.topbar select[name="restSelect"]{
+.topbar select{
     padding: 10px;
     min-width: 200px;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.nothing{
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nothing span{
+    font-size: 25px;
+    color: #777;
+    font-weight: 600;
+    user-select: none;
 }
 @media screen and (max-width:550px){
     .topbar{
@@ -18,9 +38,15 @@
         row-gap: 10px;
     }
 }
-#map1{
+.map{
     width: 100%;
     height: 75vh;
+    position: relative;
+    padding: 2% 5%;
+}
+#map{
+    width: 100%;
+    height: 100%;
 }
 .viewBtn{
     margin-top: 5px;
@@ -30,4 +56,109 @@
     background: #1a7fc7;
     color: #fff;
     text-align: center;
+}
+.order{
+    width: 100%;
+    position: relative;
+    padding: 2% 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.order .message{
+    padding: 10px;
+    background: #ff3131;
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+@media screen and (max-width:500px){
+    .order .message{
+        font-size: 13px;
+    }
+}
+.order .table{
+    overflow-x: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+@media screen and (max-width:900px){
+    .order{
+        align-items: baseline;
+    }
+    .order .table{
+        justify-content: flex-start;
+    }
+}
+.order .details{
+    width: 100%;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    align-items: center;
+    padding: 10px 30px;
+}
+.order .details .name{
+    font-weight: 600;
+    font-size: 25px;
+    word-break: break-all;
+}
+.order .details .price{
+    font-weight: 600;
+}
+table,td,th{
+    border-bottom: 1px solid #555;
+}
+.order .items{
+    border: 1px solid #777;
+    overflow-x: auto;
+    border-collapse: collapse;
+}
+.order .items th{
+    padding: 20px;
+    font-size: 18px;
+}
+.order .items td{
+    padding: 5px;
+    vertical-align: middle;
+    text-align: center;
+}
+.out-of-stock{
+    background: #ddd;
+}
+.order .nothing{
+    width: 100%;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.order .nothing span{
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+}
+.order button{
+    padding: 10px;
+    margin: 20px auto;
+    border: none;
+    border-radius: 5px;
+    background: #2173c7;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    outline: none;
+}
+.order button.reject{
+    background: #ff3131;
+}
+.order .buttons{
+    display: flex;
+    column-gap: 30px;
+}
+.order button:disabled{
+    text-decoration: line-through;
 }

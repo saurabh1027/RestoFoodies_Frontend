@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Food_Item } from 'src/app/Models/Food_Item';
 import { User } from 'src/app/Models/User';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
@@ -12,13 +12,14 @@ import * as $ from 'jquery';
 })
 export class HeaderComponent implements OnInit {
   loggedIn:boolean = false;
-  fullname:string = '';
+  user:User=new User(0,'','','','','','','','');
   categories:string[]=[];
   allItems:Food_Item[]=[];
   items:Food_Item[]=[];
   resultedItems:Food_Item[]=[];
   keywords:string[]=[];
   resultedKeywords:string[]=[];
+  @ViewChild('cname') cname:ElementRef;
 
   constructor(private service : UserService,private restService : RestaurantService) {}
 
@@ -28,22 +29,19 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn(){
     let token = localStorage.getItem("UserToken");
-    let user : User; 
     if(token!=null){
       this.service.getUserByToken(token).subscribe(data=>{
-        if(data==null)return;
-        user = data;
-        this.fullname = user.fullname;
-        if(user.username.length>0 && user.password.length>0){
-          this.loggedIn = true;
+        if(data!==null){
+          this.user = data;
+          if(this.user.username.length>0 && this.user.password.length>0)this.loggedIn = true;
+          this.getAllItems();
         }
       });
-    }
-    this.getAllItems();
+    }else this.getAllItems();
   }
 
   getAllItems(){
-    this.restService.getAllItems().subscribe(data=>{
+    this.restService.getAllItems(this.user.city).subscribe(data=>{
       this.allItems = data;
       this.getAllCategories();
     });
@@ -52,9 +50,7 @@ export class HeaderComponent implements OnInit {
   getAllCategories(){
     this.categories = [];
     for(let i=0;i<this.allItems.length;i++){
-      if(!this.categories.includes(this.allItems[i].cname)){
-        this.categories.push(this.allItems[i].cname);
-      }
+      if(!this.categories.includes(this.allItems[i].cname))this.categories.push(this.allItems[i].cname);
     }
     this.getKeywordsByCategory();
   }
@@ -67,7 +63,7 @@ export class HeaderComponent implements OnInit {
 
   getKeywordsByCategory(){
     this.clearSearchedItems();
-    let category = $('select[name="cat"]')[0].value;
+    let category = this.cname.nativeElement.value;
     let keywords:string[] = [];
     let str:string='',temp:string='';
     if(category==='All'){

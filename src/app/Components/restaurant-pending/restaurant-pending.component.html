@@ -1,16 +1,57 @@
-<div class="topbar">
-    <span>Pending Orders</span>
-    <select name="restSelect" id="restSelect" (change)='getOrdersOfRestaurant()'>
-        <option value="{{r.rid}}" *ngFor='let r of restaurants'>{{r.name}}</option>
-    </select>
+<div class="container">
+    <div class="topbar">
+        <span>Pending Orders</span>
+        <select #restSelect (change)='getPlacedOrdersOfRestaurant()'>
+            <option value="{{r.rid}}" *ngFor='let r of restaurants'>{{r.name}}({{r.branch}})</option>
+        </select>
+    </div>
+    <div class="map" *ngIf='orders.length>0'>
+        <agm-map id="map" [latitude]='lat' [longitude]='lng' [zoom]='12' [fullscreenControl]='true'>
+            <agm-marker [latitude]='o.location.substring(0,o.location.indexOf(","))' 
+                [longitude]='o.location.substring(o.location.indexOf(",")+1,o.location.length)'
+                *ngFor='let o of orders'>
+                <agm-info-window>
+                    <span style="font-weight: 600;">{{o.name}}</span><br>
+                    <span class="price" style="margin-top: 5px;">{{o.total_price}}&#8377;</span><br>
+                    <a class="view-more" (click)='order=o;getAvailableItemsOfRestaurant(o.oid)' class='viewBtn'> View More</a>
+                </agm-info-window>
+            </agm-marker>
+        </agm-map>
+    </div>
+    <div class="nothing" *ngIf='!(orders.length>0)'>
+        <span>No Pending Orders</span>
+    </div>
+    <div class="order" *ngIf='order.oid!==0'>
+        <p class="message" *ngIf='cnt>0'>This order consist of {{cnt}} <strong>Out Of Stock</strong> <span *ngIf='cnt>1'> items</span><span *ngIf='!(cnt>1)'> item</span>.</p>
+        <div class="details">
+            <span class="name" title="Name of the order">{{order.name}}</span>
+            <span class="price"  title="Total price of the order">{{order.total_price}}&#8377;</span>
+        </div>
+        <div class="table">
+            <table class="items" *ngIf='items.length>0'>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Price(&#8377;)</th>
+                    <th>Quantity</th>
+                    <th>Ingredients</th>
+                    <th>Status</th>
+                </tr>
+                <tr *ngFor='let item of items' [class.out-of-stock]='item.status=="Out Of Stock"'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td style="word-break: break-all;">{{item.ingredients}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="buttons">
+            <button *ngIf='!(cnt>0)' (click)='addOrderToList(order.oid)'>Add Order to List</button>
+            <button *ngIf='cnt>0' (click)='changeStatus()' title='Make all items available!'>Change Status</button>
+            <button class="reject" *ngIf='cnt>0' (click)='rejectOrder(order.oid)'>Reject Order</button>
+        </div>
+        <div class="nothing" *ngIf='!(items.length>0)'>
+            <span>No items present in this order.</span>
+        </div>
+    </div>
 </div>
-<agm-map id="map1" [latitude]='lat' [longitude]='lng' [zoom]='7' [fullscreenControl]='true'>
-    <agm-marker [latitude]='o.location.substring(0,o.location.indexOf(","))' [longitude]='o.location.substring(o.location.indexOf(",")+1,o.location.length)'
-        *ngFor='let o of orders'>
-        <agm-info-window>
-            <span style="font-weight: 600;">{{o.name}}</span><br>
-            <span class="price" style="margin-top: 5px;">{{o.total_price}}&#8377;</span><br>
-            <a class="view-more" (click)='toggleOrderModel(o.oid)' class='viewBtn'> View More</a>
-        </agm-info-window>
-    </agm-marker>
-</agm-map>

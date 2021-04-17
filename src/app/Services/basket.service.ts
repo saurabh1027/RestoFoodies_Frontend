@@ -40,13 +40,20 @@ export class BasketService {
     return this.http.post(this.baseUrl+'remove-order-item/'+fid,oid,{responseType:"text"});
   }
 
-  public placeOrder(oid:number,bool:boolean){
-    return this.http.post(this.baseUrl+'place-order/'+bool,oid,{responseType:"text"});
+  public placeOrder(oid:number){
+    return this.http.post(this.baseUrl+'place-order',oid,{responseType:"text"});
   }
 
-  public getOrdersOfRestaurant(rid:number):Observable<Order[]>{
-    return this.http.post<Order[]>(this.baseUrl+'get-restaurant-orders',rid);
+  public cancelOrder(oid:number){
+    return this.http.post(this.baseUrl+'cancel-order',oid,{responseType:"text"});
   }
 
+  public getPlacedOrdersOfRestaurant(rid:number):Observable<Order[]>{
+    return this.http.post<Order[]>(this.baseUrl+'get-restaurant-placed-orders',rid);
+  }
 
+  public rejectOrder(oid:number){
+    return this.http.post(this.baseUrl+'reject-order',oid,{responseType:'text'});
+  }
+  
 }

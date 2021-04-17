@@ -13,7 +13,7 @@ import { MouseEvent as AGMMouseEvent } from '@agm/core';
   styleUrls: ['./basket.component.css']
 })
 export class BasketComponent implements OnInit {
-  user:User=new User(0,'','','','','','','');
+  user:User=new User(0,'','','','','','','','');
   orders:Order[]=[];
   order:Order=new Order(0,'','Unsubmitted','',0,'');
   lat:number=0;
@@ -34,10 +34,7 @@ export class BasketComponent implements OnInit {
   getUserByToken(){
     let token = localStorage.getItem("UserToken");
     this.userService.getUserByToken(token).subscribe(data=>{
-      if(data==null){
-        Swal.fire({icon:'error', title:'Invalid Request', text:'Make sure to login!'});
-        this.router.navigate(['/Authentication/Login']);
-      }   
+      if(data==null)return;
       this.user = data;
       if(this.user.role!=='Customer'){
         Swal.fire({title:'Unauthorised access',text:'Only Customers are allowed on this page!',icon:'error'});
@@ -50,6 +47,12 @@ export class BasketComponent implements OnInit {
         this.router.navigate(['/Authentication/Login']);
       }
     });
+  }
+
+  scrollToOrder(){
+    setTimeout(() => {
+      document.documentElement.scrollTop=725;
+    }, 200);
   }
   
   getOrdersByUsername(username:string){

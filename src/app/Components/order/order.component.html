@@ -1,29 +1,35 @@
-<app-header></app-header>
 <div class="container">
-    <div class="header">
-        <div class="left">
-            <a routerLink="/Profile/My-Basket"><i class="fas fa-arrow-left"></i></a>
-            <span class="name">{{order.name}}</span>
+    <span #message class="message" *ngIf='order.status==="Rejected"'>
+        This order is rejected. Try removing unavailable items from order and place it again.
+        <i  class="fas fa-times" (click)='message.className="message close"'></i>
+    </span>
+    <div class="order">
+        <div class="header">
+            <div class="left">
+                <a routerLink="/Profile/My-Basket"><i class="fas fa-arrow-left"></i></a>
+                <span class="name">{{order.name}}</span>
+            </div>
+            <button style='background: #3b82c5' *ngIf='order.status!=="Placed"' (click)='placeOrder()'>Place Order</button>
+            <button style='background: #f00' *ngIf='order.status==="Placed"' (click)='cancelOrder()'>Cancel Order</button>
         </div>
-        <button style='background: #3b82c5' *ngIf='order.status=="Unsubmitted"' (click)='placeOrder(true)'>Place Order</button>
-        <button style='background: #f00' *ngIf='!(order.status=="Unsubmitted")' (click)='placeOrder(false)'>Cancel Order</button>
-    </div>
-    <div class="items">
-        <p *ngIf='!(food_items.length>0)' class="nothing">No Items Added!</p>
-        <div *ngFor='let item of food_items' class="item">
-            <div class="type">
-                <div *ngIf='item.vegeterian' class="veg"></div>
-                <div *ngIf='!item.vegeterian' class="nonveg"></div>
+        <p *ngIf='!(food_items.length>0)' class="nothing"><span>No Items Added!</span></p>
+        <div #items class="items" *ngIf='food_items.length>0'>
+            <div *ngFor='let item of food_items' class="item">
+                <span class="warning" *ngIf='item.status!=="Available"'>{{item.status}}</span>
+                <div class="type">
+                    <div *ngIf='item.vegeterian' class="veg"></div>
+                    <div *ngIf='!item.vegeterian' class="nonveg"></div>
+                </div>
+                <div class="img">
+                  <img src="assets/images/food_items/{{item.pic}}" alt="{{item.pic}}">  
+                </div>
+                <div class="row">
+                    <span class="cname">{{item.cname}}</span>
+                    <span class="price">{{item.price}}&#8377;</span>
+                </div>
+                <div class="name">{{item.fname}} X {{item.quantity}}</div>
+                <button (click)='removeFoodItemFromOrder(item.fid)'>Remove</button>
             </div>
-            <div class="img">
-              <img src="assets/images/food_items/{{item.pic}}" alt="{{item.pic}}">  
-            </div>
-            <div class="row">
-                <span class="cname">{{item.cname}}</span>
-                <span class="price">{{item.price}}&#8377;</span>
-            </div>
-            <div class="name">{{item.fname}} X {{item.quantity}}</div>
-            <button (click)='removeFoodItemFromOrder(item.fid)'>Remove</button>
         </div>
     </div>
 </div>

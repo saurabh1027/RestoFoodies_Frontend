@@ -94,6 +94,29 @@
     margin-bottom: 20px;
     border-radius: 12px;
 }
+.container .orders .no-orders{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 10px;
+    min-height: 30vh;
+}
+.container .orders .no-orders span{
+    font-size: 20px;
+    font-weight: 600;
+    user-select: none;
+}
+.container .orders .no-orders a{
+    padding: 10px;
+    outline: none;
+    color: #fff;
+    background-color: #2378e6;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
 .container .items .item .row1{
     display: flex;
     justify-content: center;

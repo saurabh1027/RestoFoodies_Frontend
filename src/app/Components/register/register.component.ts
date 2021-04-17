@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  user : User = new User(0,"","","","Customer","","","user.jpg");
+  user : User = new User(0,"","","","Customer","","","","user.jpg");
   message : any;
   jwt : Jwt = new Jwt("","","");
   constructor(private service:UserService,private router:Router) {}
@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   }
 
   saveUser(){
+    this.user.city = this.user.city.toLocaleUpperCase();
     if(this.user.username=='')
       Swal.fire({icon: 'error',title:'Empty Username'});
     else if(this.user.password=='')

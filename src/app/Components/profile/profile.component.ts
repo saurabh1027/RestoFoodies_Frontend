@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { Restaurant } from 'src/app/Models/Restaurant';
 import { UserService } from 'src/app/Services/user.service';
 import Swal from 'sweetalert2';
-import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { User } from 'src/app/Models/User';
 import * as $ from 'jquery';
 
@@ -13,17 +12,16 @@ import * as $ from 'jquery';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  rest : Restaurant = new Restaurant(0,'','0/0','','','','','','','','','');
-  user : User = new User(0,'','','','','','','user.jpg');
+  rest : Restaurant = new Restaurant(0,'','','','','','','','','');
+  user : User = new User(0,'','','','Customer','','','','user.jpg');
   selectedLatitude:number;
   selectedLongitude:number;
   map : google.maps.Map;
   names : string[];
   current_restaurant_name : string;
-  user1 : User = new User(0,'','','','','','','user.jpg');
+  user1 : User = new User(0,'','','','Customer','','','','user.jpg');
 
-
-  constructor(private router:Router,private service:UserService,private restService:RestaurantService) { }
+  constructor(private router:Router,private service:UserService) { }
 
   ngOnInit(): void {
     this.getUserByToken();
@@ -32,23 +30,21 @@ export class ProfileComponent implements OnInit {
   getUserByToken(){
     let token = localStorage.getItem("UserToken");
     this.service.getUserByToken(token).subscribe(data=>{
-      if(data!=null){
-        this.user = data;
-      }
+      if(data===null)return;
+      this.user = data;
+      (this.user.role==='Vendor')?this.router.navigate(['Profile','My-Restaurants']):
+      ((this.user.role==='Customer')?this.router.navigate(['Profile','My-Basket']):
+        console.log("other roles"));
     },error=>{
       if(error.status==400){
-        Swal.fire({
-          icon:'error',
-          title:'Invalid Request',
-          text:'Make sure to login!'
-        });
+        Swal.fire({icon:'error',title:'Invalid Request',text:'Make sure to login!'});
         this.router.navigate(['/Authentication/Login']);
       }
     });
   }
 
   getRole(){
-    return (this.user.role=='Admin')?'Admin':((this.user.role=='Owner')?'Owner':'Customer');
+    return (this.user.role=='Admin')?'Admin':((this.user.role=='Vendor')?'Vendor':'Customer');
   }
 
   toggleSlideBar(bool:boolean){
@@ -139,7 +135,7 @@ export class ProfileComponent implements OnInit {
       model.style.display='block';
       this.toggleSlideBar(false);
     }else{
-      this.user1 = new User(0,'','','','','','','');
+      this.user1 = new User(0,'','','','','','','','');
       model.style.display='none';
       document.getElementById("UserEditProfileModel").style.display = "none";
     }

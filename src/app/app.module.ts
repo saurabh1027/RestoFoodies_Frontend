@@ -21,10 +21,12 @@ import { OrderComponent } from './Components/order/order.component';
 import { MyRestaurantsComponent } from './Components/my-restaurants/my-restaurants.component';
 import { ItemsComponent } from './Components/items/items.component';
 import { RestaurantPendingComponent } from './Components/restaurant-pending/restaurant-pending.component';
+import { IndexComponent } from './Components/index/index.component';
+import { MyListComponent } from './Components/my-list/my-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent,HomeComponent,LoginComponent,PageNotFoundComponent, HeaderComponent, RegisterComponent, AuthenticationComponent, OffersComponent, ProfileComponent, MenuComponent, BasketComponent, OrderComponent, MyRestaurantsComponent, ItemsComponent, RestaurantPendingComponent
+    AppComponent,HomeComponent,LoginComponent,PageNotFoundComponent, HeaderComponent, RegisterComponent, AuthenticationComponent, OffersComponent, ProfileComponent, MenuComponent, BasketComponent, OrderComponent, MyRestaurantsComponent, ItemsComponent, RestaurantPendingComponent, IndexComponent, MyListComponent
   ],
   imports: [
     BrowserModule,

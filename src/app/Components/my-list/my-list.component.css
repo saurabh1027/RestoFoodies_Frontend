@@ -1,0 +1,78 @@
+.container{
+    font-family: 'poppins',sans-serif;
+    padding: 0 2.5%;
+}
+.topbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+}
+.topbar .title{
+    font-size: 25px;
+    font-weight: 600;
+}
+.topbar select{
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 5px;
+}
+.list{
+    border: 1px solid;
+}
+.list .nothing{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+.list .nothing span{
+    font-size: 25px;
+    font-weight: 600;
+    color: #555;
+    user-select: none;
+}
+@media screen and (max-width:600px){
+    .topbar{
+        flex-direction: column;
+        row-gap: 10px;
+    }
+    .topbar select{
+        width: 100%;
+    }
+}
+.list .orders{
+    min-height: 80vh;
+}
+.order .header{
+    height: 10vh;
+    border-bottom: 1px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.order .header .left{
+    font-weight: 600;
+}
+.order .header button{
+    padding: 10px;
+    background: #0078de;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+}
+#items{
+    position: fixed;
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border: 1px solid #111;
+    width: 90vw;
+    height: 90vh;
+    background-color: #fff;
+}

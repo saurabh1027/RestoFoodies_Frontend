@@ -1,5 +1,9 @@
-<app-header></app-header>
-<div class="container">
+<div class="container nothing" *ngIf='!userHasRestaurant'>
+    <p class="welcome">Welcome to your profile</p>
+    <p class="message">You have not added any Restaurants yet!</p>
+    <button (click)='toggleModel("RestoForm1",true)' class="addbtn">Add Restaurant</button>
+</div>
+<div class="container" *ngIf='userHasRestaurant'>
     <div class="select">
         <select name="select-restaurants" id="select-restaurants" (change)='onSelectChange()' title="Select Restaurant">
             <option value="{{name}}" *ngFor="let name of names">{{name}}</option>
@@ -7,40 +11,15 @@
         <i class="fa fa-trash-alt" (click)='deleteRestaurant(restaurant.rid)' title="Delete Restaurant-{{restaurant.name}}"></i>
     </div>
     <div class="profile">
-        <i class="fas fa-edit" (click)='toggleRestoUpdateForm(true)'></i>
+        <i class="fas fa-edit" (click)='toggleModel("RestoUpdateForm",true)'></i>
         <img src="assets/images/restaurants/banner1.jpg" alt="banner">
         <span class="name">{{restaurant.name}}</span>
         <span class="branch">Branch - {{restaurant.branch}}</span>
     </div>
-    <div class="row">
-        <div class="col1">
-            <div class="images">
-                <a href='assets/images/restaurants/{{rImages[index]}}' target="_blank" class="img">
-                    <img src="assets/images/restaurants/{{rImages[index]}}" alt="{{rImages[index]}}">
-                </a>
-                <div class="dirButtons">
-                    <i class="fas fa-chevron-circle-left previous" (click)='rImagesSlider(false)'></i>
-                    <i class="fas fa-chevron-circle-right next" (click)='rImagesSlider(true)'></i>
-                </div>
-            </div>
-            <div class="buttons">
-                <button (click)='toggleImageModule()' style='background: rgb(20, 106, 187);'>Add Images</button>
-                <button (click)='deleteRImage(rImages[index])' style='background: #f00;'>Delete</button>
-            </div>
-            <div id="imageModule">
-                <span class="title">Select Images to add</span>
-                <input type="file" title="Select Images" id="rImages" multiple accept="image/jpg,image/png,image/jpeg">
-                <div class="buttons">
-                    <button type="button" (click)='addImages()'>Submit</button>
-                    <button type="reset" (click)='toggleImageModule()'>Cancel</button>
-                </div>
-            </div>
-        </div>
-        <div class="map">
-            <agm-map [latitude]='getLatLng(true)' [longitude]='getLatLng(false)' [zoom]='7' [fullscreenControl]='true'>
-                <agm-marker [latitude]='getLatLng(true)' [longitude]='getLatLng(false)'></agm-marker>
-            </agm-map>
-        </div>
+    <div id="RestoMap">
+        <agm-map [latitude]='lat' [longitude]='lng' [zoom]='21' [fullscreenControl]='true'>
+            <agm-marker [latitude]='lat' [longitude]='lng'></agm-marker>
+        </agm-map>
     </div>
     <div class="menu">
         <div class="topbar">
@@ -54,7 +33,7 @@
             </div>
         </div>
         <div class="food-items">
-            <app-menu [food_items]='food_items' [restaurant]='restaurant' [user]='user' [restCategories]='restCategories'></app-menu>
+            <app-menu [food_items]='food_items' [restaurant]='restaurant' [user]='user'></app-menu>
         </div>
     </div>
 </div>
@@ -63,37 +42,94 @@
 
 
 
-<form id="RestoUpdateForm">
-    <input type="text" class="textfield" name="name" [(ngModel)]='restaurant.name' placeholder="Enter Name">
-    <input type="text" class="textfield" name="contact" [(ngModel)]='restaurant.contact' placeholder="Enter Contact">
-    <input type="email" class="textfield" name="email" [(ngModel)]='restaurant.email' placeholder="Enter Email">
-    <input type="text" class="textfield" name="branch" [(ngModel)]='restaurant.branch' placeholder="Enter Branch">
-    <label for="mapbtn" class="mapbtn" (click)='toggleMap1()'>Location<i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
-    <label for="opening_time1">Opening Time: <input type="time" name="opening_time" [(ngModel)]="restaurant.opening_time" class="timefield" id="opening_time1"></label>
-    <label for="closing_time1">Closing Time: <input type="time" name="closing_time" [(ngModel)]="restaurant.closing_time" class="timefield" id="closing_time1"></label>
-    <div class="buttons">
-        <input type="submit" value="Submit" (click)="updateRestaurant(restaurant)">
-        <input type="button" value="Cancel" (click)="toggleRestoUpdateForm(false)">
+<form id="RestoUpdateForm" #RestoUpdateForm='ngForm' novalidate (ngSubmit)='updateRestaurant(restaurant)'>
+    <div class="group">
+        <label>Restaurant Name:</label>
+        <input type="text" class="textfield" name="name" #name1='ngModel' [(ngModel)]='restaurant.name' [class.invalid]='name1.invalid && name1.touched' [class.valid]='name1.valid' required>
+        <small [class.d-none]='name1.valid || name1.untouched'>Please enter restaurant name.</small>
+    </div>
+    <div class="group">
+        <label>Phone Number:</label>
+        <input type="tel" #contact1='ngModel' pattern="^\d{10}$" name="contact" [class.invalid]='contact1.invalid && contact1.touched' [class.valid]='contact1.valid' class="textfield" [(ngModel)]="restaurant.contact" required>
+        <div *ngIf='contact1.errors && (contact1.invalid && contact1.touched)'>
+            <small *ngIf='contact1.errors.required'>Please enter contact of the restaurant.</small>
+            <small *ngIf='contact1.errors.pattern'>Contact must be of at least 10 digits.</small>
+        </div>
+    </div>
+    <div class="group">
+        <label>Email Id:</label>
+        <input type="email" #email1='ngModel' name="email" [class.invalid]='email1.invalid && email1.touched' [class.valid]='email1.valid' class="textfield" [(ngModel)]="restaurant.email" required>
+        <small [class.d-none]='email1.valid || email1.untouched'>Please enter email of the restaurant.</small>
+    </div>
+    <div class="group">
+        <label>Branch of the Restaurant:</label>
+        <input type="text" #branch1='ngModel' name="branch" [class.invalid]='branch1.invalid && branch1.touched' [class.valid]='branch1.valid' class="textfield" [(ngModel)]="restaurant.branch" required>
+        <small [class.d-none]='branch1.valid || branch1.untouched'>Please enter branch of your restaurant.</small>
+    </div>
+    <div class="group">
+        <label for="mapbtn" class="mapbtn" (click)='toggleMap()'>Location <i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
+        <small [class.d-none]='!map1HasError'>Please select location of restaurant.</small>
+    </div>
+    <div class="group">
+        <div class="flex-group">
+            <label for="opening_time">Opening Time: <input type="time" [class.invalid]='opening_time1.invalid && opening_time1.touched' [class.valid]='opening_time1.valid' #opening_time1='ngModel' name="opening_time" required [(ngModel)]="restaurant.opening_time" class="timefield" id="opening_time"></label>
+            <label for="closing_time">Closing Time: <input type="time" [class.invalid]='closing_time1.invalid && closing_time1.touched' [class.valid]='closing_time1.valid' #closing_time1='ngModel' name="closing_time" required [(ngModel)]="restaurant.closing_time" class="timefield" id="closing_time"></label>
+        </div>
+        <small [class.d-none]='opening_time1.valid || opening_time1.untouched'>Please enter opening time of the restaurant.</small>
+        <small [class.d-none]='closing_time1.valid || closing_time1.untouched'>Please enter closing time of the restaurant.</small>
+    </div>
+    <div class="flex-group">
+        <button type="submit" [disabled]='RestoUpdateForm.form.invalid' class="btn submitbtn">Submit</button>
+        <input type="button" value="Cancel" class="btn cancelbtn" (click)='toggleModel("RestoUpdateForm",false)'>
     </div>
 </form>
-<div class="form">
-    <form id="RestoForm">
-        <input type="text" name="name" class="textfield" [(ngModel)]="rest.name" placeholder="Name Of Restaurant">
-        <input type="text" name="contact" class="textfield" [(ngModel)]='rest.contact' placeholder="Contact">
-        <input type="email" name="email" class="textfield" [(ngModel)]="rest.email" placeholder="Enter Email-address">
-        <input type="text" name="branch" class="textfield" [(ngModel)]="rest.branch" placeholder="Enter Branch">
-        <label for="mapbtn" class="mapbtn" (click)='toggleMap1()'>Location<i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
-        <label for="opening_time">Opening Time: <input type="time" name="opening_time" [(ngModel)]="rest.opening_time" class="timefield" id="opening_time"></label>
-        <label for="closing_time">Closing Time: <input type="time" name="closing_time" [(ngModel)]="rest.closing_time" class="timefield" id="closing_time"></label>
-        <div class="buttons">
-            <input type="submit" value="Submit" class="btn" (click)="addRestaurant()">
-            <input type="button" value="Cancel" (click)="toggleRestoModule()">
+<form #RestoForm1='ngForm' id="RestoForm1" novalidate (ngSubmit)='addRestaurant()'>
+    <p class="heading">Restaurant Details</p>
+    <div class="group">
+        <label>Restaurant Name:</label>
+        <input type="text" #name='ngModel' name="name" [class.invalid]='name.invalid && name.touched' [class.valid]='name.valid' class="textfield" [(ngModel)]="rest.name" required>
+        <small [class.d-none]='name.valid || name.untouched'>Please enter restaurant name.</small>
+    </div>
+    <div class="group">
+        <label>Phone Number:</label>
+        <input type="tel" #contact='ngModel' pattern="^\d{10}$" name="contact" [class.invalid]='contact.invalid && contact.touched' [class.valid]='contact.valid' class="textfield" [(ngModel)]="rest.contact" required>
+        <div *ngIf='contact.errors && (contact.invalid && contact.touched)'>
+            <small *ngIf='contact.errors.required'>Please enter contact of the restaurant.</small>
+            <small *ngIf='contact.errors.pattern'>Contact must be of at least 10 digits.</small>
         </div>
-    </form>
-</div>
+    </div>
+    <div class="group">
+        <label>Email Id:</label>
+        <input type="email" #email='ngModel' name="email" [class.invalid]='email.invalid && email.touched' [class.valid]='email.valid' class="textfield" [(ngModel)]="rest.email" required>
+        <small [class.d-none]='email.valid || email.untouched'>Please enter email of the restaurant.</small>
+    </div>
+    <div class="group">
+        <label>Branch of the Restaurant:</label>
+        <input type="text" #branch='ngModel' name="branch" [class.invalid]='branch.invalid && branch.touched' [class.valid]='branch.valid' class="textfield" [(ngModel)]="rest.branch" required>
+        <small [class.d-none]='branch.valid || branch.untouched'>Please enter branch of your restaurant.</small>
+    </div>
+    <div class="group">
+        <label for="mapbtn" class="mapbtn" (click)='toggleMap1()'>Location <i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
+        <small [class.d-none]='!map1HasError'>Please select location of restaurant.</small>
+    </div>
+    <div class="group">
+        <div class="flex-group">
+            <label for="opening_time1">Opening Time: <input type="time" [class.invalid]='opening_time.invalid && opening_time.touched' [class.valid]='opening_time.valid' #opening_time='ngModel' name="opening_time" required [(ngModel)]="rest.opening_time" class="timefield" id="opening_time1"></label>
+            <label for="closing_time1">Closing Time: <input type="time" [class.invalid]='closing_time.invalid && closing_time.touched' [class.valid]='closing_time.valid' #closing_time='ngModel' name="closing_time" required [(ngModel)]="rest.closing_time" class="timefield" id="closing_time1"></label>
+        </div>
+        <small [class.d-none]='opening_time.valid || opening_time.untouched'>Please enter opening time of the restaurant.</small>
+        <small [class.d-none]='closing_time.valid || closing_time.untouched'>Please enter closing time of the restaurant.</small>
+    </div>
+    <div class="flex-group">
+        <button type="submit" [disabled]='RestoForm1.form.invalid' class="btn submitbtn">Submit</button>
+        <input type="button" value="Cancel" class="btn cancelbtn" (click)='toggleModel("RestoForm1",false)'>
+    </div>
+</form>
+
+
 <div id="map">
-    <agm-map [latitude]='selectedLatitude' [longitude]='selectedLongitude' [zoom]='6' (mapClick)='locationChosen($event,true)'>
-        <agm-marker [latitude]='selectedLatitude' [longitude]='selectedLongitude' [markerDraggable]="true"></agm-marker>
+    <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='21' (mapClick)='locationChosen($event,true)'>
+        <agm-marker [latitude]='pos.lat' [longitude]='pos.lng' [markerDraggable]="true"></agm-marker>
     </agm-map>
     <button (click)="toggleMap()" class="choosebtn">Choose this location</button>
 </div>
@@ -106,9 +142,29 @@
 <div id="CategoryModule">
     <div class="row">
         <p class="title">Categories</p>
-        <button (click)="updateCategoriesOfRestaurant()">Update Categories</button>
+        <div class="buttons">
+            <button (click)='toggleModel("AddCategoryModel",true);toggleModel("CategoryModule",false)'>New</button>
+            <button (click)="updateCategoriesOfRestaurant()">Update</button>
+        </div>
     </div>
-    <div class="categories">
+    <div class="nothing" *ngIf='!(categories.length>0)'>
+        <span>Nothing to show</span>
+    </div>
+    <div class="categories" *ngIf='categories.length>0'>
         <span *ngFor="let category of categories" class="category" (click)="addCategory(category.cname)" title="{{category.description}}">{{category.cname}}</span>
     </div>
 </div>
+<form id="AddCategoryModel" #AddCategoryModel='ngForm' (ngSubmit)='addCat()'>
+    <p class="heading">Add Category</p>
+    <div class="group">
+        <label>Category Name:</label>
+        <input type="text" name="newcat" #newcat='ngModel' [(ngModel)]='newCategory.cname' required>
+        <small [class.d-none]='newcat.valid || newcat.untouched'>Category name cannot be empty.</small>
+        <small [class.d-none]='!(newCategory.cname.length>15)'>Maximum limit exceeded</small>
+    </div>
+    <textarea name="description" [(ngModel)]='newCategory.description' cols="30" rows="10">Enter about category in brief...</textarea>
+    <div class="buttons">
+        <input [disabled]='AddCategoryModel.invalid || newCategory.cname.length>15 || AddCategoryModel.untouched' class="btn submitbtn" type="submit" value="Submit">
+        <input type="button" class="btn cancelbtn" (click)='toggleModel("AddCategoryModel",false)' value="Cancel">
+    </div>
+</form>

@@ -1,54 +1,178 @@
 @import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre&display=swap');
 
-.form{
+/*---------------------------------------RestoUpdateForm-end-------------------------------------*/
+#RestoUpdateForm{
     position: fixed;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    overflow: hidden;
     z-index: 1;
-}
-#RestoForm{
+    left: 50%;
+    transform: translate(-50%,-50%);
     background: #fff;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 10px;
-    border: 1px solid;
-    padding: 20px;
-    width: 350px;
-    height: auto;
+    border: 1px solid rgb(60, 60, 60);
+    width: 75vw;
+    height: 80vh;
+    padding: 40px 30px;
+    font-family: 'poppins',sans-serif;
+    overflow-y: auto;
     display: none;
 }
-#RestoForm .textfield{
+#RestoUpdateForm .heading{
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+#RestoUpdateForm .textfield{
     width: 100%;
     padding: 10px;
     border-radius: 5px;
     outline: none;
     border: 1px solid;
 }
-#RestoForm .buttons{
-    display: flex;
-    column-gap: 20px;
-}
-#RestoForm .buttons input[type='button'],#RestoForm .buttons input[type='submit']{
-    background: #1a9cb0;
-    color: white;
-    padding: 10px;
-    outline: none;
-    cursor: pointer;
-    border-radius: 5px;
-    border: none;
-}
-#RestoForm .buttons input[type='button']{
-    background: #f00;
-}
-#RestoForm .mapbtn{
+#RestoUpdateForm .mapbtn{
     column-gap: 10px;
     display: flex;
     cursor: pointer;
 }
+#RestoUpdateForm .group{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    row-gap: 2.5px;
+}
+#RestoUpdateForm .group .textfield{
+    padding: 8px;
+    outline: none;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+}
+#RestoUpdateForm .mapbtn{
+    cursor: pointer;
+}
+.valid{
+    border: solid 1px rgb(106, 106, 106);
+    color: #111;
+}
+#RestoUpdateForm .group small{
+    color: #f00;
+}
+#RestoUpdateForm .flex-group{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+    padding: 10px 0;
+}
+.btn{
+    outline: none;
+    padding: 10px 30px;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+.btn.submitbtn{
+    background: #1c74e0;
+}
+.btn.cancelbtn{
+    background: #f00;
+}
+
+
+
+/*----------------------------------------------RestoUpdateForm-end-----------------------------------------*/
+
+
+/*----------------------------------------------RestoForm1-start-----------------------------------------*/
+
+.d-none{
+    display: none;
+}
+.invalid{
+    border: 1px solid #f00;
+    color: #f00;
+}
+#RestoForm1{
+    position: fixed;
+    top: 50%;
+    z-index: 1;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #fff;
+    border: 1px solid rgb(60, 60, 60);
+    width: 75vw;
+    height: 80vh;
+    padding: 40px 30px;
+    font-family: 'poppins',sans-serif;
+    overflow-y: auto;
+    display: none;
+}
+#RestoForm1 .heading{
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+#RestoForm1 .group{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    row-gap: 2.5px;
+}
+#RestoForm1 .group .textfield{
+    padding: 8px;
+    outline: none;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+}
+#RestoForm1 .mapbtn{
+    cursor: pointer;
+}
+.valid{
+    border: solid 1px rgb(106, 106, 106);
+    color: #111;
+}
+#RestoForm1 .group small{
+    color: #f00;
+}
+#RestoForm1 .flex-group{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+    padding: 10px 0;
+}
+.btn{
+    outline: none;
+    padding: 10px 30px;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+.btn.submitbtn{
+    background: #1c74e0;
+}
+.btn.cancelbtn{
+    background: #f00;
+}
+
+/*----------------------------------------------RestoForm1-end-----------------------------------------*/
+
+/*----------------------------------------------Maps-start---------------------------------------------*/
+
+#RestoMap{
+    height: 50vh;
+    width: 80%;
+    margin: 50px auto;
+    display: block;
+}
 #map{
-    position: absolute;
+    position: fixed;
     height: 100vh;
     width: 100vw;
     top: 0;
@@ -59,7 +183,7 @@
     color: #fff;
 }
 #map1{
-    position: absolute;
+    position: fixed;
     height: 100vh;
     width: 100vw;
     top: 0;
@@ -87,17 +211,40 @@ agm-map{
     height: 100%;
     width: 100%;
 }
+/*----------------------------------------------Maps-end---------------------------------------------*/
 
 
 /*-----------------------------------------------container------------------------------------------------*/
 .container{
     width: 100%;
     position: relative;
-    display: none;
     font-family: 'poppins',sans-serif;
 }
-.container.active{
+.container.nothing{
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.container .welcome{
+    padding: 20px 0 0 0;
+    font-size: 25px;
+    font-weight: 600;
+    text-align: center;
+}
+.container .message{
+    color: #333;
+    text-align: center;
+}
+.container .addbtn{
+    padding: 10px;
     display: block;
+    outline: none;
+    margin: 20px auto;
+    cursor: pointer;
+    background: #155ad8;
+    border: none;
+    color: #fff;
 }
 .select{
     display: flex;
@@ -115,6 +262,7 @@ agm-map{
     cursor: pointer;
     width: fit-content;
     padding: 5px;
+    outline: none;
 }
 .select i{
     cursor: pointer;
@@ -175,160 +323,37 @@ agm-map{
         font-size: 12px;
     }
 }
-.container .row{
-    height: 400px;
-    width: 100%;
-    position: relative;
-    display: flex;
-    justify-content: space-around;
-}
-@media screen and (max-width:800px){
-    .container .row{
-        height: 150vh;
-    }
-}
-@media screen and (max-width:550px){
-    .container .row{
-        height: 100vh;
-    }
-}
-@media screen and (max-width:400px){
-    .container .row{
-        height: 80vh;
-    }
-}
-.container .row .col1{
-    width: 50%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.container .row .col1 .buttons{
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    column-gap: 20px;
-    padding: 10px;
-    background: #fff;
-}
-.container .row .col1 .buttons button{
-    outline: none;
-    padding: 10px;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-    border: none;
-}
-.container .row .images{
-    position: relative;
-    height: 100%;
-    width: 100%;
-    flex-direction: column;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.container .row .images .img{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-.container .row .images .img img{
-    width: 100%;
-    -webkit-user-drag: none;
-}
-.container .row .images .dirButtons i{
-    position: absolute;
-    top: 50%;
-    font-size: 30px;
-}
-.container .row .images .dirButtons .previous{
-    transform: translate(-5%,-50%);
-    left: 5%;
-}
-.container .row .images .dirButtons .next{
-    right: 5%;
-    transform: translate(-5%,-50%);
-}
-.container .row .map{
-    height: 100%;
-    position: relative;
-    width: 50%;
-}
-.container .row .map agm-map{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 13%;
-}
-@media screen and (max-width:800px){
-    .container .row{
-        flex-direction: column;
-    }
-    .container .row .col1{
-        width: 100%;
-    }
-    .container .row .map{
-        width: 100%;
-    }
-}
-#imageModule{
-    display: none;
-    padding: 30px;
-    background: #fff;
-    text-align: center;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    border: 1px solid #111;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    row-gap: 10px;
-}
-#imageModule .title{
-    font-weight: 600;
-    font-size: 20px;
-}
-#imageModule .buttons{
-    display: flex;
-    column-gap: 20px;
-    position: relative;
-    padding: 0;
-}
-#imageModule button{
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid;
-    background: rgb(20, 106, 187);
-    color: white;
-    cursor: pointer;
-}
-#imageModule button[type="reset"]{
-    background: #f00;
-}
 
 
 /*----------------------------Menu--------------------------*/
 
 #CategoryModule{
     z-index: 1;
+    font-family: 'poppins',sans-serif;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: white;
-    width: 400px;
+    width: 500px;
+    min-width: 300px;
+    border-radius: 10px;
     border: 1px solid #111;
     display: none;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+#CategoryModule .nothing{
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#CategoryModule .nothing span{
+    user-select: none;
+    font-size: 25px;
+    color: #666;
 }
 #CategoryModule .row{
     display: flex;
@@ -341,17 +366,28 @@ agm-map{
     font-size: 20px;
     letter-spacing: 1px;
 }
-#CategoryModule .row button{
-    margin: 10px 20px;
+#CategoryModule .row .buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    column-gap: 20px;
+}
+#CategoryModule .row .buttons button{
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
     cursor: pointer;
-    padding: 5px;
+    border-radius: 5px;
     outline: none;
+    background-color: #2569fc;
 }
 #CategoryModule .categories{
     padding: 10px;
     line-height: 28px;
     position : relative;
     overflow: hidden;
+    min-height: 50vh;
 }
 #CategoryModule .categories span{
     width: auto;
@@ -359,6 +395,7 @@ agm-map{
     margin: 10px;
     border: 1px solid;
     display: inline-block;
+    cursor: pointer;
     background: #fff;
 }
 #CategoryModule .categories span.selected{
@@ -390,9 +427,6 @@ agm-map{
     color: white;
     cursor: pointer;
 }
-.menu .category-list{
-    border: 1px solid #111;
-}
 .menu .category-box{
     width: 90%;
     padding: 10px;
@@ -412,47 +446,60 @@ agm-map{
 .food-items{
     position: relative;
 }
-
-/*---------------------------------------RestoUpdateForm-------------------------------------*/
-#RestoUpdateForm{
+#AddCategoryModel{
     position: fixed;
     top: 50%;
+    max-height: 80vh;
+    max-width: 500px;
     left: 50%;
     transform: translate(-50%,-50%);
+    background-color: #fff;
+    border: 1px solid;
     padding: 30px;
-    background: #fff;
-    border: 1px solid #111;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 10px;
-    width: 350px;
+    font-family: 'poppins',sans-serif;
     display: none;
 }
-#RestoUpdateForm .textfield{
+#AddCategoryModel .heading{
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: 600;
+}
+#AddCategoryModel .group{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    row-gap: 5px;
+}
+#AddCategoryModel .group input[type="text"]{
+    outline: none;
     width: 100%;
     padding: 10px;
+    border: 1px solid #333;
     border-radius: 5px;
+}
+#AddCategoryModel .group small{
+    color: #f00;
+}
+#AddCategoryModel textarea{
     outline: none;
     border: 1px solid;
+    border-radius: 5px;
+    resize: none;
+    padding: 10px;
 }
-#RestoUpdateForm .buttons{
+#AddCategoryModel .buttons{
     display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
     column-gap: 20px;
 }
-#RestoUpdateForm .buttons input[type='button'],#RestoUpdateForm .buttons input[type='submit']{
-    background: #1a9cb0;
-    color: white;
-    padding: 10px;
-    outline: none;
-    cursor: pointer;
-    border-radius: 5px;
-    border: none;
-}
-#RestoUpdateForm .buttons input[type='button']{
-    background: #f00;
-}
-#RestoUpdateForm .mapbtn{
-    column-gap: 10px;
-    display: flex;
-    cursor: pointer;
+@media screen and (max-width:600px){
+    #CategoryModule{
+        width: 320px;
+    }
+    #CategoryModule .row{
+        flex-direction: column;
+    }
 }

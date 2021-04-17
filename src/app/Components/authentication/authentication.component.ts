@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
       <router-outlet></router-outlet>
     </div>
   `,
-  styleUrls: ['./authentication.component.css']
+  styleUrls: []
 })
 export class AuthenticationComponent implements OnInit {
 

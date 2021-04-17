@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user : User = new User(0,'','','','','','','user.jpg');
+  user : User = new User(0,'','','','','','','','user.jpg');
   jwt : any;
   jwtModel : Jwt = new Jwt("","","");
   remember : boolean = false;
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         }else{
           this.cookieService.deleteAll();
         }
-        this.router.navigate(['/Home']);
+        this.router.navigate(['/']);
       }
     });
   }
