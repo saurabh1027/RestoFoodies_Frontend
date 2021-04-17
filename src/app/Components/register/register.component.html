@@ -1,11 +1,26 @@
 <form>
-    <h1>Register page</h1><br>
-    <input type="text" name="username" [(ngModel)]="user.username" placeholder="Enter Username" required><br>
-    <input type="password" name="password" [(ngModel)]="user.password" placeholder="Enter Password" required><br>
-    <input type="text" name="fullname" [(ngModel)]="user.fullname" placeholder="Enter Fullname" required><br>
-    <input type="text" name="email" [(ngModel)]="user.email" placeholder="Enter Email"><br>
-    <input type="text" name="city" [(ngModel)]="user.city" placeholder="Enter City"><br>
-    <textarea name="address" cols="30" rows="8" placeholder="Enter Address" [(ngModel)]="user.address"></textarea><br>
-    <input type="submit" value="Register" (click)="saveUser()"><br>
+    <h2>Register page</h2>
+    <br>
+
+    <input type="text" name="username" [(ngModel)]="user.username" placeholder="Enter Username" required>
+    <br><br>
+
+    <input type="password" name="password" [(ngModel)]="user.password" placeholder="Enter Password" required>
+    <br><br>
+
+    <input type="text" name="fullname" [(ngModel)]="user.fullname" placeholder="Enter Fullname" required>
+    <br><br>
+
+    <input type="text" name="email" [(ngModel)]="user.email" placeholder="Enter Email">
+    <br><br>
+
+    <input type="text" name="city" [(ngModel)]="user.city" placeholder="Enter City">
+    <br><br>
+
+    <textarea name="address" cols="30" rows="8" placeholder="Enter Address" [(ngModel)]="user.address">
+    </textarea>
+    <br><br>
+
+    <input type="submit" value="Register" (click)="saveUser()"> &nbsp;
     <a routerLink='/Authentication/Login'>Login</a>
 </form>

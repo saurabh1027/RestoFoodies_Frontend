@@ -1,8 +1,18 @@
 <form>
-    <h1>Login page</h1><br>
-    <input type="text" name="username" required [(ngModel)]='user.username' placeholder="Enter Username" maxlength="28"><br>
+    <h2>Login page</h2>
+    <br>
+
+    <input type="text" name="username" required [(ngModel)]='user.username' placeholder="Enter Username" maxlength="28">
+    <br><br>
+
     <input type="password" name="password" required [(ngModel)]='user.password' placeholder="Enter Password" maxlength="28"><br>
-    <label><input type="checkbox" (click)="toggleRemember()" name='remember' [(ngModel)]='remember' value="remember">Remember Me</label><br>
-    <input type="submit" value="Login" (click)='authenticateUser()'><br>
-    <a routerLink='/Authentication/Register'>Register</a>
+    <br>
+
+    <label>
+        <input type="checkbox" (click)="toggleRemember()" name='remember' [(ngModel)]='remember' value="remember">Remember Me
+    </label>
+    <br><br>
+
+    <input type="submit" value="Login" (click)='authenticateUser()'> &nbsp;
+      <a routerLink='/Authentication/Register'>Register</a>
 </form>

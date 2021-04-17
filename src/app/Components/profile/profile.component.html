@@ -10,7 +10,9 @@
         </div>
     </div>
 </div>
+
 <router-outlet></router-outlet>
+
 <form id="UserProfileModel">
     <div class="close" (click)='toggleUserProfileModel(false)'>
         <i class="fas fa-times"></i>
@@ -44,6 +46,7 @@
         </div>
     </div>
 </form>
+
 <div id="slidebar">
     <p class="title">Task Bar</p>
     <i class="fas fa-times" (click)='toggleSlideBar(false)'></i>
@@ -57,6 +60,7 @@
         <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='getRole()=="Vendor"'><li>List</li></a>
     </ul>
 </div>
+
 <div id="EditUserProfileModel">
     <input type="text" name="username" [(ngModel)]='user.username' placeholder="Enter Username">
     <div class="password">

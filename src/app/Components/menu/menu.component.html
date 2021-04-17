@@ -1,11 +1,13 @@
 <div *ngIf='!(food_items.length>0)' class="nothing">
     <p>No items added yet!</p>
 </div>
+
 <div *ngIf='food_items.length>0' class="menu">
     <div class="item" *ngFor='let item of food_items'>
         <div class="img">
             <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
         </div>
+
         <div class="details">
             <div class="left-box">
                 <span class="item-name">{{item.fname}}({{item.quantity}})</span>
@@ -18,12 +20,14 @@
                 <span class="price" title="Price">{{item.price}} &#8377;</span>
             </div>
         </div>
+
         <div class="buttons">
             <button name="edit" (click)='toggleItemModel("UpdateItemForm",item,true)'>Edit</button>
             <button name="delete" title="Delete this food-item permanently" (click)='deleteFoodItem(item.fid)'>Delete</button>
         </div>
     </div>
 </div>
+
 <div class="foodBtn" (click)='toggleModel("AddItemForm",true)'>
     <i class="fas fa-plus" title="Add Food Item"></i>
 </div>

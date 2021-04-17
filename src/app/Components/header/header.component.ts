@@ -1,9 +1,11 @@
+import { Emitter } from './../Emitter/emitter';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Food_Item } from 'src/app/Models/Food_Item';
 import { User } from 'src/app/Models/User';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { UserService } from 'src/app/Services/user.service';
 import * as $ from 'jquery';
+import * as EventEmitter from 'node:events';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +27,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoggedIn();
+    Emitter.authEmitter.subscribe(data => this.loggedIn = data)
   }
 
   isLoggedIn(){
@@ -139,6 +142,7 @@ export class HeaderComponent implements OnInit {
 
   logout(){
     this.service.logout();
+    this.loggedIn = false
   }
 
   toggleNavbar(bool:boolean){

@@ -1,3 +1,4 @@
+import { Emitter } from './../Emitter/emitter';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -57,7 +58,8 @@ export class LoginComponent implements OnInit {
         }else{
           this.cookieService.deleteAll();
         }
-        this.router.navigate(['/']);
+        this.router.navigate(['']);
+        Emitter.authEmitter.emit(true)
       }
     });
   }
