@@ -15,29 +15,6 @@ import { RestaurantProfileComponent } from './Components/restaurant-profile/rest
 import { RestaurantsComponent } from './Components/restaurants/restaurants.component';
 
 const routes: Routes = [
-<<<<<<< Updated upstream
-
-  {path : 'Profile' , component : ProfileComponent,
-    children : [
-      {path : 'My-Restaurants' , component : MyRestaurantsComponent},
-      {path : 'pending-orders', component : RestaurantPendingComponent},
-      {path : 'My-List' , component : MyListComponent},
-      {path : 'My-Basket' , component : BasketComponent,
-        children : [
-          {path : ':name' , component : OrderComponent},
-    ]},
-  ]},
-
-  {path : 'Authentication' , component : AuthenticationComponent,
-    children : [
-      {path : 'Login' , component : LoginComponent},
-      {path : 'Register' , component : RegisterComponent}
-  ]},
-
-  {path : 'Items/:keyword' , component : ItemsComponent},
-  {path : '' , component : HomeComponent},
-  {path : '**' , component : PageNotFoundComponent}
-=======
   {path:'',component:HomeComponent},
   {path:'Restaurants',component:RestaurantsComponent},
   {path:'Restaurants/:rname',component:RestaurantProfileComponent},
@@ -53,7 +30,6 @@ const routes: Routes = [
   {path:'Register',component:RegisterComponent},
   {path:'Items/:keyword',component:ItemsComponent},
   {path:'**',component:PageNotFoundComponent}
->>>>>>> Stashed changes
 ];
 
 @NgModule({

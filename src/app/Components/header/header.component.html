@@ -1,72 +1,28 @@
 <header>
-
     <div class="logo">
         <a routerLink="/">
             <img src="assets/images/logo.jpg" alt="logo-icon">
         </a>
     </div>
-<<<<<<< Updated upstream
-
-    <nav id="nav">
-        <li>
-            <a routerLink = ''> Home </a>
-        </li>
-        <!-- <li><a routerLink='/News'>News</a></li>
-        <li><a routerLink='/About'>About</a></li>
-        <li><a routerLink='/Contact'>Contact</a></li> -->
-        
-        <i class="fas fa-times" (click)='toggleNavbar(false)'></i>
-    </nav>
-
-    <div class="icons">
-        <a *ngIf='loggedIn' class="user-icon" title="{{user.fullname}}" routerLink='/Profile/My-Restaurants'>
-            <i class="fas fa-user-cog"></i>
-        </a>
-
-=======
     <div class="icons">
         <a class="user-icon" *ngIf='user.role!=="Customer"' title="User Profile" routerLink='/Profile'><i class="fas fa-user-cog"></i></a>
         <a class="user-icon" *ngIf='user.role==="Customer"' title="Basket" routerLink='/My-Basket'><i class="fas fa-shopping-basket"></i></a>
->>>>>>> Stashed changes
         <i class="fas fa-search" title="Search Items" (click)='toggleSearchBar()'></i>
-
         <div class="auth">
-<<<<<<< Updated upstream
-            <a *ngIf="!loggedIn" routerLink="/Authentication/Login" title="Login"> Login
-                <i class="fas fa-sign-in-alt"></i>
-            </a>
-            <a *ngIf="loggedIn" routerLink="/Authentication/Login" title="Logout" (click)="logout()"> Logout
-                <i class="fas fa-sign-out-alt"></i>
-            </a>
-        </div>
-        
-        <i class="fas fa-bars" (click)='toggleNavbar(true)'></i>
-=======
             <a *ngIf="!loggedIn" routerLink="/Login" title="Login"><i class="fas fa-sign-in-alt"></i></a>
             <a *ngIf="loggedIn" routerLink="/Login" title="Logout" (click)='logout()'><i class="fas fa-sign-out-alt"></i></a>
         </div>
->>>>>>> Stashed changes
     </div>
-
     <div id="searchbar">
         <select name="cat" #cname id="cat" (change)='getKeywordsByCategory()'>
             <option value="All">All</option>
             <option value="{{cname}}" *ngFor='let cname of categories'>{{cname}}</option>
         </select>
-<<<<<<< Updated upstream
-
-        <input type="text" name="searchbar" id="search-input" placeholder="Enter something..." (keyup)='toggleSearchResultModel()'>
-
-=======
         <input type="text" #searchbar name="searchbar" id="search-input" placeholder="Enter something..." (keyup)='toggleSearchResultModel()'>
->>>>>>> Stashed changes
         <div id="SearchResult">
             <a (click)='reload()' routerLink="/Items/{{k}}" *ngFor='let k of resultedKeywords'> 
                 <div class="searchedItem">{{k}}</div>
             </a>
         </div>
     </div>
-
 </header>
-
-<!-- items component -->

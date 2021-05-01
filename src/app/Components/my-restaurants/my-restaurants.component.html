@@ -1,67 +1,41 @@
-<<<<<<< Updated upstream
-<!-- UI -->
-<div class="container nothing" *ngIf='!userHasRestaurant'>
-=======
 <div class="container nothing" *ngIf='restaurant.rid===0'>
->>>>>>> Stashed changes
     <p class="welcome">Welcome to your profile</p>
     <p class="message">You have not added your restaurant yet!</p>
     <button (click)='toggleModel("RestoForm1",true)' class="addbtn">Add Restaurant</button>
 </div>
-<<<<<<< Updated upstream
-
-<div class="container" *ngIf='userHasRestaurant'>
-    <div class="select">
-        <select name="select-restaurants" id="select-restaurants" (change)='onSelectChange()' title="Select Restaurant">
-            <option value="{{name}}" *ngFor="let name of names">{{name}}</option>
-        </select>
-        <i class="fa fa-trash-alt" (click)='deleteRestaurant(restaurant.rid)' title="Delete Restaurant-{{restaurant.name}}"></i>
-    </div>
-
-=======
 <div class="container" *ngIf='restaurant.rid!==0'>
->>>>>>> Stashed changes
     <div class="profile">
         <i class="fas fa-edit" (click)='toggleModel("RestoUpdateForm",true)'></i>
         <i class="fas fa-trash-alt deletebtn" (click)='deleteRestaurant(restaurant.rid)'></i>
         <img src="assets/images/restaurants/banner1.jpg" alt="banner">
         <span class="name">{{restaurant.name}}</span>
     </div>
-
     <div id="RestoMap">
         <agm-map [latitude]='lat' [longitude]='lng' [zoom]='14' [fullscreenControl]='true'>
             <agm-marker [latitude]='lat' [longitude]='lng'></agm-marker>
         </agm-map>
     </div>
-
     <div class="menu">
         <div class="topbar">
             <p class="title">Menu</p>
             <button class="btn" (click)="toggleCategoryModule()">Add Category</button>
         </div>
-
         <div class="category-list">
             <div class="category-box">
                 <span class="category-name selected" title="All verieties of food items" (click)='getFoodItems("All")'>All</span>
                 <span class="category-name" title="{{category.description}}" (click)='getFoodItems(category.cname)' *ngFor="let category of restCategories">{{category.cname}}</span>
             </div>
         </div>
-
         <div class="food-items">
             <app-menu [food_items]='food_items' [restaurant]='restaurant' [user]='user'></app-menu>
         </div>
-
     </div>
 </div>
 
-<<<<<<< Updated upstream
-<!-- form validation -->
-=======
 
 
 
 <!-- Models -->
->>>>>>> Stashed changes
 <form id="RestoUpdateForm" #RestoUpdateForm='ngForm' novalidate (ngSubmit)='updateRestaurant(restaurant)'>
     <p class="heading">Update Restaurant</p>
     <div class="group">
@@ -69,7 +43,6 @@
         <input type="text" class="textfield" name="name" #name1='ngModel' [(ngModel)]='restaurant.name' [class.invalid]='name1.invalid && name1.touched' [class.valid]='name1.valid' required>
         <small [class.d-none]='name1.valid || name1.untouched'>Please enter restaurant name.</small>
     </div>
-
     <div class="group">
         <label>Phone Number:</label>
         <input type="tel" #contact1='ngModel' pattern="^\d{10}$" name="contact" [class.invalid]='contact1.invalid && contact1.touched' [class.valid]='contact1.valid' class="textfield" [(ngModel)]="restaurant.contact" required>
@@ -78,18 +51,12 @@
             <small *ngIf='contact1.errors.pattern'>Contact must be of at least 10 digits.</small>
         </div>
     </div>
-
     <div class="group">
         <label>Email Id:</label>
         <input type="email" #email1='ngModel' name="email" [class.invalid]='email1.invalid && email1.touched' [class.valid]='email1.valid' class="textfield" [(ngModel)]="restaurant.email" required>
         <small [class.d-none]='email1.valid || email1.untouched'>Please enter email of the restaurant.</small>
     </div>
-<<<<<<< Updated upstream
-
-    <div class="group">
-=======
     <!-- <div class="group">
->>>>>>> Stashed changes
         <label>Branch of the Restaurant:</label>
         <input type="text" #branch1='ngModel' name="branch" [class.invalid]='branch1.invalid && branch1.touched' [class.valid]='branch1.valid' class="textfield" [(ngModel)]="restaurant.branch" required>
         <small [class.d-none]='branch1.valid || branch1.untouched'>Please enter branch of your restaurant.</small>
@@ -98,12 +65,10 @@
         <input type="file" #file2='ngModel' (change)='checkFile($event)' name="file2" ngModel>
         <small [class.d-none]='!fileSizeExceed || file2.untouched'>File size should be less than 500KB.</small>
     </div>
-
     <div class="group">
         <label for="mapbtn" class="mapbtn" (click)='toggleMap()'>Location <i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
         <small [class.d-none]='!map1HasError'>Please select location of restaurant.</small>
     </div>
-
     <div class="group">
         <div class="flex-group">
             <label for="opening_time">Opening Time: <input type="time" [class.invalid]='opening_time1.invalid && opening_time1.touched' [class.valid]='opening_time1.valid' #opening_time1='ngModel' name="opening_time" required [(ngModel)]="restaurant.opening_time" class="timefield" id="opening_time"></label>
@@ -112,18 +77,14 @@
         <small [class.d-none]='opening_time1.valid || opening_time1.untouched'>Please enter opening time of the restaurant.</small>
         <small [class.d-none]='closing_time1.valid || closing_time1.untouched'>Please enter closing time of the restaurant.</small>
     </div>
-
     <div class="flex-group">
         <button type="submit" [disabled]='RestoUpdateForm.form.invalid || fileSizeExceed' class="btn submitbtn">Submit</button>
         <input type="button" value="Cancel" class="btn cancelbtn" (click)='toggleModel("RestoUpdateForm",false)'>
     </div>
 </form>
 
-<<<<<<< Updated upstream
-=======
 
 
->>>>>>> Stashed changes
 <form #RestoForm1='ngForm' id="RestoForm1" novalidate (ngSubmit)='addRestaurant()'>
     <p class="heading">Add Restaurant</p>
     <div class="group">
@@ -131,7 +92,6 @@
         <input type="text" #name='ngModel' name="name" [class.invalid]='name.invalid && name.touched' [class.valid]='name.valid' class="textfield" [(ngModel)]="rest.name" required>
         <small [class.d-none]='name.valid || name.untouched'>Please enter restaurant name.</small>
     </div>
-
     <div class="group">
         <label>Phone Number:</label>
         <input type="tel" #contact='ngModel' pattern="^\d{10}$" name="contact" [class.invalid]='contact.invalid && contact.touched' [class.valid]='contact.valid' class="textfield" [(ngModel)]="rest.contact" required>
@@ -140,19 +100,16 @@
             <small *ngIf='contact.errors.pattern'>Contact must be of at least 10 digits.</small>
         </div>
     </div>
-
     <div class="group">
         <label>Email Id:</label>
         <input type="email" #email='ngModel' name="email" [class.invalid]='email.invalid && email.touched' [class.valid]='email.valid' class="textfield" [(ngModel)]="rest.email" required>
         <small [class.d-none]='email.valid || email.untouched'>Please enter email of the restaurant.</small>
     </div>
-
     <div class="group">
         <label>Branch of the Restaurant:</label>
         <input type="text" #branch='ngModel' name="branch" [class.invalid]='branch.invalid && branch.touched' [class.valid]='branch.valid' class="textfield" [(ngModel)]="rest.branch" required>
         <small [class.d-none]='branch.valid || branch.untouched'>Please enter branch of your restaurant.</small>
     </div>
-
     <div class="group">
         <input type="file" #file1='ngModel' (change)='checkFile($event)' name="file1" required ngModel>
         <small [class.d-none]='!fileSizeExceed || file1.untouched'>File size should be less than 500KB.</small>
@@ -162,7 +119,6 @@
         <label for="mapbtn" class="mapbtn" (click)='toggleMap1()'>Location <i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
         <small [class.d-none]='!map1HasError'>Please select location of restaurant.</small>
     </div>
-
     <div class="group">
         <div class="flex-group">
             <label for="opening_time1">Opening Time: <input type="time" [class.invalid]='opening_time.invalid && opening_time.touched' [class.valid]='opening_time.valid' #opening_time='ngModel' name="opening_time" required [(ngModel)]="rest.opening_time" class="timefield" id="opening_time1"></label>
@@ -171,28 +127,25 @@
         <small [class.d-none]='opening_time.valid || opening_time.untouched'>Please enter opening time of the restaurant.</small>
         <small [class.d-none]='closing_time.valid || closing_time.untouched'>Please enter closing time of the restaurant.</small>
     </div>
-
     <div class="flex-group">
         <button type="submit" [disabled]='file1===undefined || RestoForm1.form.invalid' class="btn submitbtn">Submit</button>
         <input type="button" value="Cancel" class="btn cancelbtn" (click)='toggleModel("RestoForm1",false)'>
     </div>
 </form>
 
-<!-- maps -->
+
 <div id="map">
     <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='14' (mapClick)='locationChosen1($event,true)'>
         <agm-marker [latitude]='pos.lat' [longitude]='pos.lng' [markerDraggable]="true"></agm-marker>
     </agm-map>
     <button (click)="toggleMap()" class="choosebtn">Choose this location</button>
 </div>
-
 <div id="map1">
     <agm-map [latitude]='getLatLng(true)' [longitude]='getLatLng(false)' [zoom]='6' (mapClick)='locationChosen($event,false)'>
         <agm-marker [latitude]='getLatLng(true)' [longitude]='getLatLng(false)' [markerDraggable]="true"></agm-marker>
     </agm-map>
     <button (click)="toggleMap1()" class="choosebtn">Choose this location</button>
 </div>
-
 <div id="CategoryModule">
     <div class="row">
         <p class="title">Categories</p>
@@ -201,16 +154,13 @@
             <button (click)="updateCategoriesOfRestaurant()">Update</button>
         </div>
     </div>
-
     <div class="nothing" *ngIf='!(categories.length>0)'>
         <span>Nothing to show</span>
     </div>
-
     <div class="categories" *ngIf='categories.length>0'>
         <span *ngFor="let category of categories" class="category" (click)="addCategory(category.cname)" title="{{category.description}}">{{category.cname}}</span>
     </div>
 </div>
-
 <form id="AddCategoryModel" #AddCategoryModel='ngForm' (ngSubmit)='addCat()'>
     <p class="heading">Add Category</p>
     <div class="group">
@@ -219,7 +169,6 @@
         <small [class.d-none]='newcat.valid || newcat.untouched'>Category name cannot be empty.</small>
         <small [class.d-none]='!(newCategory.cname.length>15)'>Maximum limit exceeded</small>
     </div>
-    
     <textarea name="description" [(ngModel)]='newCategory.description' cols="30" rows="10">Enter about category in brief...</textarea>
     <div class="buttons">
         <input [disabled]='AddCategoryModel.invalid || newCategory.cname.length>15 || AddCategoryModel.untouched' class="btn submitbtn" type="submit" value="Submit">

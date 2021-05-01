@@ -1,16 +1,10 @@
-import { Emitter } from './../Emitter/emitter';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Food_Item } from 'src/app/Models/Food_Item';
 import { User } from 'src/app/Models/User';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { UserService } from 'src/app/Services/user.service';
-<<<<<<< Updated upstream
-import * as $ from 'jquery';
-import * as EventEmitter from 'node:events';
-=======
 import { Router } from '@angular/router';
 import { Emitter } from 'src/app/Models/Emitter';
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-header',
@@ -35,7 +29,6 @@ export class HeaderComponent implements OnInit {
       this.loggedIn=data;
     });
     this.isLoggedIn();
-    Emitter.authEmitter.subscribe(data => this.loggedIn = data)
   }
 
   isLoggedIn(){
@@ -156,14 +149,6 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-<<<<<<< Updated upstream
-  logout(){
-    this.service.logout();
-    this.loggedIn = false
-  }
-
-=======
->>>>>>> Stashed changes
   toggleNavbar(bool:boolean){
     let nav = document.getElementById("nav");
     if(bool){

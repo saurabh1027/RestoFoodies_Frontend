@@ -1,4 +1,3 @@
-import { Emitter } from './../Emitter/emitter';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -50,16 +49,10 @@ export class LoginComponent implements OnInit {
         }else{
           this.cookieService.deleteAll('/Login');
         }
-<<<<<<< Updated upstream
-        this.router.navigate(['']);
-        Emitter.authEmitter.emit(true)
-      }
-=======
         this.router.navigate(['/']);
     },error=>{
       if(error.status===403)Swal.fire({title:'Invalid Username',text:'Your username is not available.',icon:'error'});
       if(error.status===401)Swal.fire({title:'Unauthorized Access',text:'Your password is wrong.',icon:'error'});
->>>>>>> Stashed changes
     });
   }
   */

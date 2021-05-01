@@ -11,15 +11,9 @@
         </div>
     </div>
 </div>
-
 <router-outlet></router-outlet>
-<<<<<<< Updated upstream
-
-<form id="UserProfileModel">
-=======
 <!--Models-->
 <form #UserProfileModel id="UserProfileModel">
->>>>>>> Stashed changes
     <div class="close" (click)='toggleUserProfileModel(false)'>
         <i class="fas fa-times"></i>
     </div>
@@ -52,7 +46,6 @@
         </div>
     </div>
 </form>
-
 <div id="slidebar">
     <p class="title">Task Bar</p>
     <i class="fas fa-times" (click)='toggleSlideBar(false)'></i>
@@ -66,12 +59,7 @@
         <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List</li></a>
     </ul>
 </div>
-<<<<<<< Updated upstream
-
-<div id="EditUserProfileModel">
-=======
 <div #EditUserProfileModel id="EditUserProfileModel">
->>>>>>> Stashed changes
     <input type="text" name="username" [(ngModel)]='user.username' placeholder="Enter Username">
     <div class="password">
         <input #password type="password" name="password" [(ngModel)]='user.password' placeholder="Enter Password" id="password">

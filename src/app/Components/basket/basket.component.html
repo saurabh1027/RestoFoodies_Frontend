@@ -1,49 +1,7 @@
 <div class="container">
-
     <div class="basket">
 
         <div class="header">
-<<<<<<< Updated upstream
-
-            <div class="left">
-                <a routerLink="/Profile"><i class="fas fa-shopping-basket" title="Back to profile"></i></a>
-                Orders : {{orders.length}}
-            </div>
-            
-            <div class="right">
-                <p class="price">{{price}}&#8377;</p>
-                <i (click)='toggleBasketMenuModel()' class="fas fa-ellipsis-v"></i>
-                <ul id="BasketMenuModel">
-                    <li (click)='toggleAddOrderModel(true)'>Add Order</li>
-                </ul>
-                <div id="AddOrderModel">
-                    <input type="text" placeholder="Enter Name of Order" [(ngModel)]='order.name' name='name'>
-                    <span class="dest">
-                        Location: <i class="fas fa-map-marker-alt" (click)='toggleMap(true)'></i>
-                    </span>
-                    <div class="buttons1">
-                        <input type="button" value="Submit" (click)='addOrderByUsername()'>
-                        <input type="reset" value="Cancel" (click)='toggleAddOrderModel(false)'>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="orders" id="OrdersModel">
-            <div *ngIf='!(orders.length>0)' class="nothing">
-                Nothing to show!
-            </div>
-
-            <div class="order" *ngFor='let order of orders'>
-                <div class="card">
-                    <input type="hidden" name="{{order.name}}">
-                    <a routerLink="{{order.name.replace(' ','_')}}" (click)="scrollToOrder()">
-                        <span class="name">{{order.name}} <i (click)=deleteOrder(order.oid) style="color: #f00;" class="fas fa-trash-alt"></i></span>
-                    </a>
-                    <span class="status">Status: {{order.status}}</span>
-                    <button (click)='checkLocation(order.location)'>Check Location on map</button>
-                    <span class="price">{{order.total_price}}&#8377;</span>
-=======
             <a routerLink='/Restaurants/{{rname}}' class="left">{{rname}}</a>
         </div>
 
@@ -61,7 +19,6 @@
                     <button (click)='manageQuantity(item.fid,true)'>+</button>
                     <span>{{item.quantity}}</span>
                     <button (click)='manageQuantity(item.fid,false)'>-</button>
->>>>>>> Stashed changes
                 </div>
             </div>
 
@@ -72,12 +29,6 @@
             </div>
         </div>
 
-<<<<<<< Updated upstream
-        <div *ngIf='orders.length > 3' class="buttons" id="buttons">
-            <i class="fas fa-arrow-left" (click)='moveOrders(false)'></i>
-            <i class="fas fa-arrow-right" (click)='moveOrders(true)'></i>
-        </div>
-=======
         <form #PlaceOrder='ngForm' (ngSubmit)='placeOrder()' class="order_details">
             <input type="text" placeholder="Enter Recipient's name" pattern='[A-Za-z]{1,30}' name='recipient_name' [(ngModel)]='order1.recipient_name' required>
             <input type="number" pattern='[0-9]{10}' placeholder="Enter Recipient's Contact" name='contact' [(ngModel)]='order1.contact' required>
@@ -85,16 +36,11 @@
             <button [disabled]='PlaceOrder.invalid' type="submit">Place Order</button>
         </form>
         
->>>>>>> Stashed changes
     </div>
 </div>
-
 <router-outlet></router-outlet>
 
-<<<<<<< Updated upstream
-=======
 <!-- Models -->
->>>>>>> Stashed changes
 <div id="map">
     <i (click)='toggleModel("map",false)' class="fas fa-times"></i>
     <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [fullscreenControl]='true' (mapClick)='changeLocation($event)'>

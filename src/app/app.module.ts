@@ -27,26 +27,7 @@ import { RestaurantProfileComponent } from './Components/restaurant-profile/rest
 
 @NgModule({
   declarations: [
-<<<<<<< Updated upstream
-    AppComponent,
-    HomeComponent,
-    LoginComponent,
-    PageNotFoundComponent,
-    HeaderComponent,
-    RegisterComponent,
-    AuthenticationComponent,
-    OffersComponent,
-    ProfileComponent,
-    MenuComponent,
-    BasketComponent,
-    OrderComponent,
-    MyRestaurantsComponent,
-    ItemsComponent,
-    RestaurantPendingComponent,
-    MyListComponent
-=======
     AppComponent,HomeComponent,LoginComponent,PageNotFoundComponent, HeaderComponent, RegisterComponent, OffersComponent, ProfileComponent, MenuComponent, BasketComponent, OrderComponent, MyRestaurantsComponent, ItemsComponent, RestaurantPendingComponent, MyListComponent, RestaurantsComponent, RestaurantProfileComponent
->>>>>>> Stashed changes
   ],
   imports: [
     BrowserModule,
