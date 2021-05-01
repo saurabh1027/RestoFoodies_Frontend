@@ -48,8 +48,8 @@ export class BasketService {
     return this.http.post(this.baseUrl+'cancel-order',oid,{responseType:"text"});
   }
 
-  public getPlacedOrdersOfRestaurant(rid:number):Observable<Order[]>{
-    return this.http.post<Order[]>(this.baseUrl+'get-restaurant-placed-orders',rid);
+  public getPlacedOrdersOfBranch(branch:string):Observable<Order[]>{
+    return this.http.post<Order[]>(this.baseUrl+'get-restaurant-placed-orders',branch);
   }
 
   public rejectOrder(oid:number){

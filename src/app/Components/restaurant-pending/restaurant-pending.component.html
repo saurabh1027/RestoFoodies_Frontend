@@ -1,8 +1,8 @@
 <div class="container">
     <div class="topbar">
-        <span>Pending Orders</span>
-        <select #restSelect (change)='getPlacedOrdersOfRestaurant()'>
-            <option value="{{r.rid}}" *ngFor='let r of restaurants'>{{r.name}}({{r.branch}})</option>
+        <span>Orders</span>
+        <select #restSelect (change)='getPlacedOrdersOfBranch()'>
+            <option value="{{branch}}" *ngFor='let branch of branches'>{{branch}}</option>
         </select>
     </div>
     <div class="map" *ngIf='orders.length>0'>
@@ -19,7 +19,7 @@
         </agm-map>
     </div>
     <div class="nothing" *ngIf='!(orders.length>0)'>
-        <span>No Pending Orders</span>
+        <span>No Orders</span>
     </div>
     <div class="order" *ngIf='order.oid!==0'>
         <p class="message" *ngIf='cnt>0'>This order consist of {{cnt}} <strong>Out Of Stock</strong> <span *ngIf='cnt>1'> items</span><span *ngIf='!(cnt>1)'> item</span>.</p>

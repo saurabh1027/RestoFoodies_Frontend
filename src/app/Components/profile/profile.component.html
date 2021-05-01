@@ -1,3 +1,4 @@
+<!--Content-->
 <div class="container">
     <div class="profile">
         <i class="fas fa-bars" (click)='toggleSlideBar(true)' title="Task-Bar"></i>
@@ -12,23 +13,28 @@
 </div>
 
 <router-outlet></router-outlet>
+<<<<<<< Updated upstream
 
 <form id="UserProfileModel">
+=======
+<!--Models-->
+<form #UserProfileModel id="UserProfileModel">
+>>>>>>> Stashed changes
     <div class="close" (click)='toggleUserProfileModel(false)'>
         <i class="fas fa-times"></i>
     </div>
     <h1 style="text-align: center;">User Information</h1>
     <div class="input">
-        <input type="text" name="username1" placeholder="Enter Username of user">
+        <input #username1 type="text" name="username1" placeholder="Enter Username of user">
         <div class="buttons">
             <input type="button" (click)='getUserByUsername()' value="Search">
             <input type="button" id="deleteBtn" (click)='deleteUser()' value="Delete">
         </div>
     </div>
-    <div id="UserEditProfileModel">
+    <div #UserEditProfileModel id="UserEditProfileModel">
         <label for="password1" class="password">
-            <input type="password" name="password" [(ngModel)]='user1.password' placeholder="Enter Password" id="password1">
-            <i class="fas fa-eye" (click)='togglePasswordVisibility1()'></i>
+            <input #password1 type="password" name="password" [(ngModel)]='user1.password' placeholder="Enter Password" id="password1">
+            <i #eye1 class="fas fa-eye" (click)='togglePasswordVisibility1()'></i>
         </label>
         <input type="text" name="fullname" [(ngModel)]="user1.fullname" placeholder="Enter Fullname">
         <select name="role" [(ngModel)]='user1.role'>
@@ -37,7 +43,7 @@
             <option value="Delivery Boy">Delivery Boy</option>
             <option value="Admin">Admin</option>
         </select>
-        <input type="file" name="userpic1" accept="image/*">
+        <input type="file" #file1 name="userpic1" accept="image/*">
         <input type="text" name="email" [(ngModel)]='user1.email' placeholder="Enter Email">
         <textarea name="address" [(ngModel)]='user1.address' cols="30" rows="5">Address</textarea>
         <div class="buttons">
@@ -53,23 +59,27 @@
     <ul class="action-list">
         <li (click)='toggleEditUserProfileModel(true)'>Update Profile</li>
         <li (click)='deleteAccount()'>Delete Account</li>
-        <a routerLink="/Profile/My-Basket" *ngIf='getRole()=="Customer"'><li>Basket</li></a>
-        <a (click)='toggleSlideBar(false)' routerLink="/Profile/My-Restaurants" *ngIf='getRole()=="Vendor"'><li>Restaurants</li></a>
-        <li (click)='toggleUserProfileModel(true)' *ngIf='getRole()=="Admin"'>Update User Account</li>
-        <a routerLink="/Profile/pending-orders" (click)='toggleSlideBar(false)' *ngIf='getRole()=="Vendor"'><li>Pending Orders</li></a>
-        <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='getRole()=="Vendor"'><li>List</li></a>
+        <a routerLink="/Profile/My-Basket" *ngIf='user.role==="Customer"'><li>Basket</li></a>
+        <a (click)='toggleSlideBar(false)' routerLink="/Profile/Restaurant" *ngIf='user.role==="Vendor"'><li>Restaurant</li></a>
+        <li (click)='toggleUserProfileModel(true)' *ngIf='user.role==="Admin"'>Update User Account</li>
+        <a routerLink="/Profile/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>Orders</li></a>
+        <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List</li></a>
     </ul>
 </div>
+<<<<<<< Updated upstream
 
 <div id="EditUserProfileModel">
+=======
+<div #EditUserProfileModel id="EditUserProfileModel">
+>>>>>>> Stashed changes
     <input type="text" name="username" [(ngModel)]='user.username' placeholder="Enter Username">
     <div class="password">
-        <input type="password" name="password" [(ngModel)]='user.password' placeholder="Enter Password" id="password">
-        <i class="fas fa-eye" (click)='togglePasswordVisibility()'></i>
+        <input #password type="password" name="password" [(ngModel)]='user.password' placeholder="Enter Password" id="password">
+        <i #eye class="fas fa-eye" (click)='togglePasswordVisibility()'></i>
     </div>
     <input type="text" name="fullname" [(ngModel)]="user.fullname" placeholder="Enter Fullname">
     <input type="text" name="city" [(ngModel)]="user.city" placeholder="Enter City">
-    <input type="file" accept="image/*">
+    <input type="file" #file accept="image/*">
     <input type="text" name="email" [(ngModel)]='user.email' placeholder="Enter Email">
     <textarea name="address" [(ngModel)]='user.address' cols="30" rows="5">Address</textarea>
     <div class="buttons">

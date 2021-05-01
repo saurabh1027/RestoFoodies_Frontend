@@ -4,8 +4,13 @@ import { Food_Item } from 'src/app/Models/Food_Item';
 import { User } from 'src/app/Models/User';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { UserService } from 'src/app/Services/user.service';
+<<<<<<< Updated upstream
 import * as $ from 'jquery';
 import * as EventEmitter from 'node:events';
+=======
+import { Router } from '@angular/router';
+import { Emitter } from 'src/app/Models/Emitter';
+>>>>>>> Stashed changes
 
 @Component({
   selector: 'app-header',
@@ -14,33 +19,47 @@ import * as EventEmitter from 'node:events';
 })
 export class HeaderComponent implements OnInit {
   loggedIn:boolean = false;
-  user:User=new User(0,'','','','','','','','');
+  user:User=new User(0,'','','','Customer','','','','');
   categories:string[]=[];
   allItems:Food_Item[]=[];
-  items:Food_Item[]=[];
-  resultedItems:Food_Item[]=[];
   keywords:string[]=[];
   resultedKeywords:string[]=[];
+  location : string = '';
   @ViewChild('cname') cname:ElementRef;
+  @ViewChild('searchbar') searchbar:ElementRef;
 
-  constructor(private service : UserService,private restService : RestaurantService) {}
+  constructor(private userService : UserService,private router:Router,private restService : RestaurantService) {}
 
   ngOnInit(): void {
+    Emitter.authEmitter.subscribe(data=>{
+      this.loggedIn=data;
+    });
     this.isLoggedIn();
     Emitter.authEmitter.subscribe(data => this.loggedIn = data)
   }
 
   isLoggedIn(){
-    let token = localStorage.getItem("UserToken");
+    let token = sessionStorage.getItem("UserToken");
     if(token!=null){
-      this.service.getUserByToken(token).subscribe(data=>{
+      this.userService.getUserByToken(token).subscribe(data=>{
         if(data!==null){
           this.user = data;
           if(this.user.username.length>0 && this.user.password.length>0)this.loggedIn = true;
-          this.getAllItems();
+          // this.getAllItems();
+        }else{
+          this.loggedIn=false;
         }
       });
-    }else this.getAllItems();
+    }else{
+      this.loggedIn=false;
+      // this.getAllItems();
+    }
+  }
+
+  logout(){
+    sessionStorage.removeItem("UserToken");
+    this.router.navigate(['/Login']);
+    this.loggedIn=false;
   }
 
   getAllItems(){
@@ -74,9 +93,7 @@ export class HeaderComponent implements OnInit {
         temp = this.allItems[i].keywords;
         for(let j=0;j<temp.length;j++){
           if(temp[j]==','){
-            if(!keywords.includes(str)){
-              keywords.push(str);
-            }
+            if(!keywords.includes(str))keywords.push(str);
             str='';
           }else{
             str += temp[j];
@@ -105,10 +122,9 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleSearchResultModel(){
-    let input = $('input[name="searchbar"')[0].value;
-    if(this.keywords.length<=0)
-    return;
-    if(input==''){
+    let input = this.searchbar.nativeElement.value;
+    if(this.keywords.length<=0)return;
+    if(input===''){
       this.resultedKeywords=this.keywords;
       return;
     }
@@ -122,12 +138,12 @@ export class HeaderComponent implements OnInit {
 
   clearSearchedItems(){
     this.resultedKeywords = [];
-    $('input[name="searchbar"')[0].value = '';
+    this.searchbar.nativeElement.value = '';
   }
 
   toggleSearchBar(){
     let bar = document.getElementById('searchbar');
-    let input = document.getElementById('search-input');
+    let input = this.searchbar.nativeElement;
     if(!bar.classList.contains('active')){
       bar.classList.remove('disabled');
       bar.classList.add('active');
@@ -140,11 +156,14 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+<<<<<<< Updated upstream
   logout(){
     this.service.logout();
     this.loggedIn = false
   }
 
+=======
+>>>>>>> Stashed changes
   toggleNavbar(bool:boolean){
     let nav = document.getElementById("nav");
     if(bool){

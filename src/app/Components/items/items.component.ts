@@ -8,6 +8,7 @@ import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { UserService } from 'src/app/Services/user.service';
 import Swal from 'sweetalert2';
 import * as $ from 'jquery';
+import { Emitter } from 'src/app/Models/Emitter';
 
 @Component({
   selector: 'app-items',
@@ -45,7 +46,7 @@ export class ItemsComponent implements OnInit {
   }
 
   getUserByToken(){
-    let token = localStorage.getItem('UserToken');
+    let token = sessionStorage.getItem('UserToken');
     if(token==null)return;
     this.userService.getUserByToken(token).subscribe(data=>{
       this.user=data;

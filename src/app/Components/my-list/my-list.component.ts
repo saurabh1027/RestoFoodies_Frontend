@@ -33,14 +33,14 @@ export class MyListComponent implements OnInit {
   }
 
   getUserByToken(){
-    let token = localStorage.getItem("UserToken");
+    let token = sessionStorage.getItem("UserToken");
     this.userService.getUserByToken(token).subscribe(data=>{
       this.user = data;
       this.getAllRestaurants();
     },error=>{
       if(error.status==400){
         Swal.fire({icon:'error',title:'Invalid Request',text:'Make sure to login!'});
-        this.router.navigate(['/Authentication/Login']);
+        this.router.navigate(['/Login']);
       }
     });
   }

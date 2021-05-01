@@ -14,6 +14,22 @@ export class RestaurantService {
 
   constructor(private http:HttpClient) { }
 
+  public getRestaurantByRname(rname:string):Observable<Restaurant>{
+    return this.http.post<Restaurant>(this.baseUrl+'get-restaurant/'+rname,null);
+  }
+
+  public getRestaurantsByLocation(location:string):Observable<Restaurant[]>{
+    return this.http.post<Restaurant[]>(this.baseUrl+'get-location-restaurants',location);
+  }
+
+  public getLocations():Observable<string[]>{
+    return this.http.get<string[]>(this.baseUrl+'get-locations');
+  }
+
+  public getRestaurantByUsername(username:string):Observable<Restaurant>{
+    return this.http.post<Restaurant>(this.baseUrl+'/get-user-restaurant',username);
+  }
+
   public changeStatusOfItems(fid:number[]){
     return this.http.post(this.baseUrl+'change-status-items',fid,{responseType:'text'});
   }
@@ -24,6 +40,10 @@ export class RestaurantService {
 
   public addOrderToList(oid:number,rid:number){
     return this.http.post(this.baseUrl+'add-list-order',oid+','+rid,{responseType:'text'});
+  }
+
+  public getRestaurantAvailableItems(rid:number):Observable<Food_Item[]>{
+    return this.http.post<Food_Item[]>(this.baseUrl+'get-restaurant-available-items/'+rid,null);
   }
 
   public getAvailableItemsOfRestaurant(oid:number,rid:number):Observable<Food_Item[]>{
@@ -54,8 +74,8 @@ export class RestaurantService {
     return this.http.post<Restaurant>(this.baseUrl+'get-restaurant',rest);
   }
 
-  public deleteRestaurant(rid:number,username:string){
-    return this.http.post(this.baseUrl+"delete-restaurant/"+rid,username,{responseType:"text"});
+  public deleteRestaurant(rid:number){
+    return this.http.post(this.baseUrl+"delete-restaurant/"+rid,null,{responseType:"text"});
   }
   
   public getRestaurantByRid(rid:number):Observable<Restaurant>{
@@ -87,6 +107,12 @@ export class RestaurantService {
     let formdata : FormData  = new FormData();
     formdata.append("file",file,file.name);
     return this.http.post(this.baseUrl+'add-food-item-pic',formdata,{responseType:"text"});
+  }
+
+  public addRestaurantProfile(file:File){
+    let formdata : FormData  = new FormData();
+    formdata.append("file",file,file.name);
+    return this.http.post(this.baseUrl+'add-restaurant-profile',formdata);
   }
 
   public updateRestaurant(rest:Restaurant){

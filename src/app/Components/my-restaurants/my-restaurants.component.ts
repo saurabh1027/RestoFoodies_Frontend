@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from 'src/app/Models/Category';
 import { Food_Item } from 'src/app/Models/Food_Item';
@@ -17,13 +17,11 @@ import * as $ from 'jquery';
 })
 export class MyRestaurantsComponent implements OnInit {
   map1HasError:boolean=false;
+  branches:string[]=[];
   newCategory:Category=new Category(0,'','');
-  RestoMapHasError:boolean=false;
   user:User=new User(0,'','','','','','','','');
-  userHasRestaurant:boolean=false;
-  names : string[]=[];
-  restaurant : Restaurant = new Restaurant(0,'','','','','','','','','');
-  rest : Restaurant = new Restaurant(0,'','','','','','','','','');
+  restaurant : Restaurant = new Restaurant(0,'','','','','','','','','','');
+  rest : Restaurant = new Restaurant(0,'','','','','','','','','','');
   selectedLatitude:number;
   selectedLongitude:number;
   lat:number=0;
@@ -32,6 +30,8 @@ export class MyRestaurantsComponent implements OnInit {
   categories:Category[]=[];
   restCategories:Category[]=[];
   food_items:Food_Item[] = [];
+  fileSizeExceed:boolean=false;
+  file1:File;
 
   constructor(private userService:UserService,private router:Router,private restService:RestaurantService) { }
 
@@ -40,15 +40,38 @@ export class MyRestaurantsComponent implements OnInit {
   }
 
   getUserByToken(){
-    let token = localStorage.getItem("UserToken");
-    this.userService.getUserByToken(token).subscribe(data=>{
-      this.user = data;
+    this.userService.getUserByToken(sessionStorage.getItem("UserToken")).subscribe(data=>{
       if(data==null){
         Swal.fire({title:'Unauthorized access',text:'Make sure to login!',icon:'error'});
-        this.router.navigate(['Authentication','Login']);
+        this.router.navigate(['/Login']);
+      }else{
+        this.user = data;
+        this.getRestaurantByUsername(this.user.username);
       }
-      this.getAllRestaurantNames();
     });
+  }
+
+  getRestaurantByUsername(username:string){
+    this.restService.getRestaurantByUsername(username).subscribe(data=>{
+      if(data==null)return;
+      this.restaurant = data;
+      this.getBranches(this.restaurant.branch);
+      this.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
+      this.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
+      this.getCategoriesOfRestaurant();
+    });
+  }
+
+  getBranches(branch:string){
+    let str : string = '';
+    for(let i=0;i<branch.length;i++){
+      if(branch[i]===','){
+        this.branches.push(str);
+        str='';
+      }else{
+        str = str + branch[i];
+      }
+    }
   }
 
   addCat(){
@@ -61,28 +84,27 @@ export class MyRestaurantsComponent implements OnInit {
     });
   }
 
+  checkFile(event){
+    if(event.target.files[0]!==undefined){
+      if((event.target.files[0].size>(1024*1024)/2))
+        this.fileSizeExceed=true;
+      else{
+        this.fileSizeExceed=false;
+        this.file1 = event.target.files[0];
+      }
+    }
+    else this.fileSizeExceed = false;
+  }
+
   toggleModel(modelName:string,bool:boolean){
     let model = document.getElementById(modelName);
     model.style.display = (bool)?'block':'none';
   }
 
-  getAllRestaurantNames(){
-    this.restService.getAllRestaurantNames(this.user.username).subscribe(data=>{
-      this.names = data;
-      if(this.names.length>0){
-        this.userHasRestaurant=true;
-        this.names.push("Add Restaurant");
-        this.getRestaurantByName(this.names[0]);
-        return;
-      }
-      this.userHasRestaurant=false;
-    });
-  }
-
   getRestaurantByName(name:string){
     let branch : string = name.substring(name.indexOf('(')+1,name.length-1);
     name = name.substring(0,name.indexOf('('));
-    let rest : Restaurant = new Restaurant(0,name,'','',branch,'','','','',this.user.username);
+    let rest : Restaurant = new Restaurant(0,name,'','',branch,'','','','','',this.user.username);
     this.restService.getRestaurantByName(rest).subscribe(data=>{
       this.restaurant = data;
       this.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
@@ -102,12 +124,12 @@ export class MyRestaurantsComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.restService.deleteRestaurant(rid,this.user.username).subscribe(data=>{
+        this.restService.deleteRestaurant(rid).subscribe(data=>{
           if(data=='Success'){
-            Swal.fire('Deleted!','Your file has been deleted.','success');
-            this.getAllRestaurantNames();
+            Swal.fire('Deleted!','Your restaurant is deleted.','success');
+            this.getRestaurantByUsername(this.user.username);
           }else{
-            Swal.fire(data,'Unable to delete property.','error');
+            Swal.fire(data,'Unable to delete restaurant.','error');
           }
         });
       }
@@ -148,25 +170,22 @@ export class MyRestaurantsComponent implements OnInit {
   }
 
   updateRestaurant(rest:Restaurant){
-    if(this.selectedLatitude==undefined || this.selectedLongitude==undefined){
-      this.RestoMapHasError= true;
-      return;
-    }
-    rest.latlng = this.selectedLatitude+','+this.selectedLongitude;
-    this.RestoMapHasError=false;
+    if(this.file1!==undefined)this.rest.profile = this.file1.name;
+    rest.latlng = this.pos.lat+','+this.pos.lng;
     this.restService.updateRestaurant(rest).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',text:'Restaurant updated successfully!',icon:'success'});
         this.toggleModel('RestoUpdateForm',false);
-        this.getRestaurantByName(rest.name+'('+rest.branch+')');
+        if(this.file1!==undefined){
+          this.restService.addRestaurantProfile(this.file1);
+          this.file1 = undefined;
+          this.fileSizeExceed = false;
+        }
+        this.getRestaurantByUsername(this.user.username);
       }
       else
         Swal.fire({title:data,text:'Failed to update restaurant.',icon:'error'});
     });
-  }
-
-  onSelectChange(){
-    ($('#select-restaurants')[0].value=='Add Restaurant') ? this.toggleModel('RestoForm1',true) : this.getRestaurantByName($('#select-restaurants')[0].value);
   }
 
   toggleMap(){
@@ -181,6 +200,7 @@ export class MyRestaurantsComponent implements OnInit {
   }
 
   addRestaurant(){
+    this.rest.profile = this.file1.name;
     if(this.rest.latlng===''){
       this.map1HasError=true;
       return;
@@ -191,8 +211,11 @@ export class MyRestaurantsComponent implements OnInit {
       if(data=='Restaurant added successfully'){
         Swal.fire({ title:'Good Job!',text:data,icon:'success' });
         this.toggleModel('RestoForm1',false);
-        this.rest = new Restaurant(0,'','','','','','','','','');
-        this.getAllRestaurantNames();
+        this.restService.addRestaurantProfile(this.file1);
+        this.rest = new Restaurant(0,'','','','','','','','','','');
+        this.file1=undefined;
+        this.fileSizeExceed=false;
+        this.getRestaurantByUsername(this.user.username);
       }else{
         Swal.fire({ title:data,icon:'error' });
       }
@@ -208,7 +231,14 @@ export class MyRestaurantsComponent implements OnInit {
     }
   } 
 
-  //----------------------------Menu Functions-----------------------------------
+  locationChosen1($event:AGMMouseEvent,bool:boolean){
+    if(bool){
+      this.pos.lat=$event.coords.lat;
+      this.pos.lng=$event.coords.lng;
+    }else{
+      this.rest.latlng = $event.coords.lat+','+$event.coords.lng;
+    }
+  } 
 
   toggleCategoryModule(){
     let module = document.getElementById("CategoryModule");

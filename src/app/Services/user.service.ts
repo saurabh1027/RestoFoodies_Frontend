@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Jwt } from '../Models/Jwt';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 import { User } from '../Models/User';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +11,21 @@ import { User } from '../Models/User';
 export class UserService {
   username : string = '';
   baseUrl : string = 'http://localhost:8080/';
+  token:string;
   constructor(private http:HttpClient,private router:Router) {}
+
+  public isLoggedIn(){
+    let token:string=sessionStorage.getItem('UserToken');
+    if(token===null)return false;
+    return this.http.post(this.baseUrl+'validate-token',null);
+  }
 
   public saveUser(user):Observable<Jwt>{
     return this.http.post<Jwt>(this.baseUrl+"save-user",user);
   }
 
-  public generateToken(user):Observable<Jwt>{
-    return this.http.post<Jwt>(this.baseUrl+"token",user);
+  public authenticateUser(user):Observable<Jwt>{
+    return this.http.post<Jwt>(this.baseUrl+"authenticate-user",user);
   }
 
   public getUserByToken(token):Observable<User>{
@@ -37,13 +44,6 @@ export class UserService {
 
   public deleteUser(username:string){
     return this.http.post(this.baseUrl+'delete-user',username,{responseType:"text"});
-  }
-
-  logout(){
-    localStorage.removeItem("UserToken");
-    localStorage.removeItem("UserRole");
-    localStorage.removeItem("UserName");
-    this.router.navigate(['/Authentication/Login']);
   }
 
   public getUserByUsername(username:string):Observable<User>{

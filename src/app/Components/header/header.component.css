@@ -1,8 +1,10 @@
 header{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    align-items: center;
     height: 10vh;
     width: 100%;
+    padding: 0 5%;
 }
 .logo{
     height: 100%;
@@ -13,12 +15,13 @@ header{
 .logo img{
     width: 100%;
 }
+/* 
 nav{
     height: 100%;
     position: relative;
     display: flex;
     column-gap: 20px;
-    align-items: center;
+    align-items: center;          
     list-style: none;
 }
 nav li{
@@ -29,6 +32,7 @@ nav li:hover{
     font-weight: 600;
     font-size: 18px;
 }
+<<<<<<< Updated upstream
 .icons{
     display: flex;
     align-items: center;
@@ -41,6 +45,8 @@ nav li:hover{
     font-weight: 600;
     font-size: 18px;
 } */
+=======
+>>>>>>> Stashed changes
 nav.active{
     display: flex;
 }
@@ -74,6 +80,13 @@ nav.active{
         right: 30px;
         font-size: 30px;
     }
+} */
+
+.icons{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    column-gap: 20px;
 }
 
 #searchbar{

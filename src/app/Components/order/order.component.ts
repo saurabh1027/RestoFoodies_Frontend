@@ -6,7 +6,6 @@ import { User } from 'src/app/Models/User';
 import { BasketService } from 'src/app/Services/basket.service';
 import { UserService } from 'src/app/Services/user.service';
 import Swal from 'sweetalert2';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-order',
@@ -15,8 +14,9 @@ import * as $ from 'jquery';
 })
 export class OrderComponent implements OnInit {
   user:User=new User(0,'','','','Customer','','','','');
-  order:Order=new Order(0,'','Unsubmitted','',0,'');
+  order:Order=new Order(0,'','Unsubmitted','',0,'','');
   food_items:Food_Item[]=[];
+  loggedIn:boolean=false;
   @ViewChild('items') items:ElementRef;
 
   constructor(private userService:UserService,private baskService:BasketService,private router:Router,private activeRouter:ActivatedRoute) { }
@@ -26,20 +26,14 @@ export class OrderComponent implements OnInit {
   }
 
   getUserByToken(){
-    let token = localStorage.getItem("UserToken");
-    this.userService.getUserByToken(token).subscribe(data=>{
-      this.user = data;
-      if(this.user.role!=='Customer'){
-        Swal.fire({title:'Unauthorised access',text:'Only Customers are allowed on this page!',icon:'error'});
-        this.router.navigate(['/Profile']);
-      }else
-        this.getOrder();
-    },error=>{
-      if(error.status==400){
-        Swal.fire({icon:'error', title:'Invalid Request', text:'Make sure to login!'});
-        this.router.navigate(['/Authentication/Login']);
-      }
-    });
+    if(sessionStorage.getItem("UserToken"))
+      this.userService.getUserByToken(sessionStorage.getItem("UserToken")).subscribe(data=>{
+        if(data){
+          this.user = data;
+          console.log(this.user);
+          this.getOrder();
+        }
+      });
   }
 
   getOrder(){

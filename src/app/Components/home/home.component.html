@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 <div class="profile-container">
     <div class="container">
         <img src="assets/images/profile_bg.jpg" alt="profile_bg.jpg">
@@ -14,7 +15,28 @@
             <a href="assets/images/food_items/{{item.pic}}" target="_blank">
                 <img src="assets/images/food_items/{{item.pic}}" alt="{{item.pic}}">
             </a>
+=======
+<div class="container">
+
+    <div class="col">
+
+        <!-- <div class="buttons">
+            <button>Login</button>
+            <button>Register</button>
+        </div> -->
+
+        <div class="input">
+            <input #location type="text" name='location' placeholder='Enter your delivery location.' (keyup)='updateLocations()'>
+            <ul class="locations">
+                <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            </ul>
+>>>>>>> Stashed changes
         </div>
+
     </div>
-    <a class="explore" routerLink='/Items/All'>Explore</a>
+
+    <div class="profile">
+        <img src="assets/images/landing-bg.jpg">
+    </div>
+
 </div>

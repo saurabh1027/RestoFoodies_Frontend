@@ -4,7 +4,6 @@ import { Restaurant } from 'src/app/Models/Restaurant';
 import { User } from 'src/app/Models/User';
 import { BasketService } from 'src/app/Services/basket.service';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
-import * as $ from 'jquery';
 import { UserService } from 'src/app/Services/user.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -17,14 +16,15 @@ import { Food_Item } from 'src/app/Models/Food_Item';
 })
 export class RestaurantPendingComponent implements OnInit {
   @ViewChild('restSelect') restSelect:ElementRef;
-  restaurants:Restaurant[]=[];
+  restaurant:Restaurant=new Restaurant(0,'','','','','','','','','','');
   user:User=new User(0,'','','','','','','','');
   lat:number=0;
   lng:number=0;
   orders:Order[]=[];
-  order:Order=new Order(0,'','','',0,'');
+  order:Order=new Order(0,'','','',0,'','');
   items:Food_Item[]=[];
   cnt:number=0;
+  branches:string[]=[];
 
   constructor(private restService:RestaurantService,private baskService:BasketService,private userService:UserService
     ,private router:Router) { }
@@ -34,27 +34,37 @@ export class RestaurantPendingComponent implements OnInit {
   }
 
   getUserByToken(){
-    let token = localStorage.getItem("UserToken");
+    let token = sessionStorage.getItem("UserToken");
     this.userService.getUserByToken(token).subscribe(data=>{
       this.user = data;
-      this.getAllRestaurants();
+      this.getRestaurantByUsername();
     },error=>{
       if(error.status==400){
         Swal.fire({icon:'error',title:'Invalid Request',text:'Make sure to login!'});
-        this.router.navigate(['/Authentication/Login']);
+        this.router.navigate(['Login']);
       }
     });
   }
   
-  getAllRestaurants(){
-    this.restService.getAllRestaurants(this.user.username).subscribe(data=>{
-      this.restaurants=data;
-      if(this.restaurants.length<=0){
-        this.router.navigate(['Profile/My-Restaurants']);
-        return;
-      }
+  getRestaurantByUsername(){
+    this.restService.getRestaurantByUsername(this.user.username).subscribe(data=>{
+      if(data==null)this.router.navigate(['Profile','Restaurant']);
+      this.restaurant=data;
       this.getCurrentLocation();
+      this.getBranches(this.restaurant.branch);
     });
+  }
+
+  getBranches(branch:string){
+    let str:string='';
+    for(let i=0;i<branch.length;i++){
+      if(branch[i]===','){
+        this.branches.push(str);
+        str='';
+      }else{
+        str = str + branch[i];
+      }
+    }
   }
 
   getCurrentLocation(){
@@ -62,16 +72,16 @@ export class RestaurantPendingComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
-        this.getPlacedOrdersOfRestaurant();
+        this.getPlacedOrdersOfBranch();
       });
     }
   }
   
-  getPlacedOrdersOfRestaurant(){
+  getPlacedOrdersOfBranch(){
     if(this.restSelect.nativeElement.value==null || this.restSelect.nativeElement.value==undefined || this.restSelect.nativeElement.value==NaN)return;
-    this.baskService.getPlacedOrdersOfRestaurant(parseInt(this.restSelect.nativeElement.value)).subscribe(data=>{
+    this.baskService.getPlacedOrdersOfBranch(this.restSelect.nativeElement.value).subscribe(data=>{
       this.orders=data;
-      this.order = new Order(0,'','','',0,'');
+      this.order = new Order(0,'','','',0,'','');
     },error=>console.log(error));
   }
 
@@ -91,7 +101,7 @@ export class RestaurantPendingComponent implements OnInit {
     this.restService.addOrderToList(oid,parseInt(this.restSelect.nativeElement.value)).subscribe(data=>{
       (data=='Success')?Swal.fire({title:'Congratulations!',icon:'success'}):Swal.fire({title:'Sorry!',text:data,icon:'error'});
       if(data=='Success'){
-        this.getPlacedOrdersOfRestaurant();
+        this.getPlacedOrdersOfBranch();
         this.order.oid = 0;
       };
     });
@@ -115,7 +125,7 @@ export class RestaurantPendingComponent implements OnInit {
     this.baskService.rejectOrder(oid).subscribe(data=>{
       (data=='Success')?Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'}):
         Swal.fire({title:'Sorry',text:data,icon:'error'});
-      if(data=='Success')this.getPlacedOrdersOfRestaurant();
+      if(data=='Success')this.getPlacedOrdersOfBranch();
     });
   }
 

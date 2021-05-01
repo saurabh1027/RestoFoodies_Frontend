@@ -28,7 +28,7 @@
     padding: 10px;
     border-radius: 5px;
     outline: none;
-    border: 1px solid;
+    border: 1px solid #777;
 }
 #RestoUpdateForm .mapbtn{
     column-gap: 10px;
@@ -75,6 +75,9 @@
 }
 .btn.submitbtn{
     background: #1c74e0;
+}
+.btn.submitbtn:disabled{
+    background-color: #6fa1df;
 }
 .btn.cancelbtn{
     background: #f00;
@@ -126,8 +129,7 @@
     padding: 8px;
     outline: none;
     border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid #777;
 }
 #RestoForm1 .mapbtn{
     cursor: pointer;
@@ -156,6 +158,9 @@
 }
 .btn.submitbtn{
     background: #1c74e0;
+}
+.btn.submitbtn:disabled{
+    background-color: #6fa1df;
 }
 .btn.cancelbtn{
     background: #f00;
@@ -246,28 +251,6 @@ agm-map{
     border: none;
     color: #fff;
 }
-.select{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 10px;
-    position: absolute;
-    right: 0;
-    z-index: 1;
-    background: #fff;
-    padding: 10px;
-    border-radius: 0 0 0 10px;
-}
-.select #select-restaurants{
-    cursor: pointer;
-    width: fit-content;
-    padding: 5px;
-    outline: none;
-}
-.select i{
-    cursor: pointer;
-    color: #f00;
-}
 .profile{
     width: 100%;
     position: relative;
@@ -277,6 +260,14 @@ agm-map{
     padding: 15px;
     background: #eee;
     border-radius: 0 0 10px 0;
+}
+.profile .deletebtn{
+    padding: 15px;
+    right: 0;
+    color: #f00;
+    background: #eee;
+    border-radius: 0 0 0 10px;
+    position: absolute;
 }
 .profile img{
     width: 100%;
@@ -291,36 +282,19 @@ agm-map{
     color: white;
     font-family: 'Averia Serif Libre', cursive;
 }
-.profile .branch{
-    position: absolute;
-    bottom: 30px;
-    color: white;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 20px;
-}
 @media screen and (max-width:750px){
     .profile .name{
         font-size: 50px;
-    }
-    .profile .branch{
-        bottom: 10px;
     }
 }
 @media screen and (max-width:630px){
     .profile .name{
         font-size: 40px;
     }
-    .profile .branch{
-        font-size: 16px;
-    }
 }
 @media screen and (max-width:500px){
     .profile .name{
         font-size: 30px;
-    }
-    .profile .branch{
-        font-size: 12px;
     }
 }
 

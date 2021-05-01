@@ -1,7 +1,7 @@
 .container{
     display:flex;
     width: 100vw;
-    height: auto;
+    min-height: 80vh;
     position: relative;
     column-gap: 2vw;
     font-family: 'poppins',sans-serif;

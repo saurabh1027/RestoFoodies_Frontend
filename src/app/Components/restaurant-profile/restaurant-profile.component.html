@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="profile">
+        <img src="assets/images/restaurants/banner1.jpg" alt="banner">
+        <span class="name">{{restaurant.name}}</span>
+    </div>
+
+    <div>
+        <div class="topbar">
+            <p class="title">Menu</p>
+        </div>
+
+        <div class="category-list">
+            <div class="category-box">
+                <span class="category-name selected" title="All verieties of food items" (click)='getCategoryFoodItems("All")'>All</span>
+                <span class="category-name" title="{{category.description}}" (click)='getCategoryFoodItems(category.cname)' *ngFor="let category of restCategories">{{category.cname}}</span>
+            </div>
+        </div>
+
+
+        <div class="food-items">
+            <div *ngIf='!(food_items.length>0)' class="nothing">
+                <p>No items added yet!</p>
+            </div>
+            <div *ngIf='food_items.length>0' class="menu">
+
+                <div class="item" *ngFor='let item of items'>
+                    <div class="img">
+                        <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
+                    </div>
+
+                    <div class="details">
+                        <div class="left-box">
+                            <span class="item-name">{{item.fname}}({{item.quantity}})</span>
+                            <span *ngIf='item.ingredients!=""' class="ingredients" title="Used Ingredients">{{item.ingredients.substring(0,20)}}...</span>
+                            <span *ngIf='item.description!=""' class="description" title="More Information">{{item.description.substring(0,20)}}...</span>
+                        </div>
+                        <div class="right-box">
+                            <span *ngIf='item.vegeterian' class="veg-nonveg veg" title="{{item.vegeterian}}"></span>
+                            <span *ngIf='!item.vegeterian' class="veg-nonveg non-veg" title="{{item.vegeterian}}"></span>
+                            <span class="price" title="Price">{{item.price}} &#8377;</span>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <button (click)='addItem(item)'>Add to Basket</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="checkout">
+                
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+<!-- Models -->
+<form id="AddOrderItemModel" #AddOrderItemModel='ngForm' (ngSubmit)='addItemToOrder(oid.value)'>
+    <select #oid>
+        <option value="" selected disabled>Select Order</option>
+        <option value="{{order.oid}}" *ngFor='let order of orders'>{{order.name}}</option>
+    </select>
+    <div class="buttons">
+        <button type="submit" class="submitbtn">Submit</button>
+        <button type="reset" (click)='toggleModel("AddOrderItemModel",false)' class="cancelbtn">Cancel</button>
+    </div>
+</form>
+<div id="NoOrderModel">
+    <span>You have not created any orders yet!</span>
+    <div class="buttons">
+        <a routerLink="/Profile/My-Basket">New</a>
+        <button (click)='toggleModel("NoOrderModel",false)' class="cancelbtn">Cancel</button>
+    </div>
+</div>

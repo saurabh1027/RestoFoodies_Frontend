@@ -6,7 +6,7 @@
     <div class="order">
         <div class="header">
             <div class="left">
-                <a routerLink="/Profile/My-Basket"><i class="fas fa-arrow-left"></i></a>
+                <a routerLink="/My-Basket"><i class="fas fa-arrow-left"></i></a>
                 <span class="name">{{order.name}}</span>
             </div>
             <button style='background: #3b82c5' *ngIf='order.status!=="Placed"' (click)='placeOrder()'>Place Order</button>

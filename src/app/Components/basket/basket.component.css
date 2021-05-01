@@ -1,3 +1,31 @@
+.d-none{
+    display: none;
+}
+#map{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+#map .fa-times{
+    margin: 10px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #fff;
+    position: absolute;
+    z-index: 1;
+    color: #888;
+}
+#map .fa-times:hover{
+    color: #555;
+}
+agm-map{
+    width: 100%;
+    height: 100%;
+}
 .container{
     width: 100%;
     display: flex;
@@ -31,198 +59,50 @@
     padding: 0 20px;
     column-gap: 10px;
 }
-.container .basket .header .left i{
-    font-size: 30px;
-}
-.container .basket .header .right{
-    height: 100%;
-    position: relative;
+.container .basket .items .item{
+    margin: 20px;
     display: flex;
-    align-items: center;
-    padding: 0 20px;
-    font-size: 18px;
-    user-select: none;
     column-gap: 20px;
+    align-items: center;
 }
-.container .basket .header .right #BasketMenuModel{
-    position: absolute;
-    top: 100%;
-    z-index: 1;
-    right: 0;
-    width: 200px;
-    flex-direction: column;
-    border: 1px solid #111;
-    display: none;
-    background-color: #fff;
-}
-.container .basket .header .right #BasketMenuModel li{
-    list-style-type: none;
-    font-size: 16px;
-    padding: 5px;
-    cursor: pointer;
-}
-#AddOrderModel{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid #111;
-    padding: 20px;
+.item .type{
+    border: 1px solid rgb(0, 150, 12);
+    display: flex;
+    position: relative;
+    width: 15px;
+    height: 15px;
+    padding: 2px;
+    align-items: center;
     justify-content: center;
-    align-items: center;
+}
+.item .type.non-veg{
+    border: 1px solid #f00;
+}
+.item .type .circle{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 150, 12);
+    border-radius: 50%;
+    display: block;
+}
+.item .type .circle.non-veg{
+    background-color: #f00;
+}
+.order_details{
+    display: flex;
     flex-direction: column;
-    row-gap: 20px;
-    display: none;
-    z-index: 1;
-    background-color: #fff;
-}
-#AddOrderModel input[type="text"]{
-    width: 200px;
-    padding: 10px;
-    outline: none;
-    border: 1px solid #111;
-    border-radius: 5px;
-}
-#AddOrderModel .buttons1{
-    display: flex;
-    column-gap: 20px;
-}
-#AddOrderModel .buttons1 input{
-    padding: 10px;
-    width: 80px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-    outline: none;
-}
-#AddOrderModel .buttons1 input[type='button']{
-    background-color: #2778c4;
-}
-#AddOrderModel .buttons1 input[type='reset']{
-    background-color: #ff0000;
-}
-#map{
-    position: fixed;
-    z-index: 2;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    left: 0;
-    border: 1px solid;
-    display: none;
-}
-#map agm-map{
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 100%;
+    margin: 30px 0;
+    row-gap: 5px;
 }
-#map button{
-    padding: 10px;
-    width: 100px;
-    border: none;
-    background-color: #2778c4;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-    outline: none;
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    font-size: 20px;
-    transform: translateX(-50%);
-}
-.basket .orders{
-    height: 90%;
-    display: grid;
-    transition: 0.5s;
-    grid-template-rows: auto auto auto;
-    grid-template-columns: 100% 100%;
-    grid-auto-flow: column;
-    grid-auto-columns: 100%;
-}
-.basket .orders .nothing{
-    top: 50%;
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%,-50%);
-    font-size: 20px;
-    font-weight: 600;
-    color: #555;
-    user-select: none;
-}
-.basket .buttons{
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+.bill{
     display: flex;
-    column-gap: 5px;
-}
-.basket .buttons i{
-    padding: 5px;
-    background-color: #ddd;
-}
-#OrdersModel .order{
-    position: relative;
-}
-#OrdersModel .order .card .name{
-    position: absolute;
-    margin: 20px;
-    font-size: 25px;
-    font-weight: 600;
-}
-#OrdersModel .order .card .price{
-    position: absolute;
-    margin: 25px;
-    right: 0;
-    font-size: 20px;
-}
-#OrdersModel .order .card button{
-    position: absolute;
-    margin: 20px;
-    bottom: 0;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-    outline: none;
-    background-color: #3b82c5;
-}
-#OrdersModel .order .card .status{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin: 30px;
-    font-size: 16px;
-    font-weight: 600;
-}
-#map1{
-    position: fixed;
-    z-index: 2;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    left: 0;
-    border: 1px solid;
-    display: none;
-}
-#map1 agm-map{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 100%;
-}
-#map1 button{
-    padding: 10px;
-    width: 100px;
-    border: none;
-    background-color: #2778c4;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-    outline: none;
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    font-size: 20px;
-    transform: translateX(-50%);
+    margin: 30px 0;
+    row-gap: 5px;
 }

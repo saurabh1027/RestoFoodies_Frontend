@@ -1,0 +1,53 @@
+.d-none{
+    display: none;
+}
+.container{
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'poppins',sans-serif;
+}
+.container #LoginForm{
+    position: relative;
+    border: 1px solid #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px 30px;
+    user-select: none;
+}
+#LoginForm .group{
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+#LoginForm .group .error{
+    color: #f00;
+    font-size: 12px;
+}
+#LoginForm .group input{
+    padding: 5px;
+    outline: none;
+    width: 400px;
+}
+#LoginForm label{
+    cursor: pointer;
+    user-select: none;
+}
+#LoginForm input[type='submit']{
+    padding: 10px 0;
+    text-transform: uppercase;
+    outline: none;
+    width: 400px;
+    border: none;
+    background: #156ae8;
+    color: white;
+    margin: 10px;
+    cursor: pointer;
+}
+#LoginForm input[type='submit']:disabled{
+    background-color: #508ae0;
+}

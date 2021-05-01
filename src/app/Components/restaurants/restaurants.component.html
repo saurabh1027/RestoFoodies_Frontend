@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="nothing" *ngIf='!(restaurants.length>0)'>
+        <span>No services available...</span>
+    </div>
+    <div class="box" *ngIf='restaurants.length>0'>
+        <div class="topbar">
+            <span class="count" *ngIf='restaurants.length>1'>{{restaurants.length}} restaurants</span>
+            <span class="count" *ngIf='!(restaurants.length>1)'>{{restaurants.length}} restaurant</span>
+            <div class="nav"></div>
+        </div>
+        <div class="row">
+            <div class="restaurants">
+                <div class="restaurant" *ngFor='let r of restaurants'>
+                    <a routerLink="{{r.name}}">{{r.name}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,14 @@
+<<<<<<< Updated upstream
 <!-- UI -->
 <div class="container nothing" *ngIf='!userHasRestaurant'>
+=======
+<div class="container nothing" *ngIf='restaurant.rid===0'>
+>>>>>>> Stashed changes
     <p class="welcome">Welcome to your profile</p>
-    <p class="message">You have not added any Restaurants yet!</p>
+    <p class="message">You have not added your restaurant yet!</p>
     <button (click)='toggleModel("RestoForm1",true)' class="addbtn">Add Restaurant</button>
 </div>
+<<<<<<< Updated upstream
 
 <div class="container" *ngIf='userHasRestaurant'>
     <div class="select">
@@ -13,15 +18,18 @@
         <i class="fa fa-trash-alt" (click)='deleteRestaurant(restaurant.rid)' title="Delete Restaurant-{{restaurant.name}}"></i>
     </div>
 
+=======
+<div class="container" *ngIf='restaurant.rid!==0'>
+>>>>>>> Stashed changes
     <div class="profile">
         <i class="fas fa-edit" (click)='toggleModel("RestoUpdateForm",true)'></i>
+        <i class="fas fa-trash-alt deletebtn" (click)='deleteRestaurant(restaurant.rid)'></i>
         <img src="assets/images/restaurants/banner1.jpg" alt="banner">
         <span class="name">{{restaurant.name}}</span>
-        <span class="branch">Branch - {{restaurant.branch}}</span>
     </div>
 
     <div id="RestoMap">
-        <agm-map [latitude]='lat' [longitude]='lng' [zoom]='21' [fullscreenControl]='true'>
+        <agm-map [latitude]='lat' [longitude]='lng' [zoom]='14' [fullscreenControl]='true'>
             <agm-marker [latitude]='lat' [longitude]='lng'></agm-marker>
         </agm-map>
     </div>
@@ -46,8 +54,16 @@
     </div>
 </div>
 
+<<<<<<< Updated upstream
 <!-- form validation -->
+=======
+
+
+
+<!-- Models -->
+>>>>>>> Stashed changes
 <form id="RestoUpdateForm" #RestoUpdateForm='ngForm' novalidate (ngSubmit)='updateRestaurant(restaurant)'>
+    <p class="heading">Update Restaurant</p>
     <div class="group">
         <label>Restaurant Name:</label>
         <input type="text" class="textfield" name="name" #name1='ngModel' [(ngModel)]='restaurant.name' [class.invalid]='name1.invalid && name1.touched' [class.valid]='name1.valid' required>
@@ -68,11 +84,19 @@
         <input type="email" #email1='ngModel' name="email" [class.invalid]='email1.invalid && email1.touched' [class.valid]='email1.valid' class="textfield" [(ngModel)]="restaurant.email" required>
         <small [class.d-none]='email1.valid || email1.untouched'>Please enter email of the restaurant.</small>
     </div>
+<<<<<<< Updated upstream
 
     <div class="group">
+=======
+    <!-- <div class="group">
+>>>>>>> Stashed changes
         <label>Branch of the Restaurant:</label>
         <input type="text" #branch1='ngModel' name="branch" [class.invalid]='branch1.invalid && branch1.touched' [class.valid]='branch1.valid' class="textfield" [(ngModel)]="restaurant.branch" required>
         <small [class.d-none]='branch1.valid || branch1.untouched'>Please enter branch of your restaurant.</small>
+    </div> -->
+    <div class="group">
+        <input type="file" #file2='ngModel' (change)='checkFile($event)' name="file2" ngModel>
+        <small [class.d-none]='!fileSizeExceed || file2.untouched'>File size should be less than 500KB.</small>
     </div>
 
     <div class="group">
@@ -90,13 +114,18 @@
     </div>
 
     <div class="flex-group">
-        <button type="submit" [disabled]='RestoUpdateForm.form.invalid' class="btn submitbtn">Submit</button>
+        <button type="submit" [disabled]='RestoUpdateForm.form.invalid || fileSizeExceed' class="btn submitbtn">Submit</button>
         <input type="button" value="Cancel" class="btn cancelbtn" (click)='toggleModel("RestoUpdateForm",false)'>
     </div>
 </form>
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 <form #RestoForm1='ngForm' id="RestoForm1" novalidate (ngSubmit)='addRestaurant()'>
-    <p class="heading">Restaurant Details</p>
+    <p class="heading">Add Restaurant</p>
     <div class="group">
         <label>Restaurant Name:</label>
         <input type="text" #name='ngModel' name="name" [class.invalid]='name.invalid && name.touched' [class.valid]='name.valid' class="textfield" [(ngModel)]="rest.name" required>
@@ -125,6 +154,11 @@
     </div>
 
     <div class="group">
+        <input type="file" #file1='ngModel' (change)='checkFile($event)' name="file1" required ngModel>
+        <small [class.d-none]='!fileSizeExceed || file1.untouched'>File size should be less than 500KB.</small>
+        <small [class.d-none]='file1.valid || file1.untouched'>Profile should not be empty.</small>
+    </div>
+    <div class="group">
         <label for="mapbtn" class="mapbtn" (click)='toggleMap1()'>Location <i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
         <small [class.d-none]='!map1HasError'>Please select location of restaurant.</small>
     </div>
@@ -139,14 +173,14 @@
     </div>
 
     <div class="flex-group">
-        <button type="submit" [disabled]='RestoForm1.form.invalid' class="btn submitbtn">Submit</button>
+        <button type="submit" [disabled]='file1===undefined || RestoForm1.form.invalid' class="btn submitbtn">Submit</button>
         <input type="button" value="Cancel" class="btn cancelbtn" (click)='toggleModel("RestoForm1",false)'>
     </div>
 </form>
 
 <!-- maps -->
 <div id="map">
-    <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='21' (mapClick)='locationChosen($event,true)'>
+    <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='14' (mapClick)='locationChosen1($event,true)'>
         <agm-marker [latitude]='pos.lat' [longitude]='pos.lng' [markerDraggable]="true"></agm-marker>
     </agm-map>
     <button (click)="toggleMap()" class="choosebtn">Choose this location</button>

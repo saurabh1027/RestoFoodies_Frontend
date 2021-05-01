@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Restaurant } from 'src/app/Models/Restaurant';
 import { UserService } from 'src/app/Services/user.service';
 import Swal from 'sweetalert2';
 import { User } from 'src/app/Models/User';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-profile',
@@ -12,15 +11,25 @@ import * as $ from 'jquery';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  rest : Restaurant = new Restaurant(0,'','','','','','','','','');
-  user : User = new User(0,'','','','Customer','','','','user.jpg');
+  rest : Restaurant = new Restaurant(0,'','','','','','','','','','');
+  user : User = new User(0,'','','User','Customer','','','','user.jpg');
   selectedLatitude:number;
   selectedLongitude:number;
   map : google.maps.Map;
   names : string[];
   current_restaurant_name : string;
   user1 : User = new User(0,'','','','Customer','','','','user.jpg');
-
+  @ViewChild('eye') eye : ElementRef;
+  @ViewChild('eye1') eye1 : ElementRef;
+  @ViewChild('username1') username1 : ElementRef;
+  @ViewChild('password') password : ElementRef;
+  @ViewChild('password1') password1 : ElementRef;
+  @ViewChild('EditUserProfileModel') EditUserProfileModel : ElementRef;
+  @ViewChild('UserEditProfileModel') UserEditProfileModel : ElementRef;
+  @ViewChild('file') file : ElementRef;
+  @ViewChild('file1') file1 : ElementRef;
+  @ViewChild('UserProfileModel') UserProfileModel : ElementRef;
+  
   constructor(private router:Router,private service:UserService) { }
 
   ngOnInit(): void {
@@ -28,32 +37,24 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserByToken(){
-    let token = localStorage.getItem("UserToken");
-    this.service.getUserByToken(token).subscribe(data=>{
-      if(data===null)return;
+    if(!sessionStorage.getItem('UserToken'))this.router.navigate(['Login']);
+    this.service.getUserByToken(sessionStorage.getItem("UserToken")).subscribe(data=>{
+      if(!data)this.router.navigate(['Login']);
       this.user = data;
-      (this.user.role==='Vendor')?this.router.navigate(['Profile','My-Restaurants']):
-      ((this.user.role==='Customer')?this.router.navigate(['Profile','My-Basket']):
-        console.log("other roles"));
-    },error=>{
-      if(error.status==400){
-        Swal.fire({icon:'error',title:'Invalid Request',text:'Make sure to login!'});
-        this.router.navigate(['/Authentication/Login']);
-      }
+      (this.user.role==='Vendor')?this.router.navigate(['Profile','Restaurant']):
+      ((this.user.role==='Customer')?this.router.navigate(['My-Basket']):
+        console.log("other roles")
+      );
     });
   }
 
-  getRole(){
-    return (this.user.role=='Admin')?'Admin':((this.user.role=='Vendor')?'Vendor':'Customer');
-  }
-
   toggleSlideBar(bool:boolean){
-    (bool)?document.getElementById("slidebar").classList.add("active"):document.getElementById("slidebar").classList.remove("active");
+    (bool) ? document.getElementById("slidebar").classList.add("active") : document.getElementById("slidebar").classList.remove("active");
   }
 
   togglePasswordVisibility(){
-    let icon = $("#EditUserProfileModel .password i")[0];
-    let textField = $('#EditUserProfileModel .password input')[0];
+    let icon = this.eye.nativeElement;
+    let textField = this.password.nativeElement;
     if(icon.classList.contains("fa-eye")){
       icon.classList.replace("fa-eye","fa-eye-slash");
       textField.type = "text";
@@ -65,15 +66,15 @@ export class ProfileComponent implements OnInit {
 
   toggleEditUserProfileModel(bool:boolean){
     if(bool){
-      document.getElementById("EditUserProfileModel").classList.add("active");
+      this.EditUserProfileModel.nativeElement.classList.add("active");
       this.toggleSlideBar(false);
     }else{
-      document.getElementById("EditUserProfileModel").classList.remove("active");
+      this.EditUserProfileModel.nativeElement.classList.remove("active");
     }
   }
 
   updateUserProfile(){
-    let file = $('#EditUserProfileModel input[type="file"]')[0].files[0];
+    let file = this.file.nativeElement.files[0];
     if(file===undefined){
       this.updateUser(this.user);
     }else{
@@ -118,7 +119,7 @@ export class ProfileComponent implements OnInit {
         this.service.deleteUser(this.user.username).subscribe(data=>{
           if(data=="Success"){
             Swal.fire({title:'Congratulations!',text:'Your Account is deleted.',icon:'success'});
-            this.service.logout();
+            this.router.navigate(['Login']);
           }else{
             Swal.fire({title:data,text:'Failure in deleting your account.',icon:'error'});
           }
@@ -130,19 +131,19 @@ export class ProfileComponent implements OnInit {
   //----------------------------------------Admin-Operations-start----------------------------------
 
   toggleUserProfileModel(bool:boolean){
-    var model = document.getElementById("UserProfileModel");
+    var model = this.UserProfileModel.nativeElement;
     if(bool){
       model.style.display='block';
       this.toggleSlideBar(false);
     }else{
       this.user1 = new User(0,'','','','','','','','');
       model.style.display='none';
-      document.getElementById("UserEditProfileModel").style.display = "none";
+      this.UserEditProfileModel.nativeElement.style.display = "none";
     }
   }
 
   getUserByUsername(){
-    let username = $('input[name="username1"]')[0].value;
+    let username = this.username1.nativeElement.value;
     if(username=='') {
       Swal.fire({title:'Empty Username',icon:'error'});
       return;
@@ -150,16 +151,16 @@ export class ProfileComponent implements OnInit {
     this.service.getUserByUsername(username).subscribe(data=>{
       if(data==null){
         Swal.fire({title:'No Results...',text:'Cannot find user with "'+username+'"-username',icon:'error'});
-        document.getElementById("UserEditProfileModel").style.display = "none";
+        this.UserEditProfileModel.nativeElement.style.display = "none";
         return;
       }
       this.user1 = data;
-      document.getElementById("UserEditProfileModel").style.display = "flex";
+      this.UserEditProfileModel.nativeElement.style.display = "flex";
     });
   }
 
   deleteUser(){
-    let input = $('#UserProfileModel .input input[type="text"][name="username1"]')[0];
+    let input = this.username1.nativeElement;
     if(input.value===''){
       Swal.fire({title:'Empty username',text:'Enter something to proceed.',icon:'error'});
       return;
@@ -187,8 +188,8 @@ export class ProfileComponent implements OnInit {
   }
 
   togglePasswordVisibility1(){
-    let icon = $("#UserEditProfileModel .password i")[0];
-    let textField = $('#UserEditProfileModel .password input')[0];
+    let icon = this.eye1.nativeElement;
+    let textField = this.password1.nativeElement;
     if(icon.classList.contains("fa-eye")){
       icon.classList.replace("fa-eye","fa-eye-slash");
       textField.type = "text";
@@ -210,7 +211,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateUser1(){
-    let file = $('input[type="file"][name="userpic1"]')[0].files[0];
+    let file = this.file1.nativeElement.files[0];
     if(file!=null)
       if((file.size/(1024*1024))>0.5){
         Swal.fire({

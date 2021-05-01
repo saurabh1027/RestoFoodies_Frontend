@@ -2,6 +2,7 @@ import { Emitter } from './../Emitter/emitter';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { Emitter } from 'src/app/Models/Emitter';
 import { Jwt } from 'src/app/Models/Jwt';
 import { User } from 'src/app/Models/User';
 import { UserService } from 'src/app/Services/user.service';
@@ -13,18 +14,16 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user : User = new User(0,'','','','','','','','user.jpg');
-  jwt : any;
-  jwtModel : Jwt = new Jwt("","","");
+  user : User = new User(0,'','','','','','','','');
   remember : boolean = false;
-  token: any;
 
-  constructor(private service : UserService,private router : Router,private cookieService:CookieService) {}
+  constructor(private userService : UserService,private router : Router,private cookieService:CookieService) {}
 
   ngOnInit(): void {
-    localStorage.removeItem("UserToken");
-    localStorage.removeItem("UserRole");
-    this.getCookies();
+    sessionStorage.removeItem("UserToken");
+    setTimeout(() => {
+      this.getCookies();
+    }, 100);
   }
 
   getCookies(){
@@ -36,37 +35,52 @@ export class LoginComponent implements OnInit {
       this.user.username = '';
       this.user.password = '';
       this.remember = false;
-      this.cookieService.deleteAll();
+      this.cookieService.deleteAll('/Login');
     }
   }
   
+  /*
   public authenticateUser(){
-    this.service.generateToken(this.user).subscribe(data=>{
-      this.jwtModel = data;
-      if(this.jwtModel.message!='Valid'){
-        Swal.fire({
-          icon: 'error',
-          title: this.jwtModel.message
-        });
-      }else{
-        localStorage.setItem("UserToken",this.jwtModel.token);
-        localStorage.setItem("UserRole",this.jwtModel.role);
+    this.userService.authenticateUser(this.user).subscribe(data=>{
+      this.token=data;
+      sessionStorage.setItem('UserToken',this.token);
         if(this.remember){
-          //for 1 hour put expiration = 1/24
-          this.cookieService.set("cuser",this.user.username,5,'/Authentication/Login');   //5 days
-          this.cookieService.set("cpass",this.user.password,5,'/Authentication/Login');   //5 days
+          this.cookieService.set("cuser",this.user.username,5,'/Login');   //5 days
+          this.cookieService.set("cpass",this.user.password,5,'/Login');   //5 days
         }else{
-          this.cookieService.deleteAll();
+          this.cookieService.deleteAll('/Login');
         }
+<<<<<<< Updated upstream
         this.router.navigate(['']);
         Emitter.authEmitter.emit(true)
       }
+=======
+        this.router.navigate(['/']);
+    },error=>{
+      if(error.status===403)Swal.fire({title:'Invalid Username',text:'Your username is not available.',icon:'error'});
+      if(error.status===401)Swal.fire({title:'Unauthorized Access',text:'Your password is wrong.',icon:'error'});
+>>>>>>> Stashed changes
     });
   }
-  public toggleRemember(){
-    if(this.remember)
-      this.remember = false;
-    else
-      this.remember = true;
+  */
+
+
+  public authenticateUser(){
+    this.userService.authenticateUser(this.user).subscribe(data=>{
+      let jwt : Jwt = data;
+      if(jwt.message!=='Valid'){
+        Swal.fire({title:jwt.message,icon:'error'});
+      }else{
+        this.router.navigate(['/']);
+        sessionStorage.setItem('UserToken',jwt.token);
+        this.cookieService.deleteAll('/Login');
+        if(this.remember){
+          this.cookieService.set("cuser",this.user.username,5,'/Login');   //5 days
+          this.cookieService.set("cpass",this.user.password,5,'/Login');   //5 days
+        }
+        Emitter.authEmitter.emit(true);
+      }
+    });
   }
+
 }
