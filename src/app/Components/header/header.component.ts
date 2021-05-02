@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit {
       this.userService.getUserByToken(token).subscribe(data=>{
         if(data!==null){
           this.user = data;
-          if(this.user.username.length>0 && this.user.password.length>0)this.loggedIn = true;
+          this.loggedIn = true;
           // this.getAllItems();
         }else{
           this.loggedIn=false;

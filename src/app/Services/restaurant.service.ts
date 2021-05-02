@@ -30,9 +30,13 @@ export class RestaurantService {
     return this.http.post<Restaurant>(this.baseUrl+'/get-user-restaurant',username);
   }
 
-  public changeStatusOfItems(fid:number[]){
-    return this.http.post(this.baseUrl+'change-status-items',fid,{responseType:'text'});
+  public getItemsByFids(fids:number[]):Observable<Food_Item[]>{
+    return this.http.post<Food_Item[]>(this.baseUrl+'get-items-by-fids',fids);
   }
+
+  // public changeStatusOfItems(fid:number[]){
+  //   return this.http.post(this.baseUrl+'change-status-items',fid,{responseType:'text'});
+  // }
 
   public getListOrdersOfRestaurant(rid:number):Observable<Order[]>{
     return this.http.post<Order[]>(this.baseUrl+'get-list-orders',rid);

@@ -5,8 +5,12 @@
         </a>
     </div>
     <div class="icons">
+        <div *ngIf='loggedIn' class="user-icons">
+            <a class="user-icon" *ngIf='user.role==="Customer"' title="User Profile" routerLink='/Profile'><i class="fas fa-user-cog"></i></a>
+            <a class="user-icon" *ngIf='user.role===Customer' title="Basket" routerLink='/My-Basket'><i class="fas fa-shopping-basket"></i></a>
+        </div>
         <a class="user-icon" *ngIf='user.role!=="Customer"' title="User Profile" routerLink='/Profile'><i class="fas fa-user-cog"></i></a>
-        <a class="user-icon" *ngIf='user.role==="Customer"' title="Basket" routerLink='/My-Basket'><i class="fas fa-shopping-basket"></i></a>
+        <a class="user-icon" *ngIf='!loggedIn' title="Basket" routerLink='/My-Basket'><i class="fas fa-shopping-basket"></i></a>
         <i class="fas fa-search" title="Search Items" (click)='toggleSearchBar()'></i>
         <div class="auth">
             <a *ngIf="!loggedIn" routerLink="/Login" title="Login"><i class="fas fa-sign-in-alt"></i></a>

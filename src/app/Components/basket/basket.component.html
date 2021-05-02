@@ -1,7 +1,7 @@
 <div class="container">
     <div class="basket">
 
-        <div class="header">
+        <div class="header" *ngIf='rname'>
             <a routerLink='/Restaurants/{{rname}}' class="left">{{rname}}</a>
         </div>
 
@@ -27,14 +27,15 @@
                 <span class="delivery_charges">Delivery Charges:{{delivery_charge}}&#8377;</span>
                 <span class="total">To Pay:{{order1.price}}&#8377;</span>
             </div>
+            
+            <form #PlaceOrder='ngForm' (ngSubmit)='placeOrder()' class="order_details">
+                <input type="text" placeholder="Enter Recipient's name" pattern='[A-Za-z ]{1,30}' name='recipient_name' [(ngModel)]='order1.recipient_name' required>
+                <input type="number" pattern='[0-9]{10}' placeholder="Enter Recipient's Contact" name='contact' [(ngModel)]='order1.contact' required>
+                <span (click)='toggleModel("map",true)'>Delivery Location: <i class="fas fa-map-marker-alt"></i></span>
+                <button [disabled]='PlaceOrder.invalid' type="submit">Place Order</button>
+            </form>
         </div>
 
-        <form #PlaceOrder='ngForm' (ngSubmit)='placeOrder()' class="order_details">
-            <input type="text" placeholder="Enter Recipient's name" pattern='[A-Za-z]{1,30}' name='recipient_name' [(ngModel)]='order1.recipient_name' required>
-            <input type="number" pattern='[0-9]{10}' placeholder="Enter Recipient's Contact" name='contact' [(ngModel)]='order1.contact' required>
-            <span (click)='toggleModel("map",true)'>Delivery Location: <i class="fas fa-map-marker-alt"></i></span>
-            <button [disabled]='PlaceOrder.invalid' type="submit">Place Order</button>
-        </form>
         
     </div>
 </div>

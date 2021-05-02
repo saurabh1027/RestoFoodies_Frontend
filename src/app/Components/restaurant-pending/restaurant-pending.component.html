@@ -1,19 +1,19 @@
 <div class="container">
     <div class="topbar">
         <span>Orders</span>
-        <select #restSelect (change)='getPlacedOrdersOfBranch()'>
+        <select #restSelect (change)='getRestaurantPlacedOrdersByBranch()'>
             <option value="{{branch}}" *ngFor='let branch of branches'>{{branch}}</option>
         </select>
     </div>
     <div class="map" *ngIf='orders.length>0'>
-        <agm-map id="map" [latitude]='lat' [longitude]='lng' [zoom]='12' [fullscreenControl]='true'>
-            <agm-marker [latitude]='o.location.substring(0,o.location.indexOf(","))' 
-                [longitude]='o.location.substring(o.location.indexOf(",")+1,o.location.length)'
+        <agm-map id="map" [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='12' [fullscreenControl]='true'>
+            <agm-marker [latitude]='o.destination.substring(0,o.destination.indexOf(","))' 
+                [longitude]='o.destination.substring(o.destination.indexOf(",")+1,o.destination.length)'
                 *ngFor='let o of orders'>
                 <agm-info-window>
                     <span style="font-weight: 600;">{{o.name}}</span><br>
-                    <span class="price" style="margin-top: 5px;">{{o.total_price}}&#8377;</span><br>
-                    <a class="view-more" (click)='order=o;getAvailableItemsOfRestaurant(o.oid)' class='viewBtn'> View More</a>
+                    <span class="price" style="margin-top: 5px;">{{o.price}}&#8377;</span><br>
+                    <a class="view-more" (click)='order=o;getItemsOfOrderByOid(o.oid)' class='viewBtn'> View More</a>
                 </agm-info-window>
             </agm-marker>
         </agm-map>
@@ -23,10 +23,6 @@
     </div>
     <div class="order" *ngIf='order.oid!==0'>
         <p class="message" *ngIf='cnt>0'>This order consist of {{cnt}} <strong>Out Of Stock</strong> <span *ngIf='cnt>1'> items</span><span *ngIf='!(cnt>1)'> item</span>.</p>
-        <div class="details">
-            <span class="name" title="Name of the order">{{order.name}}</span>
-            <span class="price"  title="Total price of the order">{{order.total_price}}&#8377;</span>
-        </div>
         <div class="table">
             <table class="items" *ngIf='items.length>0'>
                 <tr>

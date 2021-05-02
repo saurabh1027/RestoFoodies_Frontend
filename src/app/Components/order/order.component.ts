@@ -66,14 +66,15 @@ export class OrderComponent implements OnInit {
         return;
       }
     }
-    this.baskService.placeOrder(this.order.oid).subscribe(data=>{
-      if(data==='Success'){
-        Swal.fire({title:'Congratulations!',text:'Order placed successfully!',icon:'success'});
-        this.getOrder();
-      }else{
-        Swal.fire({title:data,text:'Unable to place order',icon:'error'});
-      }
-    });
+    // Just for temporary
+    // this.baskService.placeOrder(this.order.oid).subscribe(data=>{
+    //   if(data==='Success'){
+    //     Swal.fire({title:'Congratulations!',text:'Order placed successfully!',icon:'success'});
+    //     this.getOrder();
+    //   }else{
+    //     Swal.fire({title:data,text:'Unable to place order',icon:'error'});
+    //   }
+    // });
   }
 
   cancelOrder(){

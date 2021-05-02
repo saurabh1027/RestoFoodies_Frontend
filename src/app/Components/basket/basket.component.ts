@@ -9,6 +9,7 @@ import { MouseEvent as AGMMouseEvent } from '@agm/core';
 import { Food_Item } from 'src/app/Models/Food_Item';
 import { Order1 } from 'src/app/Models/Order1';
 import { AesCryptoService } from 'src/app/Services/aes-crypto.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-basket',
@@ -27,7 +28,7 @@ export class BasketComponent implements OnInit {
   // price:number=0;
   // index = 1;
   items:Food_Item[]=[];
-  order1:Order1=new Order1(0,'','0,0','','Unsubmitted',[],0,'');
+  order1:Order1=new Order1(0,'','0,0','','Placed','',0,'','');
   delivery_charge:number=50;
 
   constructor(private userService:UserService,private baskService:BasketService,private router:Router) { }
@@ -104,18 +105,39 @@ export class BasketComponent implements OnInit {
   }
 
   placeOrder(){
-    console.log(this.order1);
+    this.baskService.placeOrder(this.order1).subscribe(data=>{
+      if(data==='Success'){
+        Swal.fire({
+          title:'Congratulations!',
+          text:'Order is placed.',
+          icon:'success'
+        });
+        localStorage.removeItem('Restaurant');
+        localStorage.removeItem('Food_Items');
+        this.rname='';
+        this.items=[];
+      }else{
+        Swal.fire({
+          title:data,
+          text:'Unable to place order.',
+          icon:'error'
+        });
+      }
+    });
   }
 
   getItems(){
     if(!this.loggedIn){
-      this.items=JSON.parse(localStorage.getItem('Food_Items'));
-      this.order1.price=0;
-      this.order1.items = this.items;
-      for(let i=0;i<this.items.length;i++){
-        this.order1.price += this.items[i].price;
+      if(JSON.parse(localStorage.getItem('Food_Items'))!=null){
+        this.items=JSON.parse(localStorage.getItem('Food_Items'));
+        this.order1.price=0;
+        this.order1.branch = localStorage.getItem('UserLocation');
+        this.order1.items = JSON.stringify(this.items);
+        for(let i=0;i<this.items.length;i++){
+          this.order1.price += this.items[i].price;
+        }
+        this.order1.price+=this.delivery_charge;
       }
-      this.order1.price+=this.delivery_charge;
     }
   }
 
