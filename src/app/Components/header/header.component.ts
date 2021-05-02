@@ -25,9 +25,7 @@ export class HeaderComponent implements OnInit {
   constructor(private userService : UserService,private router:Router,private restService : RestaurantService) {}
 
   ngOnInit(): void {
-    Emitter.authEmitter.subscribe(data=>{
-      this.loggedIn=data;
-    });
+    Emitter.authEmitter.subscribe(data=>this.loggedIn=data);
     this.isLoggedIn();
   }
 
