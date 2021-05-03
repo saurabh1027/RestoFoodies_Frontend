@@ -23,7 +23,7 @@ export class RestaurantPendingComponent implements OnInit {
   lat:number=0;
   lng:number=0;
   orders:Order1[]=[];
-  order:Order=new Order(0,'','','',0,'','');
+  order : Order1 = new Order1(0,'','','','','',0,'','')
   items:Food_Item[]=[];
   cnt:number=0;
   branches:string[]=[];
@@ -77,6 +77,7 @@ export class RestaurantPendingComponent implements OnInit {
   }
 
   getRestaurantPlacedOrdersByBranch(){
+    console.log(this.restSelect.nativeElement.value)
     this.baskService.getRestaurantPlacedOrdersByBranch(this.restSelect.nativeElement.value,this.restaurant.name).subscribe(data=>{
       if(data){
         this.orders = data;
@@ -130,11 +131,11 @@ export class RestaurantPendingComponent implements OnInit {
   }
 
   addOrderToList(oid:number){
-    this.restService.addOrderToList(oid,parseInt(this.restSelect.nativeElement.value)).subscribe(data=>{
+    this.restService.addOrderToList(oid,this.restaurant.rid).subscribe(data=>{
+      if(!data)return;
       (data=='Success')?Swal.fire({title:'Congratulations!',icon:'success'}):Swal.fire({title:'Sorry!',text:data,icon:'error'});
       if(data=='Success'){
-        // this.getPlacedOrdersOfBranch();
-        this.order.oid = 0;
+        this.order.oid = oid
       };
     });
   }

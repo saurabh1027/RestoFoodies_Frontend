@@ -43,7 +43,7 @@ export class RestaurantService {
   }
 
   public addOrderToList(oid:number,rid:number){
-    return this.http.post(this.baseUrl+'add-list-order',oid+','+rid,{responseType:'text'});
+    return this.http.post(this.baseUrl+'add-list-order/'+rid,oid,{responseType:'text'});
   }
 
   public getRestaurantAvailableItems(rid:number):Observable<Food_Item[]>{
