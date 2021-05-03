@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/Models/Category';
 import { Food_Item } from 'src/app/Models/Food_Item';
 import { Order } from 'src/app/Models/Order';
@@ -27,7 +27,8 @@ export class RestaurantProfileComponent implements OnInit {
   orders:Order[]=[];
   user:User=new User(0,'','','','','','','','');
 
-  constructor(private baskService:BasketService,private restService:RestaurantService,private active:ActivatedRoute,private userService:UserService) { }
+  constructor(private baskService:BasketService,private restService:RestaurantService,private active:ActivatedRoute,
+    private userService:UserService,private router:Router) { }
 
   ngOnInit(): void {
     this.isLoggedIn();
@@ -39,10 +40,14 @@ export class RestaurantProfileComponent implements OnInit {
     if(token==null)this.loggedIn = false;
     else{
       this.userService.getUserByToken(token).subscribe(data=>{
-        if(data==null)this.loggedIn=false;
-        else{
+        if(data){
           this.user=data;
+          if(this.user.role!=='Customer'){
+            this.router.navigate(['Profile']);
+          }
           this.loggedIn=true;
+        }else{
+          this.loggedIn=false;
         }
       });
     }

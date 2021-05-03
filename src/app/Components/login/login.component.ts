@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { Emitter } from 'src/app/Models/Emitter';
 import { Jwt } from 'src/app/Models/Jwt';
 import { User } from 'src/app/Models/User';
+import { AesCryptoService } from 'src/app/Services/aes-crypto.service';
 import { UserService } from 'src/app/Services/user.service';
 import Swal from 'sweetalert2';
 
@@ -16,47 +16,24 @@ export class LoginComponent implements OnInit {
   user : User = new User(0,'','','','','','','','');
   remember : boolean = false;
 
-  constructor(private userService : UserService,private router : Router,private cookieService:CookieService) {}
+  constructor(private userService : UserService,private router : Router,private cryptoService:AesCryptoService) {}
 
   ngOnInit(): void {
     sessionStorage.removeItem("UserToken");
-    setTimeout(() => {
-      this.getCookies();
-    }, 100);
+    this.getCookies();
   }
 
   getCookies(){
-    if(this.cookieService.get("cuser")!=''){
-      this.user.username = this.cookieService.get("cuser");
-      this.user.password = this.cookieService.get("cpass");
+    if(localStorage.getItem('cuser') && localStorage.getItem('cpass')){
+      this.user.username = this.cryptoService.decryptData(localStorage.getItem('cuser'));
+      this.user.password = this.cryptoService.decryptData(localStorage.getItem('cpass'));
       this.remember = true;
     }else{
       this.user.username = '';
       this.user.password = '';
       this.remember = false;
-      this.cookieService.deleteAll('/Login');
     }
   }
-  
-  /*
-  public authenticateUser(){
-    this.userService.authenticateUser(this.user).subscribe(data=>{
-      this.token=data;
-      sessionStorage.setItem('UserToken',this.token);
-        if(this.remember){
-          this.cookieService.set("cuser",this.user.username,5,'/Login');   //5 days
-          this.cookieService.set("cpass",this.user.password,5,'/Login');   //5 days
-        }else{
-          this.cookieService.deleteAll('/Login');
-        }
-        this.router.navigate(['/']);
-    },error=>{
-      if(error.status===403)Swal.fire({title:'Invalid Username',text:'Your username is not available.',icon:'error'});
-      if(error.status===401)Swal.fire({title:'Unauthorized Access',text:'Your password is wrong.',icon:'error'});
-    });
-  }
-  */
-
 
   public authenticateUser(){
     this.userService.authenticateUser(this.user).subscribe(data=>{
@@ -66,12 +43,16 @@ export class LoginComponent implements OnInit {
       }else{
         this.router.navigate(['/']);
         sessionStorage.setItem('UserToken',jwt.token);
-        this.cookieService.deleteAll('/Login');
+        localStorage.removeItem('cuser');
+        localStorage.removeItem('cpass');
         if(this.remember){
-          this.cookieService.set("cuser",this.user.username,5,'/Login');   //5 days
-          this.cookieService.set("cpass",this.user.password,5,'/Login');   //5 days
+          localStorage.setItem('cuser',this.cryptoService.encryptData(this.user.username));
+          localStorage.setItem('cpass',this.cryptoService.encryptData(this.user.password));
         }
         Emitter.authEmitter.emit(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
       }
     });
   }

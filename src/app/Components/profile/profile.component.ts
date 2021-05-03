@@ -19,16 +19,7 @@ export class ProfileComponent implements OnInit {
   names : string[];
   current_restaurant_name : string;
   user1 : User = new User(0,'','','','Customer','','','','user.jpg');
-  @ViewChild('eye') eye : ElementRef;
-  @ViewChild('eye1') eye1 : ElementRef;
-  @ViewChild('username1') username1 : ElementRef;
-  @ViewChild('password') password : ElementRef;
-  @ViewChild('password1') password1 : ElementRef;
-  @ViewChild('EditUserProfileModel') EditUserProfileModel : ElementRef;
-  @ViewChild('UserEditProfileModel') UserEditProfileModel : ElementRef;
-  @ViewChild('file') file : ElementRef;
   @ViewChild('file1') file1 : ElementRef;
-  @ViewChild('UserProfileModel') UserProfileModel : ElementRef;
   
   constructor(private router:Router,private service:UserService) { }
 
@@ -52,36 +43,41 @@ export class ProfileComponent implements OnInit {
     (bool) ? document.getElementById("slidebar").classList.add("active") : document.getElementById("slidebar").classList.remove("active");
   }
 
-  togglePasswordVisibility(){
-    let icon = this.eye.nativeElement;
-    let textField = this.password.nativeElement;
+  togglePasswordVisibility(iconName:string,inputName:string){
+    let icon = document.getElementById(iconName);
+    let input = document.getElementById(inputName);
     if(icon.classList.contains("fa-eye")){
       icon.classList.replace("fa-eye","fa-eye-slash");
-      textField.type = "text";
+      input.setAttribute('type','text');
     }else{
       icon.classList.replace("fa-eye-slash","fa-eye");
-      textField.type = "password";
+      input.setAttribute('type','password');
     }
   }
 
-  toggleEditUserProfileModel(bool:boolean){
+  toggleModel(modelName:string,bool:boolean){
+    this.toggleSlideBar(false);
+    let model = document.getElementById(modelName);
+    let body = document.getElementsByTagName('body')[0];
     if(bool){
-      this.EditUserProfileModel.nativeElement.classList.add("active");
-      this.toggleSlideBar(false);
+      document.getElementById('Panel').style.display = 'flex';
+      body.classList.add('model');
+      model.style.display = 'flex';
     }else{
-      this.EditUserProfileModel.nativeElement.classList.remove("active");
+      document.getElementById('Panel').style.display = 'none';
+      body.classList.remove('model');
+      model.style.display = 'none';
     }
   }
 
-  updateUserProfile(){
-    let file = this.file.nativeElement.files[0];
-    if(file===undefined){
+  changeUserPic(){
+  
+  }
+
+  updateUserProfile(file:File){
+    if(!file){
       this.updateUser(this.user);
     }else{
-      if(((file.size)/(1024*1024))>0.5){
-        Swal.fire({title:'File size exceeded!',text:'File size should be less than 500KB.',icon:'error'});
-        return;
-      }
       this.service.updateUserPic(file).subscribe(data=>{
         if(data!='Success'){
           Swal.fire({title:data,text:'Unable to store image',icon:'error'});
@@ -97,7 +93,7 @@ export class ProfileComponent implements OnInit {
     this.service.updateUser(user).subscribe(data=>{
       if(data=="Success"){
         Swal.fire({title:'Congratulations!',text:'User information is updated.',icon:'success'});
-        this.toggleEditUserProfileModel(false);
+        this.toggleModel('EditUserProfileModel',false);
       }else{
         Swal.fire({title:data,text:'Failure in updating user',icon:'error'});
       }
@@ -130,41 +126,21 @@ export class ProfileComponent implements OnInit {
 
   //----------------------------------------Admin-Operations-start----------------------------------
 
-  toggleUserProfileModel(bool:boolean){
-    var model = this.UserProfileModel.nativeElement;
-    if(bool){
-      model.style.display='block';
-      this.toggleSlideBar(false);
-    }else{
-      this.user1 = new User(0,'','','','','','','','');
-      model.style.display='none';
-      this.UserEditProfileModel.nativeElement.style.display = "none";
-    }
-  }
 
   getUserByUsername(){
-    let username = this.username1.nativeElement.value;
-    if(username=='') {
-      Swal.fire({title:'Empty Username',icon:'error'});
-      return;
-    }
-    this.service.getUserByUsername(username).subscribe(data=>{
+    this.service.getUserByUsername(this.user1.username).subscribe(data=>{
       if(data==null){
-        Swal.fire({title:'No Results...',text:'Cannot find user with "'+username+'"-username',icon:'error'});
-        this.UserEditProfileModel.nativeElement.style.display = "none";
+        Swal.fire({title:'No Results...',text:'Cannot find user with "'+this.user1.username+'"-username',icon:'error'});
+        this.toggleModel("UserProfileModel",false);
         return;
       }
       this.user1 = data;
-      this.UserEditProfileModel.nativeElement.style.display = "flex";
+      this.toggleModel("UserProfileModel",false);
+      this.toggleModel("UserEditProfileModel",true);
     });
   }
-
+  
   deleteUser(){
-    let input = this.username1.nativeElement;
-    if(input.value===''){
-      Swal.fire({title:'Empty username',text:'Enter something to proceed.',icon:'error'});
-      return;
-    }
     Swal.fire({
       title: 'Are you sure!',
       text: "You won't be able to revert this!",
@@ -175,10 +151,10 @@ export class ProfileComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.deleteUser(input.value).subscribe(data=>{
+        this.service.deleteUser(this.user1.username).subscribe(data=>{
           if(data=="Success"){
             Swal.fire({title:data,text:'User information has deleted.',icon:'success'});
-            this.toggleUserProfileModel(false);
+            this.toggleModel("UserEditProfileModel",false);
           }else{
             Swal.fire({title:data,text:'Failure in deletion of user.',icon:'error'});
           }
@@ -188,22 +164,21 @@ export class ProfileComponent implements OnInit {
   }
 
   togglePasswordVisibility1(){
-    let icon = this.eye1.nativeElement;
-    let textField = this.password1.nativeElement;
-    if(icon.classList.contains("fa-eye")){
-      icon.classList.replace("fa-eye","fa-eye-slash");
-      textField.type = "text";
-    }else{
-      icon.classList.replace("fa-eye-slash","fa-eye");
-      textField.type = "password";
-    }
+    // let icon = document.getElementById('eye1');
+    // let textField = this.password1.nativeElement;
+    // if(icon.classList.contains("fa-eye")){
+    //   icon.classList.replace("fa-eye","fa-eye-slash");
+    //   textField.type = "text";
+    // }else{
+    //   icon.classList.replace("fa-eye-slash","fa-eye");
+    //   textField.type = "password";
+    // }
   }
 
   updateUserProfile1(){
     this.service.updateUser(this.user1).subscribe(data=>{
       if(data=="Success"){
         Swal.fire({title:'Congratulations!',text:'User information has updated.',icon:'success'});
-        this.toggleUserProfileModel(false);
       }else{
         Swal.fire({title:data,text:'Failure in updating user',icon:'error'});
       }

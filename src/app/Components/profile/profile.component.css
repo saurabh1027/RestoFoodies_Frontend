@@ -1,9 +1,22 @@
 app-restaurant-pending{
     font-family: 'poppins',sans-serif;
 }
-
 /*--------------------------------------------Models--------------------------------------------*/
-#UserProfileModel{
+#Panel{
+    font-family: 'poppins',sans-serif;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    background: rgb(76 76 76 / 90%);
+    z-index: 1;
+    justify-content: center;
+    display: none;
+    overflow-y: auto;
+    align-items: flex-start;
+}
+
+/* #UserProfileModel{
     position: fixed;
     top: 50%;
     left: 50%;
@@ -111,7 +124,7 @@ app-restaurant-pending{
 }
 #UserEditProfileModel .buttons input[type="reset"]{
     background: #ff0000;
-}
+} */
 
 #slidebar{
     height: 100vh;
@@ -152,38 +165,63 @@ app-restaurant-pending{
     margin: 5px 0;
 }
 #EditUserProfileModel{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: none;
+}
+#UserProfileModel{
+    display: none;
+}
+#UserEditProfileModel{
+    display: none;
+}
+.form{
+    user-select: none;
+    padding: 40px;
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
-    padding: 0;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    transition: 0.2s ease-out;
-    width: 0;
-    height: 0;
-    border: 0;
     background: #fff;
+    margin: 10vh 0;
+    min-height: 80vh;
+    min-width: 350px;
+    width: 500px;
+    position: relative;
 }
-#EditUserProfileModel.active{
-    border: 1px solid;
-    padding: 20px;
-    width: auto;
-    height: auto;
+.form .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 15px;
+    font-size: 25px;
 }
-#EditUserProfileModel input[type="text"],
-#EditUserProfileModel input[type="password"]{
-    width: 90%;
-    padding: 10px;
+.form .title{
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+}
+.form .group{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 5px 0;
+}
+.form .group .d-none{
+    display: none;
+}
+.form .group label{
+    font-size: 14px;
+}
+.form .group input[type='text'],
+.form .group input[type='password']{
+    padding: 5px;
     outline: none;
-    border-radius: 4px;
-    border: 1px solid;
+    width: 100%;
 }
-#EditUserProfileModel .password{
+.form .group small{
+    color: #f00;
+    font-size: 12px;
+}
+.form .group .password{
     display: flex;
     align-items: center;
     position: relative;
@@ -191,45 +229,45 @@ app-restaurant-pending{
     display: flex;
     justify-content: center;
 }
-#EditUserProfileModel .password i{
+.form .group .password i{
     position: absolute;
-    right: 25px;
+    right: 5px;
 }
-#EditUserProfileModel input[type="file"]{
-    width: 90%;
-    cursor: pointer;
-    outline: none;
-    border: 1px solid #111;
-    border-radius: 5px;
-}
-#EditUserProfileModel textarea{
-    width: 90%;
+.form textarea{
+    width: 100%;
     padding: 5px;
     resize: none;
-    border-radius: 5px;
     outline: none;
-    border: 1px solid #111;
+    border: 1px solid #555;
 }
-#EditUserProfileModel .buttons{
+.form .buttons{
     display: flex;
+    margin-top: 5px;
     column-gap: 10px;
 }
-#EditUserProfileModel .buttons input{
+.form .buttons input{
     padding: 10px;
     width: 80px;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
     color: white;
     outline: none;
 }
-#EditUserProfileModel .buttons input[type="button"]{
-    background: #2778c4;
+.form input[type="submit"],
+.form input[type="button"]{
+    background: #156ae8;
 }
-#EditUserProfileModel .buttons input[type="reset"]{
+.form input[type="submit"]:disabled{
+    background: #5c93c5;
+}
+.form input[type="reset"]{
     background: #ff0000;
+} 
+@media screen and (max-width:550px){
+    .form{
+        width: 350px;
+    }
 }
-
 
 
 

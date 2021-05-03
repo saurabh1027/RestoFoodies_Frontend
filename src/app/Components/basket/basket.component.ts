@@ -51,6 +51,9 @@ export class BasketComponent implements OnInit {
       if(!data)this.loggedIn=false;
       else{
         this.user = data;
+        if(this.user.role!=="Customer"){
+          this.router.navigate(['Profile']);
+        }
         this.loggedIn=true;
       }
       this.getItems();

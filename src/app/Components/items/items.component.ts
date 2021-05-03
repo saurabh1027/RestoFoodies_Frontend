@@ -27,7 +27,7 @@ export class ItemsComponent implements OnInit {
 
   ngOnInit(): void {
     this.keyword = this.activeRouter.snapshot.paramMap.get('keyword');
-    this.restService.getItemsOfKeywords(this.keyword,this.user.city).subscribe(data=>this.items=data);
+    this.restService.getItemsOfKeywords(this.keyword,this.user.location).subscribe(data=>this.items=data);
     this.getUserByToken();
   }
 

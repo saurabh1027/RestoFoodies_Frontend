@@ -5,7 +5,7 @@ export class User{
     fullname:string;
     role:string;
     email:string;
-    city:string;
+    location:string;
     address:string;
     profile:string;
     constructor(
@@ -15,7 +15,7 @@ export class User{
         fullname:string,
         role:string,
         email:string,
-        city:string,
+        location:string,
         address:string,
         profile:string){
         this.id = id;
@@ -24,7 +24,7 @@ export class User{
         this.fullname = fullname;
         this.role = role;
         this.email = email;
-        this.city = city;
+        this.location = location;
         this.address = address;
         this.profile = profile;
     }

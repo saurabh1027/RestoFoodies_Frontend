@@ -30,31 +30,34 @@ export class HeaderComponent implements OnInit {
   }
 
   isLoggedIn(){
+    this.loggedIn = false;
     let token = sessionStorage.getItem("UserToken");
-    if(token!=null){
+    if(token){
       this.userService.getUserByToken(token).subscribe(data=>{
-        if(data!==null){
+        if(data){
           this.user = data;
           this.loggedIn = true;
-          // this.getAllItems();
-        }else{
-          this.loggedIn=false;
+          // console.log('loggedin: '+this.loggedIn);
         }
+        // else{
+        //   console.log('loggedin: '+this.loggedIn);
+        // }
       });
-    }else{
-      this.loggedIn=false;
-      // this.getAllItems();
     }
+    // else{
+    //   console.log('loggedin: '+this.loggedIn);
+    // }
   }
 
   logout(){
     sessionStorage.removeItem("UserToken");
     this.router.navigate(['/Login']);
     this.loggedIn=false;
+    this.user = new User(0,'','','','Customer','','','','');
   }
 
   getAllItems(){
-    this.restService.getAllItems(this.user.city).subscribe(data=>{
+    this.restService.getAllItems(this.user.location).subscribe(data=>{
       this.allItems = data;
       this.getAllCategories();
     });

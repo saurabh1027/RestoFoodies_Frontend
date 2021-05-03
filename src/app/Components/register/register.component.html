@@ -4,7 +4,7 @@
     <input type="password" name="password" [(ngModel)]="user.password" placeholder="Enter Password" required><br>
     <input type="text" name="fullname" [(ngModel)]="user.fullname" placeholder="Enter Fullname" required><br>
     <input type="text" name="email" [(ngModel)]="user.email" placeholder="Enter Email"><br>
-    <input type="text" name="city" [(ngModel)]="user.city" placeholder="Enter City"><br>
+    <input type="text" name="location" [(ngModel)]="user.location" placeholder="Enter location"><br>
     <textarea name="address" cols="30" rows="8" placeholder="Enter Address" [(ngModel)]="user.address"></textarea><br>
     <input type="submit" value="Register" (click)="saveUser()"><br>
     <a routerLink='/Login'>Login</a>

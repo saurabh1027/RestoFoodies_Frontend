@@ -13,25 +13,76 @@
 </div>
 <router-outlet></router-outlet>
 <!--Models-->
-<form #UserProfileModel id="UserProfileModel">
-    <div class="close" (click)='toggleUserProfileModel(false)'>
-        <i class="fas fa-times"></i>
-    </div>
-    <h1 style="text-align: center;">User Information</h1>
-    <div class="input">
-        <input #username1 type="text" name="username1" placeholder="Enter Username of user">
-        <div class="buttons">
-            <input type="button" (click)='getUserByUsername()' value="Search">
-            <input type="button" id="deleteBtn" (click)='deleteUser()' value="Delete">
+<div id="Panel">
+
+    <form #EditUserProfileModel='ngForm' id="EditUserProfileModel" (ngSubmit)='updateUserProfile(file.files[0])' class="form">
+        <span class="title">Update Your Profile</span>
+        <div class="group">
+            <label>Username : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <input type="text" #username='ngModel' name="username" [(ngModel)]='user.username' maxlength="30" required>
+            <small [class.d-none]='username.valid || username.untouched'>Username cannot be empty.</small>
         </div>
-    </div>
-    <div #UserEditProfileModel id="UserEditProfileModel">
-        <label for="password1" class="password">
-            <input #password1 type="password" name="password" [(ngModel)]='user1.password' placeholder="Enter Password" id="password1">
-            <i #eye1 class="fas fa-eye" (click)='togglePasswordVisibility1()'></i>
-        </label>
-        <input type="text" name="fullname" [(ngModel)]="user1.fullname" placeholder="Enter Fullname">
-        <select name="role" [(ngModel)]='user1.role'>
+        <div class="group">
+            <label>Password : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <div class="password">
+                <input #password='ngModel' type="password" name="password" [(ngModel)]='user.password' required id="password">
+                <i id='eye' class="fas fa-eye" (click)='togglePasswordVisibility("eye","password")'></i>
+            </div>
+            <small [class.d-none]='password.valid || password.untouched'>Password cannot be empty.</small>
+        </div>
+        <div class="group">
+            <label>Fullname : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <input type="text" name="fullname" required #fullname='ngModel' [(ngModel)]="user.fullname" maxlength="50">
+            <small [class.d-none]='fullname.valid || fullname.untouched'>Fullname cannot be empty.</small>
+        </div>
+        <div class="group">
+            <label>Profile picture :</label>
+            <input type="file" #file name="file" (change)='changeUserPic()' accept="image/*">
+            <small *ngIf='file.files[0] && ((file.files[0].size)/((1024*1024)/2))>0.5'>File size should be less than 500KB.</small>
+        </div>
+        <div class="group">
+            <label>Email Id :</label>
+            <input type="text" name="email" [(ngModel)]='user.email' #email='ngModel'>
+        </div>
+        <div class="group">
+            <label>Address :</label>
+            <textarea name="address" [(ngModel)]='user.address' cols="30" rows="5" placeholder="Enter your address here."></textarea>
+        </div>
+        <div class="buttons">
+            <input type="submit" [disabled]='EditUserProfileModel.invalid || (file.files[0] && ((file.files[0].size)/((1024*1024)/2))>0.5)' value="Update">
+            <input type="reset" (click)='toggleModel("EditUserProfileModel",false)' value="Cancel">
+        </div>
+    </form>
+
+    <form #UserProfileModel='ngForm' (ngSubmit)='getUserByUsername()' id="UserProfileModel" class="form">
+        <span class="title">Update User Profile</span>
+        <div class="group">
+            <label>Username</label>
+            <input type="text" required #username1='ngModel' [(ngModel)]='user1.username' name="username1">
+            <small [class.d-none]='username1.valid || username1.untouched'>Username cannot be empty.</small>
+        </div>
+        <div class="buttons">
+            <input type="submit" value="Search">
+            <input type="reset" value="Cancel" (click)='toggleModel("UserProfileModel",false)'>
+        </div>
+    </form>
+    
+    <form #UserEditProfileModel='ngForm' (ngSubmit)='updateUser1()' id="UserEditProfileModel" class="form">
+        <div class="group">
+            <label>Password : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <div class="password">
+                <input #password1='ngModel' type="password" name="password1" [(ngModel)]='user1.password' required id="password1">
+                <i id='eye1' class="fas fa-eye" (click)='togglePasswordVisibility("eye1","password1")'></i>
+            </div>
+            <small [class.d-none]='password1.valid || password1.untouched'>Password cannot be empty.</small>
+        </div>
+        <div class="group">
+            <label>Fullname : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <input type="text" name="fullname1" required #fullname1='ngModel' [(ngModel)]="user1.fullname" maxlength="50">
+            <small [class.d-none]='fullname1.valid || fullname1.untouched'>Fullname cannot be empty.</small>
+        </div>
+        <select name="role" #role>
+            {{role.value}}
             <option value="Customer">Customer</option>
             <option value="Owner">Vendor</option>
             <option value="Delivery Boy">Delivery Boy</option>
@@ -41,37 +92,22 @@
         <input type="text" name="email" [(ngModel)]='user1.email' placeholder="Enter Email">
         <textarea name="address" [(ngModel)]='user1.address' cols="30" rows="5">Address</textarea>
         <div class="buttons">
-            <input type="button" (click)='updateUser1()' value="Submit">
-            <input type="reset" (click)='toggleUserProfileModel(false)' value="Cancel">
+            <input type="submit" value="Update">
+            <input type="reset" (click)='deleteUser()' value="Delete">
         </div>
-    </div>
-</form>
+    </form>
+
+</div>
 <div id="slidebar">
     <p class="title">Task Bar</p>
     <i class="fas fa-times" (click)='toggleSlideBar(false)'></i>
     <ul class="action-list">
-        <li (click)='toggleEditUserProfileModel(true)'>Update Profile</li>
+        <li (click)='toggleModel("EditUserProfileModel",true)'>Update Profile</li><!--toggleEditUserProfileModel(true)-->
         <li (click)='deleteAccount()'>Delete Account</li>
-        <a routerLink="/Profile/My-Basket" *ngIf='user.role==="Customer"'><li>Basket</li></a>
+        <a *ngIf='user.role==="Customer"' routerLink="/Profile/My-Basket"><li>Basket</li></a>
         <a (click)='toggleSlideBar(false)' routerLink="/Profile/Restaurant" *ngIf='user.role==="Vendor"'><li>Restaurant</li></a>
         <li (click)='toggleUserProfileModel(true)' *ngIf='user.role==="Admin"'>Update User Account</li>
         <a routerLink="/Profile/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>Orders</li></a>
         <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List</li></a>
     </ul>
-</div>
-<div #EditUserProfileModel id="EditUserProfileModel">
-    <input type="text" name="username" [(ngModel)]='user.username' placeholder="Enter Username">
-    <div class="password">
-        <input #password type="password" name="password" [(ngModel)]='user.password' placeholder="Enter Password" id="password">
-        <i #eye class="fas fa-eye" (click)='togglePasswordVisibility()'></i>
-    </div>
-    <input type="text" name="fullname" [(ngModel)]="user.fullname" placeholder="Enter Fullname">
-    <input type="text" name="city" [(ngModel)]="user.city" placeholder="Enter City">
-    <input type="file" #file accept="image/*">
-    <input type="text" name="email" [(ngModel)]='user.email' placeholder="Enter Email">
-    <textarea name="address" [(ngModel)]='user.address' cols="30" rows="5">Address</textarea>
-    <div class="buttons">
-        <input type="button" (click)='updateUserProfile()' value="Update">
-        <input type="reset" (click)='toggleEditUserProfileModel(false)' value="Cancel">
-    </div>
 </div>

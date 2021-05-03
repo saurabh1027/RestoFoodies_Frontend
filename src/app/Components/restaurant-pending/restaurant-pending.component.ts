@@ -86,6 +86,7 @@ export class RestaurantPendingComponent implements OnInit {
   
   getItemsOfOrderByOid(oid:number){
     let fid:number[]=[];
+    this.cnt = 0;
     for(let i=0;i<this.orders.length;i++){
       if(this.orders[i].oid===oid){
         this.items = JSON.parse(this.orders[i].items);
@@ -153,7 +154,12 @@ export class RestaurantPendingComponent implements OnInit {
     for(let i=0;i<this.items.length;i++){
       this.items[i].status = 'Available';
     }
-    this.baskService.updateItems(this.items).subscribe(data=>Swal.fire(data));
+    this.baskService.updateItems(this.items).subscribe(data=>{
+      if(data==='Success'){
+        this.cnt = 0;
+        this.getItemsOfOrderByOid(this.order.oid);
+      }
+    });
   }
 
   rejectOrder(oid:number){

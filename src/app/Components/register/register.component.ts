@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
   }
 
   saveUser(){
-    this.user.city = this.user.city.toLocaleUpperCase();
+    this.user.location = this.user.location.toLocaleUpperCase();
     if(this.user.username=='')
       Swal.fire({icon: 'error',title:'Empty Username'});
     else if(this.user.password=='')

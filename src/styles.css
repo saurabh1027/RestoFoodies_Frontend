@@ -16,3 +16,7 @@ i{
 html{
     scroll-behavior: smooth;
 }
+body.model{
+    height: 100vh;
+    overflow: hidden;
+}
