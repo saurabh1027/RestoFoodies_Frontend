@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
     this.service.getUserByToken(sessionStorage.getItem("UserToken")).subscribe(data=>{
       if(!data)this.router.navigate(['Login']);
       this.user = data;
-      (this.user.role==='Vendor')?this.router.navigate(['Profile','Restaurant']):
+      (this.user.role==='Vendor')?this.router.navigate(['Profile','My-List']):
       ((this.user.role==='Customer')?this.router.navigate(['My-Basket']):
         console.log("other roles")
       );

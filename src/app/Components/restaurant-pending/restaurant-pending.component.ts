@@ -77,7 +77,7 @@ export class RestaurantPendingComponent implements OnInit {
   }
 
   getRestaurantPlacedOrdersByBranch(){
-    console.log(this.restSelect.nativeElement.value)
+    if(!this.restSelect.nativeElement.value)return;
     this.baskService.getRestaurantPlacedOrdersByBranch(this.restSelect.nativeElement.value,this.restaurant.name).subscribe(data=>{
       if(data){
         this.orders = data;
@@ -133,25 +133,18 @@ export class RestaurantPendingComponent implements OnInit {
   addOrderToList(oid:number){
     this.restService.addOrderToList(oid,this.restaurant.rid).subscribe(data=>{
       if(!data)return;
-      (data=='Success')?Swal.fire({title:'Congratulations!',icon:'success'}):Swal.fire({title:'Sorry!',text:data,icon:'error'});
       if(data=='Success'){
-        this.order.oid = oid
-      };
+        Swal.fire({title:'Congratulations!',icon:'success'});
+        this.getRestaurantPlacedOrdersByBranch();
+        this.items = [];
+        this.order = new Order1(0,'','','','','',0,'','');
+      }else{
+        Swal.fire({title:'Sorry!',text:data,icon:'error'});
+      }
     });
   }
 
   changeStatus(){
-    // let fid:number[]=[];
-    // for(let i=0;i<this.items.length;i++){
-    //   if(this.items[i].status==='Out Of Stock'){
-    //     fid.push(this.items[i].fid);
-    //   }
-    // }
-    // this.restService.changeStatusOfItems(fid).subscribe(data=>{
-    //   (data=='Success')?Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'}):
-    //     Swal.fire({title:'Sorry',text:data,icon:'error'});
-    //   if(data=='Success')this.getAvailableItemsOfRestaurant(this.order.oid);
-    // });
     for(let i=0;i<this.items.length;i++){
       this.items[i].status = 'Available';
     }
@@ -167,7 +160,7 @@ export class RestaurantPendingComponent implements OnInit {
     this.baskService.rejectOrder(oid).subscribe(data=>{
       (data=='Success')?Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'}):
         Swal.fire({title:'Sorry',text:data,icon:'error'});
-      // if(data=='Success')this.getPlacedOrdersOfBranch();
+      if(data=='Success')this.getRestaurantPlacedOrdersByBranch();
     });
   }
 
