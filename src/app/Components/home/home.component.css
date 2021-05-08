@@ -2,6 +2,11 @@
 *{
     font-family: 'poppins',sans-serif;
     box-sizing: border-box;
+    /* margin: 0;
+    padding: 0;
+    justify-items: center;
+    align-items: center;
+    text-align: center; */
 }
 
 .container{
@@ -204,3 +209,67 @@
 
 
 /*---------------------------------------------Food-container-end--------------------------------------------------------*/
+
+/* -----------------------logo animation------------------------ */
+
+.logo h2{
+    text-align: center;
+    font-size: 50px;
+} 
+
+.logo h2 span{
+    color: lightblue;
+    position: relative;
+    display: inline-flex;
+}
+
+.logo h2 span:nth-child(even){
+     color : black;
+     letter-spacing: -1em;
+     line-height: 1em;
+     overflow: hidden;
+     transition: 0.5s ease-in-out;
+}
+
+.logo h2:hover span:nth-child(even){
+    letter-spacing: 0;
+}
+
+.logo h2 i{
+    position: absolute;
+    font-size: 15px;
+    transform: translateX(-50%);
+    color: #777;
+    font-weight: 100;
+    line-height: 1em; 
+}
+
+.logo h2 i::before{
+    content: 'restofoodies';
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    display: initial;
+    transition: 0.5s;
+}
+
+.logo h2:hover i::before{
+    opacity: 0;
+    letter-spacing: 2em;
+}
+
+.logo h2 i::after{
+    content: 'Online food delivery service';
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+}
+
+.logo h2:hover i::after{
+    opacity: 1;
+    visibility: visible;
+}
+
+.logo img{
+    height: 60px;
+}

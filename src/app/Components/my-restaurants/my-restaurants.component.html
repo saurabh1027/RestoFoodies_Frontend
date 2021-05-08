@@ -3,6 +3,7 @@
     <p class="message">You have not added your restaurant yet!</p>
     <button (click)='toggleModel("RestoForm1",true)' class="addbtn">Add Restaurant</button>
 </div>
+
 <div class="container" *ngIf='restaurant.rid!==0'>
     <div class="profile">
         <i class="fas fa-edit" (click)='toggleModel("RestoUpdateForm",true)'></i>
@@ -10,25 +11,30 @@
         <img src="assets/images/restaurants/banner1.jpg" alt="banner">
         <span class="name">{{restaurant.name}}</span>
     </div>
+
     <div id="RestoMap">
         <agm-map [latitude]='lat' [longitude]='lng' [zoom]='14' [fullscreenControl]='true'>
             <agm-marker [latitude]='lat' [longitude]='lng'></agm-marker>
         </agm-map>
     </div>
+
     <div class="menu">
         <div class="topbar">
             <p class="title">Menu</p>
             <button class="btn" (click)="toggleCategoryModule()">Add Category</button>
         </div>
+
         <div class="category-list">
             <div class="category-box">
                 <span class="category-name selected" title="All verieties of food items" (click)='getFoodItems("All")'>All</span>
                 <span class="category-name" title="{{category.description}}" (click)='getFoodItems(category.cname)' *ngFor="let category of restCategories">{{category.cname}}</span>
             </div>
         </div>
+        
         <div class="food-items">
             <app-menu [food_items]='food_items' [restaurant]='restaurant' [user]='user'></app-menu>
         </div>
+        
     </div>
 </div>
 
