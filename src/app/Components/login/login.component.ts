@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  user : User = new User(0,'','','','','','','','');
+  user : User = new User(0,'','','','','','','','','');
   remember : boolean = false;
 
   constructor(private userService : UserService,private router : Router,private cryptoService:AesCryptoService) {}

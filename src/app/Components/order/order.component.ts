@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./order.component.css']
 })
 export class OrderComponent implements OnInit {
-  user:User=new User(0,'','','','Customer','','','','');
+  user:User=new User(0,'','','','Customer','','','','','');
   order:Order=new Order(0,'','Unsubmitted','',0,'','');
   food_items:Food_Item[]=[];
   loggedIn:boolean=false;

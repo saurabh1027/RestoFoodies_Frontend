@@ -17,7 +17,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./restaurant-profile.component.css']
 })
 export class RestaurantProfileComponent implements OnInit {
-  restaurant:Restaurant=new Restaurant(0,'','','','','','','','','','');
+  restaurant:Restaurant=new Restaurant(0,'','','','','','','','');
   pos:{lat:number,lng:number}={lat:0,lng:0};
   restCategories:Category[]=[];
   food_items:Food_Item[]=[];
@@ -25,7 +25,7 @@ export class RestaurantProfileComponent implements OnInit {
   loggedIn:boolean=false;
   item:Food_Item=new Food_Item(0,'',0,'',0,'','',false,'',0,'','','',0);
   orders:Order[]=[];
-  user:User=new User(0,'','','','','','','','');
+  user:User=new User(0,'','','','','','','','','');
 
   constructor(private baskService:BasketService,private restService:RestaurantService,private active:ActivatedRoute,
     private userService:UserService,private router:Router) { }

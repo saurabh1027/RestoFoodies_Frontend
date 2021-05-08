@@ -1,172 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre&display=swap');
 
-/*---------------------------------------RestoUpdateForm-end-------------------------------------*/
-#RestoUpdateForm{
-    position: fixed;
-    top: 50%;
-    z-index: 1;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    background: #fff;
-    border: 1px solid rgb(60, 60, 60);
-    width: 75vw;
-    height: 80vh;
-    padding: 40px 30px;
-    font-family: 'poppins',sans-serif;
-    overflow-y: auto;
-    display: none;
-}
-#RestoUpdateForm .heading{
-    text-align: center;
-    font-size: 25px;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
-#RestoUpdateForm .textfield{
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    outline: none;
-    border: 1px solid #777;
-}
-#RestoUpdateForm .mapbtn{
-    column-gap: 10px;
-    display: flex;
-    cursor: pointer;
-}
-#RestoUpdateForm .group{
-    display: flex;
-    flex-direction: column;
-    padding: 10px 0;
-    row-gap: 2.5px;
-}
-#RestoUpdateForm .group .textfield{
-    padding: 8px;
-    outline: none;
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
-}
-#RestoUpdateForm .mapbtn{
-    cursor: pointer;
-}
-.valid{
-    border: solid 1px rgb(106, 106, 106);
-    color: #111;
-}
-#RestoUpdateForm .group small{
-    color: #f00;
-}
-#RestoUpdateForm .flex-group{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 20px;
-    padding: 10px 0;
-}
-.btn{
-    outline: none;
-    padding: 10px 30px;
-    color: #fff;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-}
-.btn.submitbtn{
-    background: #1c74e0;
-}
-.btn.submitbtn:disabled{
-    background-color: #6fa1df;
-}
-.btn.cancelbtn{
-    background: #f00;
-}
-
-
-
-/*----------------------------------------------RestoUpdateForm-end-----------------------------------------*/
-
-
-/*----------------------------------------------RestoForm1-start-----------------------------------------*/
-
 .d-none{
     display: none;
 }
-.invalid{
-    border: 1px solid #f00;
-    color: #f00;
-}
-#RestoForm1{
-    position: fixed;
-    top: 50%;
-    z-index: 1;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    background: #fff;
-    border: 1px solid rgb(60, 60, 60);
-    width: 75vw;
-    height: 80vh;
-    padding: 40px 30px;
-    font-family: 'poppins',sans-serif;
-    overflow-y: auto;
-    display: none;
-}
-#RestoForm1 .heading{
-    text-align: center;
-    font-size: 25px;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-}
-#RestoForm1 .group{
-    display: flex;
-    flex-direction: column;
-    padding: 10px 0;
-    row-gap: 2.5px;
-}
-#RestoForm1 .group .textfield{
-    padding: 8px;
-    outline: none;
-    border-radius: 5px;
-    border: 1px solid #777;
-}
-#RestoForm1 .mapbtn{
-    cursor: pointer;
-}
-.valid{
-    border: solid 1px rgb(106, 106, 106);
-    color: #111;
-}
-#RestoForm1 .group small{
-    color: #f00;
-}
-#RestoForm1 .flex-group{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 20px;
-    padding: 10px 0;
-}
-.btn{
-    outline: none;
-    padding: 10px 30px;
-    color: #fff;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-}
-.btn.submitbtn{
-    background: #1c74e0;
-}
-.btn.submitbtn:disabled{
-    background-color: #6fa1df;
-}
-.btn.cancelbtn{
-    background: #f00;
-}
-
-/*----------------------------------------------RestoForm1-end-----------------------------------------*/
 
 /*----------------------------------------------Maps-start---------------------------------------------*/
 
@@ -176,27 +12,27 @@
     margin: 50px auto;
     display: block;
 }
-#map{
+#Map,#Map1{
     position: fixed;
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    left: 0;
+    height: 90vh;
+    width: 90vw;
+    top: 5vh;
+    left: 5vw;
     z-index: 2;
     display: none;
     background: #eee;
     color: #fff;
 }
-#map1{
-    position: fixed;
-    height: 100vh;
-    width: 100vw;
+#Map .close,#Map1 .close{
     top: 0;
+    position: absolute;
+    color: #333;
+    font-size: 25px;
+    margin: 10px;
+    padding: 10px 15px;
     left: 0;
+    background-color: #fff;
     z-index: 2;
-    display: none;
-    background: #eee;
-    color: #fff;
 }
 .choosebtn{
     position: absolute;
@@ -477,3 +313,144 @@ agm-map{
         flex-direction: column;
     }
 }
+
+
+
+
+
+
+
+
+
+
+#RestoForm1{
+    display: none;
+}
+#RestoUpdateForm{
+    display: none;
+}
+/*------------------------------------------------Panel-Start---------------------------------------------*/
+#Panel1{
+    font-family: 'poppins',sans-serif;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: rgb(76 76 76 / 90%);
+    z-index: 1;
+    justify-content: center;
+    display: none;
+    overflow-y: auto;
+    align-items: flex-start;
+}
+.form{
+    user-select: none;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    margin: 10vh 0;
+    min-height: 80vh;
+    min-width: 350px;
+    width: 500px;
+}
+.form.small{
+    min-height: 30vh;
+}
+.form .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 20px 30px;
+    color: #fff;
+    font-size: 25px;
+}
+.form .title{
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+}
+.form .group{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 5px 0;
+}
+.form .group select{
+    padding: 5px;
+    cursor: pointer;
+    outline: none;
+}
+.form .group.flex{
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+}
+.form .group .d-none{
+    display: none;
+}
+.form .group label{
+    font-size: 14px;
+}
+.form .group input[type='text'],
+.form .group input[type='password']{
+    padding: 5px;
+    outline: none;
+    width: 100%;
+}
+.form .group small{
+    color: #f00;
+    font-size: 12px;
+}
+.form .group .password{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.form .group .password i{
+    position: absolute;
+    right: 5px;
+}
+.form textarea{
+    width: 100%;
+    padding: 5px;
+    resize: none;
+    outline: none;
+    border: 1px solid #555;
+}
+.form .buttons{
+    display: flex;
+    margin-top: 5px;
+    column-gap: 10px;
+}
+.form .buttons input{
+    padding: 10px;
+    min-width: 80px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    outline: none;
+}
+.form input[type="submit"],
+.form input[type="button"]{
+    background: #156ae8;
+}
+.form input[type="submit"]:disabled{
+    background: #5c93c5;
+}
+.form input[type="reset"]{
+    background: #ff0000;
+} 
+@media screen and (max-width:550px){
+    .form{
+        width: 350px;
+    }
+}
+
+/*------------------------------------------------Panel-End---------------------------------------------*/

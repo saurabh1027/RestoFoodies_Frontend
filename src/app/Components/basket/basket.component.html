@@ -43,8 +43,13 @@
 
 <!-- Models -->
 <div id="map">
-    <i (click)='toggleModel("map",false)' class="fas fa-times"></i>
+    <i (click)='toggleMap("map",false)' class="fas fa-times"></i>
     <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [fullscreenControl]='true' (mapClick)='changeLocation($event)'>
         <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
     </agm-map>  
-</div>          
+</div>
+<div id="Panel">
+    <div id="ContactModel">
+
+    </div>
+</div>

@@ -12,7 +12,7 @@ import { UserService } from 'src/app/Services/user.service';
 })
 export class RestaurantsComponent implements OnInit {
   restaurants:Restaurant[]=[];
-  user:User=new User(0,'','','','','','','','');
+  user:User=new User(0,'','','','','','','','','');
 
   constructor(private router:Router,private userService:UserService,private restService:RestaurantService) { }
 
@@ -23,17 +23,17 @@ export class RestaurantsComponent implements OnInit {
 
   getUserByToken(){
     let token = sessionStorage.getItem("UserToken");
-    if(!token){
-      return;
-    }
-    this.userService.getUserByToken(token).subscribe(data=>{
-      if(data){
-        this.user = data;
-        if(this.user.role!=="Customer"){
-          this.router.navigate(['Profile']);
+    if(token){
+      this.userService.getUserByToken(token).subscribe(data=>{
+        if(data){
+          this.user = data;
+          if(this.user.role!=="Customer"){
+            this.router.navigate(['Profile']);
+          }
+          this.getRestaurantsByLocation(this.user.location);
         }
-      }
-    });
+      });
+    }
   }
 
   checkLocation(){
@@ -42,7 +42,9 @@ export class RestaurantsComponent implements OnInit {
 
   getRestaurantsByLocation(location:string){
     this.restService.getRestaurantsByLocation(location).subscribe(data=>{
-      this.restaurants = data;
+      if(data){
+        this.restaurants = data;
+      }
     });
   }
 

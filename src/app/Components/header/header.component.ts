@@ -13,7 +13,7 @@ import { Emitter } from 'src/app/Models/Emitter';
 })
 export class HeaderComponent implements OnInit {
   loggedIn:boolean = false;
-  user:User=new User(0,'','','','Customer','','','','');
+  user:User=new User(0,'','','','Customer','','','','','');
   categories:string[]=[];
   allItems:Food_Item[]=[];
   keywords:string[]=[];
@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
     sessionStorage.removeItem("UserToken");
     this.router.navigate(['/Login']);
     this.loggedIn=false;
-    this.user = new User(0,'','','','Customer','','','','');
+    this.user = new User(0,'','','','Customer','','','','','');
   }
 
   getAllItems(){

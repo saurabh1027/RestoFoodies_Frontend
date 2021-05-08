@@ -1,11 +1,57 @@
-<form style="display: none;">
-    <h1>Register page</h1><br>
-    <input type="text" name="username" [(ngModel)]="user.username" placeholder="Enter Username" required><br>
-    <input type="password" name="password" [(ngModel)]="user.password" placeholder="Enter Password" required><br>
-    <input type="text" name="fullname" [(ngModel)]="user.fullname" placeholder="Enter Fullname" required><br>
-    <input type="text" name="email" [(ngModel)]="user.email" placeholder="Enter Email"><br>
-    <input type="text" name="location" [(ngModel)]="user.location" placeholder="Enter location"><br>
-    <textarea name="address" cols="30" rows="8" placeholder="Enter Address" [(ngModel)]="user.address"></textarea><br>
-    <input type="submit" value="Register" (click)="saveUser()"><br>
-    <a routerLink='/Login'>Login</a>
-</form>
+<div class="container">
+    <div class="box">
+        <form #RegisterForm='ngForm' id='RegisterForm' (ngSubmit)='saveUser()'>
+            
+            <div class="title">User Details</div>
+            <div class="group">
+                <label>Username: </label>
+                <input type="text" name="username" maxlength="50" #username='ngModel' [(ngModel)]="user.username" required>
+                <small [class.d-none]='username.valid || username.untouched'>Username cannot be empty!</small>
+            </div>
+            <div class="group">
+                <label>Password: </label>
+                <input type="password" name="password" maxlength="30" #password='ngModel' [(ngModel)]="user.password" required>
+                <small [class.d-none]='password.valid || password.untouched'>Password cannot be empty!</small>
+            </div>
+            <div class="group">
+                <label>Fullname: </label>
+                <input type="text" name="fullname" maxlength="50" #fullname='ngModel' [(ngModel)]="user.fullname" required>
+                <small [class.d-none]='fullname.valid || fullname.untouched'>Fullname cannot be empty!</small>
+            </div>
+            <div class="group">
+                <label>Contact: </label>
+                <input type="text" name="contact" pattern="[0-9]{10}" #contact='ngModel' [(ngModel)]='user.contact' required>
+                <div *ngIf='contact.errors'>
+                    <small [class.d-none]='!contact.errors.required || contact.untouched'>Contact cannot be empty!</small>
+                    <small *ngIf='contact.errors.pattern'>Contact should contain 10 digits only.</small>
+                </div>
+            </div>
+            <div class="group">
+                <label>Email: </label>
+                <input type="text" name="email" maxlength="50" #email='ngModel' [(ngModel)]="user.email">
+            </div>
+            <div class="group">
+                <label (click)='toggleMap(true)'>Location: <i class="fas fa-map-marked-alt"></i>
+                    <i *ngIf='pos.lat!=0 && pos.lng!=0' class="fas fa-check locationCheck"></i>
+                    <i *ngIf='pos.lat==0 && pos.lng==0' class="fas fa-times locationCheck"></i>
+                </label>
+            </div>
+            <div class="buttons">
+                <input type="submit" [disabled]='RegisterForm.invalid || (pos.lat==0 && pos.lng==0)' value="Register">
+            </div>
+        
+        </form>
+        <a routerLink='/Login' class="message">Existing User, Click here!</a>
+    </div>
+</div>
+
+<div id="Panel">
+
+    <div id="Map">
+        <i class="fas fa-times" (click)='toggleMap(false)'></i>
+        <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='14' [fullscreenControl]='true' (mapClick)='chooseLocation($event)'>
+            <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
+        </agm-map>
+    </div>
+
+</div>

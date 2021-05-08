@@ -1,16 +1,19 @@
 <div class="container">
-    <form #LoginForm='ngForm' (ngSubmit)='authenticateUser()' id="LoginForm">
-        <div class="group">
-            <label for="username">Username: </label>
-            <input type="text" #username='ngModel' id="username" name="username" required [(ngModel)]='user.username' maxlength="50">
-            <span class="error" [class.d-none]='username.valid || username.untouched'>Username cannot be empty!</span>
-        </div>
-        <div class="group">
-            <label for="password">Password: </label>
-            <input type="password" id="password" #password='ngModel' name="password" required [(ngModel)]='user.password' maxlength="50">
-            <span class="error" [class.d-none]='password.valid || password.untouched'>Password cannot be empty!</span>
-        </div>
-        <label><input type="checkbox" name='remember' [(ngModel)]='remember'> Remember me</label>
-        <input [disabled]='LoginForm.invalid' type="submit" value="Login">
-    </form>
+    <div class="box">
+        <form #LoginForm='ngForm' (ngSubmit)='authenticateUser()' id="LoginForm">
+            <div class="group">
+                <label for="username">Username: </label>
+                <input type="text" #username='ngModel' id="username" name="username" required [(ngModel)]='user.username' maxlength="50">
+                <span class="error" [class.d-none]='username.valid || username.untouched'>Username cannot be empty!</span>
+            </div>
+            <div class="group">
+                <label for="password">Password: </label>
+                <input type="password" id="password" #password='ngModel' name="password" required [(ngModel)]='user.password' maxlength="50">
+                <span class="error" [class.d-none]='password.valid || password.untouched'>Password cannot be empty!</span>
+            </div>
+            <label><input type="checkbox" name='remember' [(ngModel)]='remember'> Remember me</label>
+            <input [disabled]='LoginForm.invalid' type="submit" value="Login">
+        </form>
+        <a routerLink='/Register' class="message">New here, Connect with Us!</a>
+    </div>
 </div>

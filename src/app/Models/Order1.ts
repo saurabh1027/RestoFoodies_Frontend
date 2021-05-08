@@ -1,5 +1,3 @@
-import { Food_Item } from "./Food_Item";
-
 export class Order1{
     oid:number;
     recipient_name:string;

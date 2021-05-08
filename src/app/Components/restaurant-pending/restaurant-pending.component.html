@@ -44,7 +44,7 @@
         <div class="buttons">
             <button *ngIf='!(cnt>0)' (click)='addOrderToList(order.oid)'>Add Order to List</button>
             <button *ngIf='cnt>0' (click)='changeStatus()' title='Make all items available!'>Change Status</button>
-            <button class="reject" *ngIf='cnt>0' (click)='rejectOrder(order.oid)'>Reject Order</button>
+            <button class="reject" (click)='rejectOrder(order.oid)'>Reject Order</button>
         </div>
         <div class="nothing" *ngIf='!(items.length>0)'>
             <span>No items present in this order.</span>

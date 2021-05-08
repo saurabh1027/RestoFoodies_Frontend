@@ -78,13 +78,12 @@ export class RestaurantService {
   public addRestaurantProfile(file:File){
     let formdata : FormData  = new FormData();
     formdata.append("file",file,file.name);
-    return this.http.post(this.baseUrl+'add-restaurant-profile',formdata);
+    return this.http.post(this.baseUrl+'add-restaurant-profile',formdata,{responseType:'text'});
   }
   
   public updateCategoriesOfRestaurant(categories:string,rid:number){
     return this.http.post(this.baseUrl+'update-restaurant-categories/'+rid,categories,{responseType:"text"});
   }
-  
   
   public getFoodItems(cname:string,rid:number):Observable<Food_Item[]>{
     return this.http.post<Food_Item[]>(this.baseUrl+'get-food-items/'+rid,cname);
@@ -117,6 +116,7 @@ export class RestaurantService {
   public getListOrdersOfRestaurantByBranch(branch:string,rid:number):Observable<Order1[]>{
     return this.http.post<Order1[]>(this.baseUrl+'get-restaurant-list-orders/'+rid,branch);
   }
+
 
 
 

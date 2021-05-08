@@ -1,5 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Order } from 'src/app/Models/Order';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Restaurant } from 'src/app/Models/Restaurant';
 import { User } from 'src/app/Models/User';
 import { BasketService } from 'src/app/Services/basket.service';
@@ -17,8 +16,8 @@ import { Order1 } from 'src/app/Models/Order1';
 })
 export class RestaurantPendingComponent implements OnInit {
   @ViewChild('restSelect') restSelect:ElementRef;
-  restaurant:Restaurant=new Restaurant(0,'','','','','','','','','','');
-  user:User=new User(0,'','','','','','','','');
+  restaurant:Restaurant=new Restaurant(0,'','','','','','','','');
+  user:User=new User(0,'','','','','','','','','');
   pos:{lat:number,lng:number}={lat:0,lng:0};
   lat:number=0;
   lng:number=0;
@@ -38,19 +37,25 @@ export class RestaurantPendingComponent implements OnInit {
   getUserByToken(){
     let token = sessionStorage.getItem("UserToken");
     this.userService.getUserByToken(token).subscribe(data=>{
-      if(!data) this.router.navigate(['Login']);
-      this.user = data;
-      if(!(this.user.role==='Vendor')) this.router.navigate(['Profile']);
-      this.getRestaurantByUsername();
+      if(data){
+        this.user = data;
+        if(!(this.user.role==='Vendor')) this.router.navigate(['Profile']);
+        this.getRestaurantByUsername();
+      }else{
+        this.router.navigate(['Login']);
+      } 
     });
   }
   
   getRestaurantByUsername(){
     this.restService.getRestaurantByUsername(this.user.username).subscribe(data=>{
-      if(data==null) this.router.navigate(['Profile','Restaurant']);
-      this.restaurant=data;
-      this.getCurrentLocation();
-      this.getBranches(this.restaurant.branch);
+      if(data){
+        this.restaurant=data;
+        this.getCurrentLocation();
+        this.getBranches(this.restaurant.branch);
+      }else{
+        this.router.navigate(['Profile','Restaurant']);
+      }
     });
   }
 
@@ -70,7 +75,6 @@ export class RestaurantPendingComponent implements OnInit {
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
         this.pos = {lat:position.coords.latitude , lng:position.coords.longitude};
-        // this.getPlacedOrdersOfBranch();
         this.getRestaurantPlacedOrdersByBranch();
       });
     }
@@ -86,17 +90,13 @@ export class RestaurantPendingComponent implements OnInit {
   }
   
   getItemsOfOrderByOid(oid:number){
-    let fid:number[]=[];
+    let fids:number[]=[];
     this.cnt = 0;
     for(let i=0;i<this.orders.length;i++){
       if(this.orders[i].oid===oid){
-        this.items = JSON.parse(this.orders[i].items);
-        for(let i=0;i<this.items.length;i++){
-          fid.push(this.items[i].fid);
-        }
-        this.restService.getItemsByFids(fid).subscribe(data=>{
+        fids = JSON.parse(this.orders[i].items);
+        this.restService.getItemsByFids(fids).subscribe(data=>{
           this.items = (data)?data:[];
-          this.orders[i].items = JSON.stringify(this.items);
           for(let i=0;i<this.items.length;i++){
             if(this.items[i].status==='Out Of Stock'){
               this.cnt++;
@@ -158,9 +158,14 @@ export class RestaurantPendingComponent implements OnInit {
 
   rejectOrder(oid:number){
     this.baskService.rejectOrder(oid).subscribe(data=>{
-      (data=='Success')?Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'}):
+      if(data=='Success'){
+        Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'});
+        this.getRestaurantPlacedOrdersByBranch();
+        this.items = [];
+        this.order = new Order1(0,'','','','','',0,'','');
+      }else{
         Swal.fire({title:'Sorry',text:data,icon:'error'});
-      if(data=='Success')this.getRestaurantPlacedOrdersByBranch();
+      }
     });
   }
 

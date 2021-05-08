@@ -16,22 +16,17 @@ import * as $ from 'jquery';
   styleUrls: ['./my-restaurants.component.css']
 })
 export class MyRestaurantsComponent implements OnInit {
-  map1HasError:boolean=false;
   branches:string[]=[];
   newCategory:Category=new Category(0,'','');
-  user:User=new User(0,'','','','','','','','');
-  restaurant : Restaurant = new Restaurant(0,'','','','','','','','','','');
-  rest : Restaurant = new Restaurant(0,'','','','','','','','','','');
-  selectedLatitude:number;
-  selectedLongitude:number;
+  user:User=new User(0,'','','','','','','','','');
+  restaurant : Restaurant = new Restaurant(0,'','','','','','','','');
+  rest : Restaurant = new Restaurant(0,'','','','','','','','');
   lat:number=0;
   lng:number=0;
   pos={lat:0,lng:0};
   categories:Category[]=[];
   restCategories:Category[]=[];
   food_items:Food_Item[] = [];
-  fileSizeExceed:boolean=false;
-  file1:File;
 
   constructor(private userService:UserService,private router:Router,private restService:RestaurantService) { }
 
@@ -41,11 +36,12 @@ export class MyRestaurantsComponent implements OnInit {
 
   getUserByToken(){
     this.userService.getUserByToken(sessionStorage.getItem("UserToken")).subscribe(data=>{
-      if(data==null){
+      if(!data){
         Swal.fire({title:'Unauthorized access',text:'Make sure to login!',icon:'error'});
         this.router.navigate(['/Login']);
       }else{
         this.user = data;
+        if(this.user.role!=='Vendor')this.router.navigate(['Login']);
         this.getRestaurantByUsername(this.user.username);
       }
     });
@@ -53,13 +49,25 @@ export class MyRestaurantsComponent implements OnInit {
 
   getRestaurantByUsername(username:string){
     this.restService.getRestaurantByUsername(username).subscribe(data=>{
-      if(data==null)return;
-      this.restaurant = data;
-      this.getBranches(this.restaurant.branch);
-      this.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
-      this.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
-      this.getCategoriesOfRestaurant();
+      if(data){
+        this.restaurant = data;
+        this.getBranches(this.restaurant.branch);
+        this.pos.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
+        this.pos.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
+        this.getCategoriesOfRestaurant();
+      }else{
+        this.restaurant = new Restaurant(0,'','','','','','','','');
+        this.getCurrentLocation();
+      }
     });
+  }
+
+  getCurrentLocation(){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
+        this.pos = {lat:position.coords.latitude,lng:position.coords.longitude};
+      });
+    }
   }
 
   getBranches(branch:string){
@@ -85,26 +93,35 @@ export class MyRestaurantsComponent implements OnInit {
   }
 
   checkFile(event){
-    if(event.target.files[0]!==undefined){
-      if((event.target.files[0].size>(1024*1024)/2))
-        this.fileSizeExceed=true;
-      else{
-        this.fileSizeExceed=false;
-        this.file1 = event.target.files[0];
-      }
-    }
-    else this.fileSizeExceed = false;
+    // if(event.target.files[0]!==undefined){
+    //   if((event.target.files[0].size>(1024*1024)/2))
+    //     this.fileSizeExceed=true;
+    //   else{
+    //     this.fileSizeExceed=false;
+    //     this.file1 = event.target.files[0];
+    //   }
+    // }
+    // else this.fileSizeExceed = false;
   }
 
   toggleModel(modelName:string,bool:boolean){
     let model = document.getElementById(modelName);
-    model.style.display = (bool)?'block':'none';
+    let body = document.getElementsByTagName('body')[0];
+    if(bool){
+      document.getElementById('Panel1').style.display = 'flex';
+      body.classList.add('model');
+      model.style.display = 'flex';
+    }else{
+      document.getElementById('Panel1').style.display = 'none';
+      body.classList.remove('model');
+      model.style.display = 'none';
+    }
   }
 
   getRestaurantByName(name:string){
     let branch : string = name.substring(name.indexOf('(')+1,name.length-1);
     name = name.substring(0,name.indexOf('('));
-    let rest : Restaurant = new Restaurant(0,name,'','',branch,'','','','','',this.user.username);
+    let rest : Restaurant = new Restaurant(0,name,'','',branch,'','','',this.user.username);
     this.restService.getRestaurantByName(rest).subscribe(data=>{
       this.restaurant = data;
       this.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
@@ -127,6 +144,7 @@ export class MyRestaurantsComponent implements OnInit {
         this.restService.deleteRestaurant(rid).subscribe(data=>{
           if(data=='Success'){
             Swal.fire('Deleted!','Your restaurant is deleted.','success');
+            this.toggleModel("RestoUpdateForm",false);
             this.getRestaurantByUsername(this.user.username);
           }else{
             Swal.fire(data,'Unable to delete restaurant.','error');
@@ -135,110 +153,79 @@ export class MyRestaurantsComponent implements OnInit {
       }
     });
   }
-
-  getLatLng(bool:boolean){
-    if(this.rest.latlng===''){
-      return 0;
-    }
-    let latlng : string = this.rest.latlng;
-    return (bool)?parseFloat(latlng.substring(0,latlng.indexOf(','))):parseFloat(latlng.substring(latlng.indexOf(',')+1,latlng.length));
-  }
-
-  toggleMap1(){
-    let map = document.getElementById("map1");
-    if(map.style.display=='block'){
-      map.style.display = "none";
-    }else{
-      map.style.display = "block";
-      if(this.rest.latlng==''){
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
-            const pos = {
-              lat : position.coords.latitude,
-              lng : position.coords.longitude
-            };
-            this.rest.latlng = pos.lat+","+pos.lng;
-          },()=>{
-            alert("Location Disallowed");
-            this.toggleMap();
-          });
-        } else {
-          alert("Your browser doesn't support Geolocation.");
-        }
-      }
-    }
-  }
-
-  updateRestaurant(rest:Restaurant){
-    if(this.file1!==undefined)this.rest.profile = this.file1.name;
+  
+  updateRestaurant(rest:Restaurant,files:FileList){
     rest.latlng = this.pos.lat+','+this.pos.lng;
-    this.restService.updateRestaurant(rest).subscribe(data=>{
-      if(data=='Success'){
-        Swal.fire({title:'Congratulations!',text:'Restaurant updated successfully!',icon:'success'});
-        this.toggleModel('RestoUpdateForm',false);
-        if(this.file1!==undefined){
-          this.restService.addRestaurantProfile(this.file1);
-          this.file1 = undefined;
-          this.fileSizeExceed = false;
+    if(files.length==1){
+      let file:File = files[0];
+      this.restService.addRestaurantProfile(file).subscribe(data=>{
+        if(data=='Success'){
+          rest.profile = file.name;
+          this.restService.updateRestaurant(rest).subscribe(data=>{
+            if(data=='Success'){
+              Swal.fire({title:'Congratulations!',text:'Restaurant Updated Successfully.',icon:'success'});
+              this.toggleModel('RestoUpdateForm',false);
+            }else{
+              Swal.fire({title:'Sorry!',text:data,icon:'error'});
+            }
+          });
+        }else{
+          Swal.fire({title:'Sorry!',text:data,icon:'error'});
         }
-        this.getRestaurantByUsername(this.user.username);
-      }
-      else
-        Swal.fire({title:data,text:'Failed to update restaurant.',icon:'error'});
-    });
+      });
+    }else{
+      this.restService.updateRestaurant(rest).subscribe(data=>{
+        if(data=='Success'){
+          Swal.fire({title:'Congratulations!',text:'Restaurant Updated Successfully.',icon:'success'});
+          this.toggleModel('RestoUpdateForm',false);
+        }else{
+          Swal.fire({title:'Sorry!',text:data,icon:'error'});
+        }
+      });
+    }
   }
 
-  toggleMap(){
-    let map = document.getElementById("map");
-    if(map.style.display=='block'){
-      map.style.display = "none";
-    }else{
+  toggleMap(mapName:string,modelName:string,bool:boolean){
+    let map = document.getElementById(mapName);
+    let model = document.getElementById(modelName);
+    if(bool){
       map.style.display = "block";
-      this.pos.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
-      this.pos.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
+      model.style.display = "none";
+    }else{
+      map.style.display = "none";
+      model.style.display = "flex";
     }
   }
 
-  addRestaurant(){
-    this.rest.profile = this.file1.name;
-    if(this.rest.latlng===''){
-      this.map1HasError=true;
-      return;
-    }
-    this.map1HasError=false;
-    this.rest.username = this.user.username;
-    this.restService.addRestaurant(this.rest).subscribe(data=>{
-      if(data=='Restaurant added successfully'){
-        Swal.fire({ title:'Good Job!',text:data,icon:'success' });
-        this.toggleModel('RestoForm1',false);
-        this.restService.addRestaurantProfile(this.file1);
-        this.rest = new Restaurant(0,'','','','','','','','','','');
-        this.file1=undefined;
-        this.fileSizeExceed=false;
-        this.getRestaurantByUsername(this.user.username);
+  addRestaurant(rest:Restaurant,files:FileList){
+    rest.latlng = this.pos.lat+','+this.pos.lng;
+    this.restService.addRestaurantProfile(files[0]).subscribe(data=>{
+      if(data==='Success'){
+        rest.profile = files[0].name;
+        rest.username = this.user.username;
+        rest.branch+=',';
+        this.restService.addRestaurant(rest).subscribe(data=>{
+          if(data=='Restaurant added successfully'){
+            Swal.fire({ title:'Good Job!',text:data,icon:'success' });
+            this.toggleModel('RestoForm1',false);
+            this.rest = new Restaurant(0,'','','','','','','','');
+            this.getRestaurantByUsername(this.user.username);
+          }else{
+            Swal.fire({ title:data,icon:'error' });
+          }
+        });
       }else{
-        Swal.fire({ title:data,icon:'error' });
+        Swal.fire({title:'Sorry!',text:data,icon:'error'});
       }
     });
   }
 
-  locationChosen($event:AGMMouseEvent,bool:boolean){
-    if(bool){
-      this.selectedLatitude=$event.coords.lat;
-      this.selectedLongitude=$event.coords.lng;
-    }else{
-      this.rest.latlng = $event.coords.lat+','+$event.coords.lng;
+  chooseLocation($event:AGMMouseEvent){
+    this.pos = {
+      lat:$event.coords.lat,
+      lng:$event.coords.lng
     }
-  } 
-
-  locationChosen1($event:AGMMouseEvent,bool:boolean){
-    if(bool){
-      this.pos.lat=$event.coords.lat;
-      this.pos.lng=$event.coords.lng;
-    }else{
-      this.rest.latlng = $event.coords.lat+','+$event.coords.lng;
-    }
-  } 
+  }
 
   toggleCategoryModule(){
     let module = document.getElementById("CategoryModule");

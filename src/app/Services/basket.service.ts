@@ -38,6 +38,10 @@ export class BasketService {
     return this.http.post(this.baseUrl+'add-order-item/'+oid,item,{responseType:'text'});
   }
 
+  public updateOrder(order:Order1){
+    return this.http.post(this.baseUrl+'update-order',order,{responseType:'text'})
+  }
+
 
 
 

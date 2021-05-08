@@ -1,0 +1,112 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    font-family: 'poppins',sans-serif;
+    padding: 20px 10px;
+    user-select: none;
+}
+.container .box .message:hover{
+    font-weight: 600;
+}
+.d-none{
+    display: none;
+}
+.container .box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+}
+#RegisterForm{
+    width: 450px;
+    padding: 20px;
+    border: 1px solid;
+    min-width: 350px;
+}
+#RegisterForm .title{
+    font-size: 25px;
+    font-weight: 600;
+    text-align: center;
+}
+#RegisterForm .group{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+#RegisterForm .group small{
+    color: #f00;
+    font-size: 12px;
+}
+#RegisterForm .group input{
+    padding: 5px;
+    outline: none;
+    width: 400px;
+}
+#RegisterForm label{
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+#RegisterForm .locationCheck{
+    position: absolute;
+    right: 0;
+}
+#RegisterForm .locationCheck.fa-check{
+    color: rgb(0, 255, 30);
+}
+#RegisterForm .locationCheck.fa-times{
+    color: #f00;
+}
+#RegisterForm .buttons{
+    display: flex;
+    justify-content: center;
+}
+#RegisterForm .buttons input[type='submit']{
+    padding: 10px 0;
+    text-transform: uppercase;
+    outline: none;
+    width: 400px;
+    border: none;
+    background: #156ae8;
+    color: white;
+    margin: 10px;
+    cursor: pointer;
+}
+#RegisterForm .buttons input[type='submit']:disabled{
+    background-color: #508ae0;
+}
+
+#Panel{
+    font-family: 'poppins',sans-serif;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: rgb(76 76 76 / 60%);
+    z-index: 1;
+    justify-content: center;
+    display: none;
+    align-items: center;
+}
+#Map{
+    width: 90%;
+    height: 90%;
+    margin: 5vh;
+    position: relative;
+}
+#Map .fa-times{
+    position: absolute;
+    margin: 10px;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    background-color: #fff;
+}
+agm-map{
+    height: 100%;
+    width: 100%;
+}

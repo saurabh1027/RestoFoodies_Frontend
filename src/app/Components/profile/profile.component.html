@@ -12,10 +12,27 @@
     </div>
 </div>
 <router-outlet></router-outlet>
-<!--Models-->
-<div id="Panel">
 
-    <form #EditUserProfileModel='ngForm' id="EditUserProfileModel" (ngSubmit)='updateUserProfile(file.files[0])' class="form">
+
+
+<!--Models-->
+<div id="slidebar">
+    <p class="title">Task Bar</p>
+    <i class="fas fa-times" (click)='toggleSlideBar(false)'></i>
+    <ul class="action-list">
+        <li (click)='toggleModel("EditUserProfileModel",true)'>Edit Profile</li>
+        <a *ngIf='user.role==="Customer"' routerLink="/My-Basket"><li>Basket</li></a>
+        <a (click)='toggleSlideBar(false)' routerLink="/Profile/Restaurant" *ngIf='user.role==="Vendor"'><li>Restaurant</li></a>
+        <li (click)='toggleModel("UserProfileModel",true)' *ngIf='user.role==="Admin"'>Manage Users</li>
+        <a routerLink="/Profile/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>Orders</li></a>
+        <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List</li></a>
+    </ul>
+</div>
+
+<div id="Panel">
+    
+    <form #EditUserProfileModel='ngForm' id="EditUserProfileModel" (ngSubmit)='updateUserProfile(file.files[0],user)' class="form">
+        <i class="fas fa-times close" (click)='toggleModel("EditUserProfileModel",false)'></i>
         <span class="title">Update Your Profile</span>
         <div class="group">
             <label>Username : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
@@ -44,17 +61,14 @@
             <label>Email Id :</label>
             <input type="text" name="email" [(ngModel)]='user.email' #email='ngModel'>
         </div>
-        <div class="group">
-            <label>Address :</label>
-            <textarea name="address" [(ngModel)]='user.address' cols="30" rows="5" placeholder="Enter your address here."></textarea>
-        </div>
         <div class="buttons">
             <input type="submit" [disabled]='EditUserProfileModel.invalid || (file.files[0] && ((file.files[0].size)/((1024*1024)/2))>0.5)' value="Update">
-            <input type="reset" (click)='toggleModel("EditUserProfileModel",false)' value="Cancel">
+            <input type="reset" (click)='deleteUser(user.username)' value="Delete Profile">
         </div>
     </form>
-
-    <form #UserProfileModel='ngForm' (ngSubmit)='getUserByUsername()' id="UserProfileModel" class="form">
+    
+    <!-- Admin-Models Start -->
+    <form #UserProfileModel='ngForm' (ngSubmit)='getUserByUsername(username1.value)' id="UserProfileModel" class="form small">
         <span class="title">Update User Profile</span>
         <div class="group">
             <label>Username</label>
@@ -67,7 +81,9 @@
         </div>
     </form>
     
-    <form #UserEditProfileModel='ngForm' (ngSubmit)='updateUser1()' id="UserEditProfileModel" class="form">
+    <form #UserEditProfileModel='ngForm' (ngSubmit)='updateUserProfile(file1.files[0],user1)' id="UserEditProfileModel" class="form">
+        <i class="fas fa-times close" (click)='toggleModel("UserEditProfileModel",false)'></i>
+        <span class="title">Update Your Profile</span>
         <div class="group">
             <label>Password : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
             <div class="password">
@@ -81,33 +97,29 @@
             <input type="text" name="fullname1" required #fullname1='ngModel' [(ngModel)]="user1.fullname" maxlength="50">
             <small [class.d-none]='fullname1.valid || fullname1.untouched'>Fullname cannot be empty.</small>
         </div>
-        <select name="role" #role>
-            {{role.value}}
-            <option value="Customer">Customer</option>
-            <option value="Owner">Vendor</option>
-            <option value="Delivery Boy">Delivery Boy</option>
-            <option value="Admin">Admin</option>
-        </select>
-        <input type="file" #file1 name="userpic1" accept="image/*">
-        <input type="text" name="email" [(ngModel)]='user1.email' placeholder="Enter Email">
-        <textarea name="address" [(ngModel)]='user1.address' cols="30" rows="5">Address</textarea>
+        <div class="flex group">
+            <label>Role : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <select name="role" [(ngModel)]='user1.role' required>
+                <option value="Customer">Customer</option>
+                <option value="Vendor">Vendor</option>
+                <option value="Delivery">Delivery</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+        <div class="group">
+            <label>Profile picture :</label>
+            <input type="file" #file1 name="file1" (change)='changeUserPic()' accept="image/*">
+            <small *ngIf='file1.files[0] && ((file1.files[0].size)/((1024*1024)/2))>0.5'>File size should be less than 500KB.</small>
+        </div>
+        <div class="group">
+            <label>Email Id :</label>
+            <input type="text" name="email1" [(ngModel)]='user1.email' #email1='ngModel'>
+        </div>
         <div class="buttons">
-            <input type="submit" value="Update">
-            <input type="reset" (click)='deleteUser()' value="Delete">
+            <input type="submit" [disabled]='UserEditProfileModel.invalid || (file1.files[0] && ((file1.files[0].size)/((1024*1024)/2))>0.5)' value="Update">
+            <input type="reset" (click)='deleteUser(user1.username)' value="Delete User Profile">
         </div>
     </form>
+    <!-- Admin-Models End -->
 
-</div>
-<div id="slidebar">
-    <p class="title">Task Bar</p>
-    <i class="fas fa-times" (click)='toggleSlideBar(false)'></i>
-    <ul class="action-list">
-        <li (click)='toggleModel("EditUserProfileModel",true)'>Update Profile</li><!--toggleEditUserProfileModel(true)-->
-        <li (click)='deleteAccount()'>Delete Account</li>
-        <a *ngIf='user.role==="Customer"' routerLink="/Profile/My-Basket"><li>Basket</li></a>
-        <a (click)='toggleSlideBar(false)' routerLink="/Profile/Restaurant" *ngIf='user.role==="Vendor"'><li>Restaurant</li></a>
-        <li (click)='toggleUserProfileModel(true)' *ngIf='user.role==="Admin"'>Update User Account</li>
-        <a routerLink="/Profile/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>Orders</li></a>
-        <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List</li></a>
-    </ul>
 </div>

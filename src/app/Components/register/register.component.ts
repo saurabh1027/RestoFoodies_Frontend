@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Jwt } from 'src/app/Models/Jwt';
 import { User } from 'src/app/Models/User';
 import { UserService } from 'src/app/Services/user.service';
+import { MouseEvent as AGMMouseEvent } from '@agm/core';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -11,42 +12,64 @@ import Swal from 'sweetalert2';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  user : User = new User(0,"","","","Customer","","","","user.jpg");
+  user : User = new User(0,"","","","Customer","","","","","user.jpg");
   message : any;
   jwt : Jwt = new Jwt("","","");
+  pos:{lat:number,lng:number}={lat:0,lng:0};
+  geolocationPermission:string='';
+
   constructor(private service:UserService,private router:Router) {}
 
   ngOnInit(): void {
-    localStorage.removeItem("UserToken");
-    localStorage.removeItem("UserRole");
+    this.getCurrentLocation();
+  }
+
+  getCurrentLocation(){
+    navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus)=>{
+      console.log(permissionStatus.state);
+      if(permissionStatus.state=='granted'){
+        if(navigator.geolocation){
+          navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
+            this.pos = { lat:position.coords.latitude , lng:position.coords.longitude };
+          });
+        }
+      }else if(permissionStatus.state=='denied'){
+        alert('Location Disallowed!');
+      }else{
+        permissionStatus.onchange = ()=>{
+          this.getCurrentLocation();
+        }
+      }
+    });
   }
 
   saveUser(){
-    this.user.location = this.user.location.toLocaleUpperCase();
-    if(this.user.username=='')
-      Swal.fire({icon: 'error',title:'Empty Username'});
-    else if(this.user.password=='')
-      Swal.fire({icon:'error',title:'Empty Password'});
-    else if(this.user.fullname=='')
-      Swal.fire({icon:'error',title:'Empty Fullname'});
-    else{
-      this.service.saveUser(this.user).subscribe(data=>{
-        this.jwt=data;
-        if(this.jwt.message=='Success'){
-          localStorage.setItem("UserToken",this.jwt.token);
-          localStorage.setItem("UserRole",this.jwt.role);
-          Swal.fire({
-            icon:'success',
-            title:'User Data is stored'
-          });
-          this.router.navigate(['/Home']);
-        }else{
-          Swal.fire({
-            icon:'error',
-            title:this.jwt.message
-          });
-        }
-      });
+    this.user.latlng = this.pos.lat+','+this.pos.lng;
+    this.service.saveUser(this.user).subscribe(data=>{
+      this.jwt=data;
+      if(this.jwt.message=='Success'){
+        sessionStorage.setItem("UserToken",this.jwt.token);
+        Swal.fire({icon:'success',title:'Congratulations!',text:'Registration Successful.'});
+        this.router.navigate(['']);
+      }else{
+        Swal.fire({icon:'error',title:'Sorry!',text:this.jwt.message});
+      }
+    });
+  }
+
+  chooseLocation($event:AGMMouseEvent){
+    this.pos = { lat:$event.coords.lat , lng:$event.coords.lng }
+  }
+
+  toggleMap(bool:boolean){
+    if(bool){
+      document.getElementById('Panel').style.display = 'flex';
+      document.getElementsByTagName('body')[0].classList.add('model');
+    }else{
+      document.getElementById('Panel').style.display = 'none';
+      document.getElementsByTagName('body')[0].classList.remove('model');
+
     }
   }
+
 }

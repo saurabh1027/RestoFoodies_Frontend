@@ -28,6 +28,7 @@ const routes: Routes = [
   ]},
   {path:'Login',component:LoginComponent},
   {path:'Register',component:RegisterComponent},
+  {path:'Register',component:RegisterComponent},
   {path:'Items/:keyword',component:ItemsComponent},
   {path:'**',component:PageNotFoundComponent}
 ];

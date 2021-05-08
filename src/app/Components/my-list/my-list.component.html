@@ -10,8 +10,26 @@
             <span>No orders added!</span>
         </div>
         <div class="orders" *ngIf='orders.length>0'>
-            <div class="order" *ngFor='let order of orders'>
-                {{order.recipient_name}}
+
+            <div class="order" *ngFor='let o of orders'>
+                {{o.recipient_name}}
+                <button (click)='order=o;getAvailableItemsOfOrder(o);toggleModel("panel",true)'>View</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel -->
+<div id="panel">
+    <div class="box">
+        <div class="header">
+            <span class="price">Price: {{order.price}}</span>
+            <button (click)='finishOrder()'>Finish</button>
+        </div>
+        <div class="items">
+            <div class="item" *ngFor='let item of items'>
+                {{item.fname}}
             </div>
         </div>
     </div>
