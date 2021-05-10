@@ -26,6 +26,20 @@ export class MenuComponent implements OnInit {
     this.getAllCategories();
   }
 
+  toggleModel(modelName:string,bool:boolean){
+    let model = document.getElementById(modelName);
+    let body = document.getElementsByTagName('body')[0];
+    if(bool){
+      document.getElementById('Panel2').style.display = 'flex';
+      body.classList.add('model');
+      model.style.display = 'flex';
+    }else{
+      document.getElementById('Panel2').style.display = 'none';
+      body.classList.remove('model');
+      model.style.display = 'none';
+    }
+  }
+
   getAllCategories(){
     this.restService.getAllCategories().subscribe(data=>{
       this.categories=data;
@@ -42,7 +56,9 @@ export class MenuComponent implements OnInit {
         (data=='Success')?Swal.fire({title:'Item added!',icon:'success'}):Swal.fire({title:data,icon:'error'});
       }):Swal.fire({title:data,icon:'error'});
       this.pic = undefined;
-      if(data==='Success')this.toggleModel('AddItemForm',false);
+      if(data==='Success'){
+        this.toggleModel('AddItemForm',false);
+      }
     });
   }
 
@@ -55,7 +71,7 @@ export class MenuComponent implements OnInit {
       }else if(this.pic!=undefined){
         this.restService.addFoodItemPic(this.pic).subscribe(data=>{
           (data=='Success')?Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'}):Swal.fire({title:data,text:'Failed to update',icon:'error'});
-          if(data=='Success')this.toggleItemModel('UpdateItemForm',null,false);
+          if(data=='Success')this.toggleModel('UpdateItemForm',false);
         });
       }else{
         Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'});
@@ -71,9 +87,9 @@ export class MenuComponent implements OnInit {
     if((this.pic.size/(1024*1024))>0.5)this.fileSizeExceeded=true;
   }
 
-  toggleModel(modelName:string,bool:boolean){
-    document.getElementById(modelName).style.display = (bool)?'block':'none';
-  }
+  // toggleModel(modelName:string,bool:boolean){
+  //   document.getElementById(modelName).style.display = (bool)?'block':'none';
+  // }
   
   toggleItemModel(modelName:string,item:Food_Item,bool:boolean){
     this.fileSizeExceeded=false;

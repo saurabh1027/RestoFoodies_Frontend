@@ -322,7 +322,9 @@ agm-map{
 
 
 
-
+#AddCategoryForm{
+    display: none;
+}
 #RestoForm1{
     display: none;
 }
