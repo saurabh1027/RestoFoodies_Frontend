@@ -1,36 +1,64 @@
-<div *ngIf='!(food_items.length>0)' class="nothing">
-    <p>No items added yet!</p>
-</div>
-<div *ngIf='food_items.length>0' class="menu">
-    <div class="item" *ngFor='let i of food_items'>
-        <div class="img">
-            <a href="assets/images/food_items/{{i.pic}}" target="_blank"><img src="assets/images/food_items/{{i.pic}}"></a>
-        </div>
-        <div class="details">
-            <div class="left-box">
-                <span class="item-name">{{i.fname}}({{i.quantity}})</span>
-                <span *ngIf='i.ingredients!=""' class="ingredients" title="Used Ingredients">{{i.ingredients.substring(0,20)}}...</span>
-                <span *ngIf='i.description!=""' class="description" title="More Information">{{i.description.substring(0,20)}}...</span>
-            </div>
-            <div class="right-box">
-                <span *ngIf='i.vegeterian' class="veg-nonveg veg" title="{{i.vegeterian}}"></span>
-                <span *ngIf='!i.vegeterian' class="veg-nonveg non-veg" title="{{i.vegeterian}}"></span>
-                <span class="price" title="Price">{{i.price}} &#8377;</span>
-            </div>
-        </div>
-        <div class="buttons">
-            <button name="edit" (click)='item=i;toggleModel("UpdateItemForm",true)'>Edit</button>
-            <button name="delete" title="Delete this food-item permanently" (click)='deleteFoodItem(i.fid)'>Delete</button>
-        </div>
+<div class="menu">
+    <div class="topbar">
+        <p class="title">Menu</p>
+        <i class="fas fa-ellipsis-v" (mouseenter)='toggleMenuActionsModel()'></i>
+        <ul id="MenuActions">
+            <li (click)="toggleModel('AddCategoryForm',true)">Add Category</li>
+            <li (click)="toggleModel('SelectCategoryForm',true)">Select Category</li>
+            <li (click)="toggleModel('AddItemForm',true)">Add Food Item</li>
+        </ul>
     </div>
+
+    <div class="food-items">
+
+        <div *ngIf='!(food_items.length>0)' class="nothing">
+            <p>No items added yet!</p>
+            <button (click)='toggleModel("AddItemForm",true)'>Add Food Item</button>
+        </div>
+        <div *ngIf='food_items.length>0' class='list'>
+            <div class="item" *ngFor='let i of food_items'>
+                <div class="img">
+                    <a href="assets/images/food_items/{{i.pic}}" target="_blank"><img src="assets/images/food_items/{{i.pic}}"></a>
+                </div>
+                <div class="details">
+                    <div class="left-box">
+                        <span class="item-name">{{i.fname}}({{i.quantity}})</span>
+                        <span *ngIf='i.ingredients!=""' class="ingredients" title="Used Ingredients">{{i.ingredients.substring(0,20)}}...</span>
+                        <span *ngIf='i.description!=""' class="description" title="More Information">{{i.description.substring(0,20)}}...</span>
+                    </div>
+                    <div class="right-box">
+                        <span *ngIf='i.vegeterian' class="veg-nonveg veg" title="{{i.vegeterian}}"></span>
+                        <span *ngIf='!i.vegeterian' class="veg-nonveg non-veg" title="{{i.vegeterian}}"></span>
+                        <span class="price" title="Price">{{i.price}} &#8377;</span>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button name="edit" (click)='item=i;toggleModel("UpdateItemForm",true)'>Edit</button>
+                    <button name="delete" (click)='deleteFoodItem(i.fid)'>Delete</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
 </div>
-<div class="foodBtn" (click)='toggleModel("AddItemForm",true)'>
-    <i class="fas fa-plus" title="Add Food Item"></i>
-</div>
+
+
+
+
 
 
 <!-- Models -->
 <div id="Panel2">
+
+    <div id="SelectCategoryForm">
+        <i class="fas fa-times close" (click)="toggleModel('SelectCategoryForm',false)"></i>
+        <p class="title">Select Category</p>
+        <div class="group">
+            <span class="category" (click)='getFoodItems("All")'>All</span>
+            <span class="category" (click)='getFoodItems(cat.cname)' *ngFor='let cat of restCategories'>{{cat.cname}}</span>
+        </div>
+    </div>
 
     <form id="AddItemForm" #AddItemForm='ngForm' class="form" (ngSubmit)='addFoodItem()'>
         <p class="title">Add Food Item</p>
@@ -52,7 +80,7 @@
         <div class="group">
             <select style="cursor: pointer;" name="category" #category='ngModel' [(ngModel)]="food_item.cname" required>
                 <option value="" selected disabled>Select Category</option>
-                <option value="{{category.cname}}" *ngFor='let category of categories'>{{category.cname}}</option>
+                <option value="{{category.cname}}" *ngFor='let category of restCategories'>{{category.cname}}</option>
             </select>
             <small [class.d-none]='category.valid || category.untouched'>Please select a category.</small>
         </div>
@@ -84,10 +112,6 @@
         </div>
     </form>
 
-
-
-
-
     <form #UpdateItemForm='ngForm' (ngSubmit)='updateItem(item)' class="form" id="UpdateItemForm">
         <p class="title">Update Food-Item Details</p>
         <div class="group">
@@ -108,7 +132,8 @@
         <div class="group">
             <label>Category: </label>
             <select style="cursor: pointer;" name="category" #category1='ngModel' [(ngModel)]="item.cname" required>
-                <option value="{{category.cname}}" *ngFor='let category of categories'>{{category.cname}}</option>
+                <option value="" selected disabled>Select Category</option>
+                <option value="{{category.cname}}" *ngFor='let category of restCategories'>{{category.cname}}</option>
             </select>
             <small [class.d-none]='category1.valid || category1.untouched'>Please select a category.</small>
         </div>
@@ -145,6 +170,26 @@
             <input type="button" (click)='toggleModel("UpdateItemForm",false)' value="Cancel">
         </div>
     </form>
+
+    <form id="AddCategoryForm" #AddCategoryForm='ngForm' class="form" (ngSubmit)='addCategory(newCategory)'>
+
+        <i class="fas fa-times close" (click)='toggleModel("AddCategoryForm",false)'></i>
+        <span class="title" style="margin-bottom: 20px;">Add New Category</span>
+        <div class="group">
+            <label>Category Name: </label>
+            <input type="text" name='cname' #cname='ngModel' maxlength="50" [(ngModel)]='newCategory.cname' required>
+            <small [class.d-none]='cname.valid || cname.untouched'>Category name cannot be empty.</small>
+        </div>
+        <div class="group">
+            <textarea name="description" cols="30" rows="10" placeholder="Enter description of category here..."></textarea>
+        </div>
+        <div class="buttons">
+            <input type="submit" [disabled]='AddCategoryForm.invalid' value="Add Category">
+        </div>
+
+    </form>
+
+
 
 </div>
 

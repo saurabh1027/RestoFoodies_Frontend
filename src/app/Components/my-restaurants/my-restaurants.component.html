@@ -16,25 +16,9 @@
             <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
         </agm-map>
     </div>
+    
+    <app-menu [restaurant]='restaurant'></app-menu>
 
-    <div class="menu">
-        <div class="topbar">
-            <p class="title">Menu</p>
-            <button class="btn" (click)="toggleModel('AddCategoryForm',true)">Add Category</button>
-        </div>
-
-        <div class="category-list">
-            <div class="category-box">
-                <span class="category-name selected" title="All verieties of food items" (click)='getFoodItems("All")'>All</span>
-                <span class="category-name" title="{{category.description}}" (click)='getFoodItems(category.cname)' *ngFor="let category of restCategories">{{category.cname}}</span>
-            </div>
-        </div>
-        
-        <div class="food-items">
-            <app-menu [food_items]='food_items' [restaurant]='restaurant' [user]='user'></app-menu>
-        </div>
-        
-    </div>
 </div>
 
 
@@ -119,24 +103,6 @@
         <div class="buttons">
             <input type="submit" [disabled]='RestoForm1.form.invalid || file1.files.length!=1 || file1.files[0] && ( (file1.files[0].size/(1024*512)>0.5) )' value='Submit'>
         </div>
-    </form>
-
-    <form id="AddCategoryForm" #AddCategoryForm='ngForm' class="form" (ngSubmit)='addCategory(newCategory)'>
-
-        <i class="fas fa-times close" (click)='toggleModel("AddCategoryForm",false)'></i>
-        <span class="title" style="margin-bottom: 20px;">Add New Category</span>
-        <div class="group">
-            <label>Category Name: </label>
-            <input type="text" name='cname' #cname='ngModel' maxlength="50" [(ngModel)]='newCategory.cname' required>
-            <small [class.d-none]='cname.valid || cname.untouched'>Category name cannot be empty.</small>
-        </div>
-        <div class="group">
-            <textarea name="description" cols="30" rows="10" placeholder="Enter description of category here..."></textarea>
-        </div>
-        <div class="buttons">
-            <input type="submit" [disabled]='AddCategoryForm.invalid' value="Add Category">
-        </div>
-
     </form>
 
 </div>

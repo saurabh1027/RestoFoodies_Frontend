@@ -69,7 +69,17 @@ export class RestaurantProfileComponent implements OnInit {
 
   getCategoriesOfRestaurant(){
     this.restCategories = [];
-    this.restService.getRestaurantCategories(this.restaurant.rid).subscribe(data=>{
+    let str:string = '';
+    let cnames:string[]=[];
+    for(let i=0;i<this.restaurant.categories.length;i++){
+      if(this.restaurant.categories[i]==','){
+        cnames.push(str);
+        str = '';
+      }else{
+        str += this.restaurant.categories[i];
+      }
+    }
+    this.restService.getCategoriesByCnames(cnames).subscribe(data=>{
       this.restCategories = data;
       this.getFoodItems();
     });

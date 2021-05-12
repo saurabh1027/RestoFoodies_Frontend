@@ -1,7 +1,5 @@
 import { Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
-import { Category } from 'src/app/Models/Category';
-import { Food_Item } from 'src/app/Models/Food_Item';
 import { Restaurant } from 'src/app/Models/Restaurant';
 import { MouseEvent as AGMMouseEvent } from '@agm/core';
 import { User } from 'src/app/Models/User';
@@ -16,16 +14,10 @@ import Swal from 'sweetalert2';
 })
 export class MyRestaurantsComponent implements OnInit {
   branches:string[]=[];
-  newCategory:Category=new Category(0,'','');
   user:User=new User(0,'','','','','','','','','');
   restaurant : Restaurant = new Restaurant(0,'','','','','','','','');
   rest : Restaurant = new Restaurant(0,'','','','','','','','');
-  lat:number=0;
-  lng:number=0;
   pos={lat:0,lng:0};
-  categories:Category[]=[];
-  restCategories:Category[]=[];
-  food_items:Food_Item[] = [];
 
   constructor(private userService:UserService,private router:Router,private restService:RestaurantService) { }
 
@@ -53,7 +45,6 @@ export class MyRestaurantsComponent implements OnInit {
         this.getBranches(this.restaurant.branch);
         this.pos.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
         this.pos.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
-        this.getCategoriesOfRestaurant();
       }else{
         this.restaurant = new Restaurant(0,'','','','','','','','');
         this.getCurrentLocation();
@@ -96,18 +87,6 @@ export class MyRestaurantsComponent implements OnInit {
       model.style.display = 'none';
     }
   }
-  
-  // getRestaurantByName(name:string){
-  //   let branch : string = name.substring(name.indexOf('(')+1,name.length-1);
-  //   name = name.substring(0,name.indexOf('('));
-  //   let rest : Restaurant = new Restaurant(0,name,'','',branch,'','','',this.user.username);
-  //   this.restService.getRestaurantByName(rest).subscribe(data=>{
-  //     this.restaurant = data;
-  //     this.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
-  //     this.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
-  //     this.getCategoriesOfRestaurant();
-  //   });
-  // }
   
   deleteRestaurant(rid:number){
     Swal.fire({
@@ -183,6 +162,7 @@ export class MyRestaurantsComponent implements OnInit {
         rest.profile = files[0].name;
         rest.username = this.user.username;
         rest.branch+=',';
+        console.log(rest);
         this.restService.addRestaurant(rest).subscribe(data=>{
           if(data=='Restaurant added successfully'){
             Swal.fire({ title:'Good Job!',text:data,icon:'success' });
@@ -198,30 +178,6 @@ export class MyRestaurantsComponent implements OnInit {
       }
     });
   }
-  
-  addCategory(category:Category){
-    if(this.restaurant.categories.includes(category.cname+',')){
-      Swal.fire({title:'Category present already!',icon:'error'});
-    }else{
-      this.restService.addCategory(category).subscribe(data=>{
-        if(data=='Success' || data=='Already present!'){
-          this.restaurant.categories += category.cname+',';
-          this.restService.updateRestaurant(this.restaurant).subscribe(data=>{
-            console.log(this.restaurant);
-            if(data=='Success'){
-              Swal.fire({title:'Category added successfully!',icon:'success'});
-              this.toggleModel('AddCategoryForm',false);
-              this.getRestaurantByUsername(this.user.username);
-            }else{
-              Swal.fire({title:'Sorry!',text:data,icon:'error'});
-            }
-          });
-        }else{
-          Swal.fire({title:'Sorry!',text:data,icon:'error'});
-        }
-      });
-    }
-  }
 
   chooseLocation($event:AGMMouseEvent){
     this.pos = {
@@ -230,97 +186,4 @@ export class MyRestaurantsComponent implements OnInit {
     }
   }
 
-  // toggleCategoryModule(){
-  //   let module = document.getElementById("CategoryModule");
-  //   if(module.style.display=='block'){
-  //     this.categories = [];
-  //     module.style.display = "none";
-  //   }else{
-  //     module.style.display = "block";
-  //     this.getAllCategories();
-  //   }
-  // }
-
-
-  // addCat(){
-  //   this.restService.addCategory(this.newCategory).subscribe(data=>{
-  //     (data==='Success')?Swal.fire({title:'Congratulations',text:'Category added',icon:'success'}):
-  //     Swal.fire({title:'Sorry!',text:data,icon:'error'});
-  //     this.toggleModel('AddCategoryModel',false);
-  //     this.toggleModel('CategoryModule',true);
-  //     this.getAllCategories();
-  //   });
-  // }
-
-  // getAllCategories(){
-  //   this.restService.getAllCategories().subscribe(data=>{
-  //     this.categories = data;
-  //     if(this.restaurant.categories!=null)
-  //       this.addSelectedClass();
-  //   });
-  // }
-
-
-  // updateCategoriesOfRestaurant(){ 
-  //   if(this.restaurant.categories!=''){
-  //     this.restService.updateCategoriesOfRestaurant(this.restaurant.categories,this.restaurant.rid).subscribe(data=>{
-  //       if(data=='Success'){
-  //         Swal.fire('Updated!','Your selected categories updated successfully.','success');
-  //         let select = $('select[name="select-restaurants"]')[0].value;
-  //         this.getRestaurantByName(select);
-  //       }else{
-  //         Swal.fire(data,'Unable to update categories.','error');
-  //       }
-  //       // this.toggleCategoryModule();
-  //     });
-  //   }else{
-  //     Swal.fire('No Categories Selected!','You should select at least one category','error');
-  //   }
-  // }
-
-  // addSelectedClass(){
-  //   //Add 'selected' class to categories which are present in this.restaurant.categories
-  //   let restCategories : string[] = [''];
-  //   let str : string = '';
-  //   let j = 0 ;
-  //   for(let i=0;i<this.restaurant.categories.length;i++){
-  //     if(this.restaurant.categories[i]!=','){
-  //       str = str + this.restaurant.categories[i];
-  //     }else{
-  //       restCategories[j++] = str;
-  //       str = '';
-  //     }
-  //   }
-  //   setTimeout(() => {
-  //     var category = document.getElementsByClassName("category");
-  //     for(let i=0;i<category.length;i++){
-  //       if(restCategories.includes(category[i].innerHTML)){
-  //         category[i].classList.add('selected');
-  //       }
-  //     }
-  //   }, 100);
-  // }
-
-  getCategoriesOfRestaurant(){
-    this.restCategories = [];
-    this.restService.getRestaurantCategories(this.restaurant.rid).subscribe(data=>{
-      this.restCategories = data;
-      this.getFoodItems("All");
-    });
-  }
-
-  getFoodItems(cname:string){
-    let category =document.getElementsByClassName('category-name');
-    for(let i=0;i<category.length;i++){
-      if(category[i].innerHTML==cname){
-        category[i].classList.add("selected");
-      }else{
-        category[i].classList.remove("selected");
-      }
-    }
-    this.food_items = [];
-    this.restService.getFoodItems(cname,this.restaurant.rid).subscribe(data=>{
-      this.food_items = data;
-    });
-  }
 }

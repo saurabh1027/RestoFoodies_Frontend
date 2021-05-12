@@ -110,26 +110,6 @@ export class RestaurantPendingComponent implements OnInit {
     }
   }
   
-  // getPlacedOrdersOfBranch(){
-  //   if(this.restSelect.nativeElement.value==null || this.restSelect.nativeElement.value==undefined || this.restSelect.nativeElement.value==NaN)return;
-  //   this.baskService.getPlacedOrdersOfBranch(this.restSelect.nativeElement.value).subscribe(data=>{
-  //     this.orders=data;
-  //     this.order = new Order(0,'','','',0,'','');
-  //   },error=>console.log(error));
-  // }
-
-  getAvailableItemsOfRestaurant(oid:number){
-    this.cnt = 0;
-    this.restService.getAvailableItemsOfRestaurant(oid,parseInt(this.restSelect.nativeElement.value)).subscribe(data=>{
-      this.items = data;
-      for(let i=0;i<this.items.length;i++){
-        if(this.items[i].status==='Out Of Stock'){
-          this.cnt++;
-        }
-      }
-    });
-  }
-
   addOrderToList(oid:number){
     this.restService.addOrderToList(oid,this.restaurant.rid).subscribe(data=>{
       if(!data)return;
