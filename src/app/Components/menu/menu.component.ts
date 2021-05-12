@@ -5,6 +5,7 @@ import { Restaurant } from 'src/app/Models/Restaurant';
 import Swal from 'sweetalert2';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
   selector: 'app-menu',
@@ -12,24 +13,96 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  @Input() food_items : Food_Item[];
   @Input() restaurant : Restaurant;
-  categories : Category[]=[];
   fileSizeExceeded:boolean=false;
+  restCategories:Category[]=[];
   pic:File;
+  food_items : Food_Item[] = [];
   food_item : Food_Item = new Food_Item(0,'',0,'',0,'','',false,'',0,'','','',0);
   item : Food_Item = new Food_Item(0,'',0,'',0,'','',false,'',0,'','','',0);
+  newCategory:Category=new Category(0,'','');
 
-  constructor(private restService:RestaurantService,private router:Router) { }
+  constructor(private restService:RestaurantService,private userService:UserService,private router:Router) { }
 
   ngOnInit(): void {
-    this.getAllCategories();
+    this.getCategoriesByCnames();
+    this.getFoodItems("All");
   }
 
-  getAllCategories(){
-    this.restService.getAllCategories().subscribe(data=>{
-      this.categories=data;
+  toggleMenuActionsModel(){
+    let model = document.getElementById('MenuActions');
+    model.style.display = (model.style.display=='flex') ? 'none' : 'flex';
+  }
+
+  getCategoriesByCnames(){
+    this.restCategories = [];
+    if(this.restaurant.categories){
+      let str:string = '';
+      let cnames:string[]=[];
+      for(let i=0;i<this.restaurant.categories.length;i++){
+        if(this.restaurant.categories[i]==','){
+          cnames.push(str);
+          str = '';
+        }else{
+          str += this.restaurant.categories[i];
+        }
+      }
+      this.restService.getCategoriesByCnames(cnames).subscribe(data=>{
+        this.restCategories = data;
+      });
+    }
+  }
+
+  getFoodItems(cname:string){
+    let category =document.getElementsByClassName('category-name');
+    for(let i=0;i<category.length;i++){
+      if(category[i].innerHTML==cname){
+        category[i].classList.add("selected");
+      }else{
+        category[i].classList.remove("selected");
+      }
+    }
+    this.food_items = [];
+    this.restService.getFoodItems(cname,this.restaurant.rid).subscribe(data=>{
+      this.food_items = data;
     });
+  }
+
+  toggleModel(modelName:string,bool:boolean){
+    let model = document.getElementById(modelName);
+    let body = document.getElementsByTagName('body')[0];
+    if(bool){
+      document.getElementById('Panel2').style.display = 'flex';
+      body.classList.add('model');
+      model.style.display = 'flex';
+    }else{
+      document.getElementById('Panel2').style.display = 'none';
+      body.classList.remove('model');
+      model.style.display = 'none';
+    }
+  }
+
+  addCategory(category:Category){
+    if(this.restaurant.categories && this.restaurant.categories.includes(category.cname+',')){
+      Swal.fire({title:'Category present already!',icon:'error'});
+    }else{
+      this.restService.addCategory(category).subscribe(data=>{
+        if(data=='Success' || data=='Already present!'){
+          (this.restaurant.categories) ? this.restaurant.categories += category.cname+',' : this.restaurant.categories = category.cname + ',';
+          this.restService.updateRestaurant(this.restaurant).subscribe(data=>{
+            if(data=='Success'){
+              Swal.fire({title:'Category added successfully!',icon:'success'});
+              this.toggleModel('AddCategoryForm',false);
+              this.getCategoriesByCnames();
+            }else{
+              Swal.fire({title:'Sorry!',text:data,icon:'error'});
+            }
+          });
+        }else{
+          Swal.fire({title:'Sorry!',text:data,icon:'error'});
+        }
+      });
+    }
   }
 
   addFoodItem(){
@@ -42,7 +115,9 @@ export class MenuComponent implements OnInit {
         (data=='Success')?Swal.fire({title:'Item added!',icon:'success'}):Swal.fire({title:data,icon:'error'});
       }):Swal.fire({title:data,icon:'error'});
       this.pic = undefined;
-      if(data==='Success')this.toggleModel('AddItemForm',false);
+      if(data==='Success'){
+        this.toggleModel('AddItemForm',false);
+      }
     });
   }
 
@@ -55,7 +130,7 @@ export class MenuComponent implements OnInit {
       }else if(this.pic!=undefined){
         this.restService.addFoodItemPic(this.pic).subscribe(data=>{
           (data=='Success')?Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'}):Swal.fire({title:data,text:'Failed to update',icon:'error'});
-          if(data=='Success')this.toggleItemModel('UpdateItemForm',null,false);
+          if(data=='Success')this.toggleModel('UpdateItemForm',false);
         });
       }else{
         Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'});
@@ -71,10 +146,6 @@ export class MenuComponent implements OnInit {
     if((this.pic.size/(1024*1024))>0.5)this.fileSizeExceeded=true;
   }
 
-  toggleModel(modelName:string,bool:boolean){
-    document.getElementById(modelName).style.display = (bool)?'block':'none';
-  }
-  
   toggleItemModel(modelName:string,item:Food_Item,bool:boolean){
     this.fileSizeExceeded=false;
     if(bool){

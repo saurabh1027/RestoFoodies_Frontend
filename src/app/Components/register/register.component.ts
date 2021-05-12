@@ -5,6 +5,8 @@ import { User } from 'src/app/Models/User';
 import { UserService } from 'src/app/Services/user.service';
 import { MouseEvent as AGMMouseEvent } from '@agm/core';
 import Swal from 'sweetalert2';
+import { Emitter } from 'src/app/Models/Emitter';
+import { AesCryptoService } from 'src/app/Services/aes-crypto.service';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +20,7 @@ export class RegisterComponent implements OnInit {
   pos:{lat:number,lng:number}={lat:0,lng:0};
   geolocationPermission:string='';
 
-  constructor(private service:UserService,private router:Router) {}
+  constructor(private service:UserService,private cryptoService:AesCryptoService,private router:Router) {}
 
   ngOnInit(): void {
     this.getCurrentLocation();
@@ -26,7 +28,6 @@ export class RegisterComponent implements OnInit {
 
   getCurrentLocation(){
     navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus)=>{
-      console.log(permissionStatus.state);
       if(permissionStatus.state=='granted'){
         if(navigator.geolocation){
           navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
@@ -48,9 +49,16 @@ export class RegisterComponent implements OnInit {
     this.service.saveUser(this.user).subscribe(data=>{
       this.jwt=data;
       if(this.jwt.message=='Success'){
-        sessionStorage.setItem("UserToken",this.jwt.token);
-        Swal.fire({icon:'success',title:'Congratulations!',text:'Registration Successful.'});
         this.router.navigate(['']);
+        sessionStorage.setItem("UserToken",this.jwt.token);
+        localStorage.removeItem('cuser');
+        localStorage.removeItem('cpass');
+        localStorage.setItem('cuser',this.cryptoService.encryptData(this.user.username));
+        localStorage.setItem('cpass',this.cryptoService.encryptData(this.user.password));
+        Emitter.authEmitter.emit(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
       }else{
         Swal.fire({icon:'error',title:'Sorry!',text:this.jwt.message});
       }

@@ -1,17 +1,391 @@
-.nothing{
-    height: 350px;
+/*-----------------------------------------------------Panel-Start-----------------------------------------------------*/
+
+
+
+
+#Panel2{
+    font-family: 'poppins',sans-serif;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: rgb(76 76 76 / 90%);
+    z-index: 1;
+    justify-content: center;
+    display: none;
+    overflow-y: auto;
+    align-items: flex-start;
+}
+#MenuActions{
+    display: none;
+    position: absolute;
+    right: 0;
+    list-style: none;
+    row-gap: 10px;
+    padding: 10px 20px;
+    border: 1px solid #777;
+    top: 100%;
+    flex-direction: column;
+    z-index: 1;
+}
+#MenuActions li{
+    cursor: pointer;
+}
+#SelectCategoryForm{
+    display: none;
+    background-color: #fff;
+    width: 500px;
+    min-width: 350px;
+    min-height: 80vh;
+    margin: 10vh 0;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+}
+#SelectCategoryForm .title{
+    padding: 20px 0;
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+}
+#SelectCategoryForm .group{
+    position: relative;
+    text-align: center;
+    width: 90%;
+}
+#SelectCategoryForm .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 20px 30px;
+    color: #fff;
+    font-size: 25px;
+}
+#SelectCategoryForm .category{
+    padding: 5px 10px;
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid;
+    margin: 10px 5px;
+}
+#AddCategoryForm{
+    display: none;
+}
+#AddItemForm{
+    display: none;
+}
+#UpdateItemForm{
+    display: none;
+}
+.form{
+    user-select: none;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    margin: 10vh 0;
+    min-height: 80vh;
+    min-width: 350px;
+    width: 500px;
+}
+.form.small{
+    min-height: 30vh;
+}
+.form .close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 20px 30px;
+    color: #fff;
+    font-size: 25px;
+}
+.form .title{
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+}
+.form .group{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 5px 0;
+}
+.form .group select{
+    padding: 5px;
+    cursor: pointer;
+    outline: none;
+}
+.form .group.flex{
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.form .group.flex label input{
+    width: 100%;
+    outline: none;
+    padding: 5px;
+}
+.form .group .d-none{
+    display: none;
+}
+.form .group label{
+    font-size: 14px;
+}
+.form .group input[type='text'],
+.form .group input[type='password']{
+    padding: 5px;
+    outline: none;
+    width: 100%;
+}
+.form .group small{
+    color: #f00;
+    font-size: 12px;
+}
+.form .group .password{
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.form .group .password i{
+    position: absolute;
+    right: 5px;
+}
+.form textarea{
+    width: 100%;
+    padding: 5px;
+    resize: none;
+    outline: none;
+    border: 1px solid #555;
+}
+.form .buttons{
+    display: flex;
+    margin-top: 5px;
+    column-gap: 10px;
+}
+.form .buttons input{
+    padding: 10px;
+    min-width: 80px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    outline: none;
+}
+.form input[type="submit"],
+.form input[type="button"]{
+    background: #156ae8;
+}
+.form input[type="submit"]:disabled{
+    background: #5c93c5;
+}
+.form input[type="reset"]{
+    background: #ff0000;
+} 
+@media screen and (max-width:550px){
+    .form{
+        width: 350px;
+    }
+}
+
+
+/*-----------------------------------------------------Panel-End-----------------------------------------------------*/
+
+
+
+
+
+
+
+
+.menu{
+    width: 100%;
+    height: auto;
+    padding: 2.5vh 2.5vw;
+}
+.menu .topbar{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+    /* padding: 0 30px; */
+}
+.menu .topbar .title{
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    user-select: none;
+}
+.menu .btn{
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    background: rgb(20, 106, 187);
+    color: white;
+    cursor: pointer;
+    width: 100px;
+}
+.menu .category-list{
+    display: flex;
+    padding: 0 30px;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.menu .category-name{
+    border: 1px solid #111;
+    margin: 0 10px 10px;
+    padding: 0 10px;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+.menu .category-name.selected{
+    background-color: #1a9cb0;
+    color: white;
+}
+.food-items{
+    position: relative;
+}
+.food-items .nothing{
+    height: 50vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    row-gap: 10px;
 }
-.nothing p{
+.food-items .nothing p{
     font-size: 25px;
     font-weight: 600;
     color: #666;
     user-select: none;
 }
+.food-items .nothing button{
+    padding: 10px;
+    background-color: #155b9a;
+    border: none;
+    outline: none;
+    color: #fff;
+    cursor: pointer;
+}
+.list{
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto auto auto;
+    column-gap: 20px;
+    row-gap: 20px;
+    padding: 25px 20px;
+    grid-auto-flow: column;
+    grid-auto-columns: auto;
+}
+.list .item{
+    border: 1px solid #777;
+    width: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.list .item .img{
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+.list .item .img img{
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.list .item .details{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.list .item .left-box{
+    display: flex;
+    flex-direction: column;
+}
+.list .item .item-name{
+    font-weight: 700;
+    font-size: 20px;
+}
+.list .item .left-box .ingredients{
+    width: 200px;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: 600;
+}
+.list .item .left-box .description{
+    width: 200px;
+    overflow: hidden;
+    font-size: 13px;
+    color: #333;
+}
+.list .item .right-box .veg-nonveg{
+    top: 10px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.list .item .right-box .veg{
+    background-color: green;
+}
+.list .item .right-box .non-veg{
+    background-color: red;
+}
+.list .item .right-box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 20px;
+    justify-content: center;
+    row-gap: 5px;
+}
+.list .item .buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+    padding: 10px;
+}
+.list .item .buttons button{
+    padding: 5px 0;
+    width: 70px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+.list .item .buttons button[name="edit"]{
+    background-color: #1e45b5;
+}
+.list .item .buttons button[name="delete"]{
+    background-color: #f00;
+}
 
+
+
+
+
+
+
+
+
+
+/* 
 .foodBtn{
     position: absolute;
     top: -50px;
@@ -32,8 +406,8 @@
 }
 .d-none{
     display: none;
-}
-#AddItemForm,#UpdateItemForm{
+} */
+/* #AddItemForm,#UpdateItemForm{
     border: 1px solid;
     position: fixed;
     top: 50%;
@@ -118,13 +492,13 @@
         row-gap: 10px;
         align-items: baseline;
     }
-}
+} */
 
 
 
 
 
-.menu{
+/* .menu{
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: auto auto auto auto;
@@ -220,4 +594,4 @@
 }
 .menu .item .buttons button[name="delete"]{
     background-color: #f00;
-}
+} */

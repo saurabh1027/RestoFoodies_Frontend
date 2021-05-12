@@ -45,36 +45,4 @@ export class UserService {
     return this.http.post<Jwt>(this.baseUrl+"save-user",user);
   }    
 
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Not In Use
-
-
-  public isLoggedIn(){
-    let token:string=sessionStorage.getItem('UserToken');
-    if(token===null)return false;
-    return this.http.post(this.baseUrl+'validate-token',null);
-  }  
-
-
-
-
-
 }

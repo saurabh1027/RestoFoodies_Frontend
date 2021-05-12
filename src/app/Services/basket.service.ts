@@ -12,7 +12,6 @@ export class BasketService {
   baseUrl : string = 'http://localhost:8080/';
   
   constructor(private http:HttpClient) { }
-  // In Use
   
   public placeOrder(order:Order1){
     return this.http.post(this.baseUrl+'place-order',order,{responseType:"text"});
@@ -42,69 +41,4 @@ export class BasketService {
     return this.http.post(this.baseUrl+'update-order',order,{responseType:'text'})
   }
 
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Not In Use
-
-
-
-
-
-
-
-
-
-
-
-
-
-  public addOrder(order:Order){
-    return this.http.post(this.baseUrl+'add-order',order,{responseType:"text"});
-  }
-
-  public deleteOrder(oid:number){
-    return this.http.post(this.baseUrl+'delete-order',oid,{responseType:"text"});
-  }
-
-  public getOrder(name:string,username:string):Observable<Order>{
-    return this.http.post<Order>(this.baseUrl+'get-order/'+name,username);
-  }
-
-  public getFoodItemsOfOrder(oid:number):Observable<Food_Item[]>{
-    return this.http.post<Food_Item[]>(this.baseUrl+'get-food-items-of-order',oid);
-  }
-
-  public removeFoodItemFromOrder(fid:number,oid:number){
-    return this.http.post(this.baseUrl+'remove-order-item/'+fid,oid,{responseType:"text"});
-  }
-
-
-  public cancelOrder(oid:number){
-    return this.http.post(this.baseUrl+'cancel-order',oid,{responseType:"text"});
-  }
-
-  // public getPlacedOrdersOfBranch(branch:string):Observable<Order[]>{
-  //   return this.http.post<Order[]>(this.baseUrl+'get-restaurant-placed-orders',branch);
-  // }
-
-
-  
 }

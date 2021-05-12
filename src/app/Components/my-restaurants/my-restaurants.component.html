@@ -16,25 +16,9 @@
             <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
         </agm-map>
     </div>
+    
+    <app-menu [restaurant]='restaurant'></app-menu>
 
-    <div class="menu">
-        <div class="topbar">
-            <p class="title">Menu</p>
-            <button class="btn" (click)="toggleCategoryModule()">Add Category</button>
-        </div>
-
-        <div class="category-list">
-            <div class="category-box">
-                <span class="category-name selected" title="All verieties of food items" (click)='getFoodItems("All")'>All</span>
-                <span class="category-name" title="{{category.description}}" (click)='getFoodItems(category.cname)' *ngFor="let category of restCategories">{{category.cname}}</span>
-            </div>
-        </div>
-        
-        <div class="food-items">
-            <app-menu [food_items]='food_items' [restaurant]='restaurant' [user]='user'></app-menu>
-        </div>
-        
-    </div>
 </div>
 
 
@@ -126,7 +110,7 @@
 
 
 
-
+<!-- Maps -->
 <div id="Map">
     <i class="fas fa-times close" (click)='toggleMap("Map","RestoUpdateForm",false)'></i>
     <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='14' [fullscreenControl]='true' (mapClick)='chooseLocation($event)'>
@@ -139,32 +123,3 @@
         <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
     </agm-map>
 </div>
-<div id="CategoryModule">
-    <div class="row">
-        <p class="title">Categories</p>
-        <div class="buttons">
-            <button (click)='toggleModel("AddCategoryModel",true);toggleModel("CategoryModule",false)'>New</button>
-            <button (click)="updateCategoriesOfRestaurant()">Update</button>
-        </div>
-    </div>
-    <div class="nothing" *ngIf='!(categories.length>0)'>
-        <span>Nothing to show</span>
-    </div>
-    <div class="categories" *ngIf='categories.length>0'>
-        <span *ngFor="let category of categories" class="category" (click)="addCategory(category.cname)" title="{{category.description}}">{{category.cname}}</span>
-    </div>
-</div>
-<form id="AddCategoryModel" #AddCategoryModel='ngForm' (ngSubmit)='addCat()'>
-    <p class="heading">Add Category</p>
-    <div class="group">
-        <label>Category Name:</label>
-        <input type="text" name="newcat" #newcat='ngModel' [(ngModel)]='newCategory.cname' required>
-        <small [class.d-none]='newcat.valid || newcat.untouched'>Category name cannot be empty.</small>
-        <small [class.d-none]='!(newCategory.cname.length>15)'>Maximum limit exceeded</small>
-    </div>
-    <textarea name="description" [(ngModel)]='newCategory.description' cols="30" rows="10">Enter about category in brief...</textarea>
-    <div class="buttons">
-        <input [disabled]='AddCategoryModel.invalid || newCategory.cname.length>15 || AddCategoryModel.untouched' class="btn submitbtn" type="submit" value="Submit">
-        <input type="button" class="btn cancelbtn" (click)='toggleModel("AddCategoryModel",false)' value="Cancel">
-    </div>
-</form>
