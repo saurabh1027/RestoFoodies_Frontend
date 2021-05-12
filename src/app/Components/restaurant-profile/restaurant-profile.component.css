@@ -1,7 +1,25 @@
+*{
+    font-family: 'poppins',sans-serif;
+}
 .container{
     box-sizing: border-box;
     font-family: 'poppins',sans-serif;
     min-height: 75vh;
+}
+
+.me .topbar{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+.me .topbar .title{
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    user-select: none;
 }
 
 .profile{
@@ -38,19 +56,45 @@
     }
 }
 
-.nothing{
+.me .food-items{
+    position: relative;
+}
+
+.me .nothing{
     height: 350px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.nothing p{
+
+.me .nothing p{
     font-size: 25px;
     font-weight: 600;
     color: #666;
     user-select: none;
 }
+
+.me .category-box{
+    width: 90%;
+    padding: 10px;
+}
+
+.me .category-name{
+    border: 1px solid #111;
+    margin: 0 10px 10px;
+    padding: 0 10px;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.me .category-name.selected{
+    background-color: #1a9cb0;
+    color: white;
+}
+
+
 .menu{
     display: grid;
     grid-template-columns: 300px 300px 300px 300px;

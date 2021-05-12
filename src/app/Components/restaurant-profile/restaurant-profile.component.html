@@ -4,7 +4,7 @@
         <span class="name">{{restaurant.name}}</span>
     </div>
 
-    <div>
+    <div class="me">
         <div class="topbar">
             <p class="title">Menu</p>
         </div>
@@ -21,6 +21,7 @@
             <div *ngIf='!(food_items.length>0)' class="nothing">
                 <p>No items added yet!</p>
             </div>
+
             <div *ngIf='food_items.length>0' class="menu">
 
                 <div class="item" *ngFor='let item of items'>
@@ -67,6 +68,7 @@
         <button type="reset" (click)='toggleModel("AddOrderItemModel",false)' class="cancelbtn">Cancel</button>
     </div>
 </form>
+
 <div id="NoOrderModel">
     <span>You have not created any orders yet!</span>
     <div class="buttons">
