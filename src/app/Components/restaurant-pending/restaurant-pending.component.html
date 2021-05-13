@@ -1,7 +1,7 @@
 <div class="container">
     <div class="topbar">
         <span>Orders</span>
-        <select #restSelect (change)='getRestaurantPlacedOrdersByBranch()'>
+        <select #restSelect (change)='getRestaurantPlacedOrdersByBranch(restSelect.value)'>
             <option value="{{branch}}" *ngFor='let branch of branches'>{{branch}}</option>
         </select>
     </div>
@@ -11,9 +11,7 @@
                 [longitude]='o.destination.substring(o.destination.indexOf(",")+1,o.destination.length)'
                 *ngFor='let o of orders'>
                 <agm-info-window>
-                    <span style="font-weight: 600;">{{o.name}}</span><br>
-                    <span class="price" style="margin-top: 5px;">{{o.price}}&#8377;</span><br>
-                    <a class="view-more" (click)='order=o;getItemsOfOrderByOid(o.oid)' class='viewBtn'> View More</a>
+                    <a class="view-more" (click)='order=o;getItemsOfOrder()' class='viewBtn'>View More</a>
                 </agm-info-window>
             </agm-marker>
         </agm-map>

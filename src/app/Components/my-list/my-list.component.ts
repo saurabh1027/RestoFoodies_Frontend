@@ -21,10 +21,12 @@ export class MyListComponent implements OnInit {
   user:User=new User(0,'','','','','','','','','');
   restaurants:Restaurant[]=[];
   orders:Order1[]=[];
+  pos:{lat:number,lng:number} = {lat:0,lng:0};
   rid:number=0;
   items:Food_Item[]=[];
   branches:string[]=[];
   order:Order1 = new Order1(0,'','','','','',0,'','');
+  count:number = 0;
 
   constructor(private userService:UserService,private restService:RestaurantService,private baskService:BasketService,private router:Router) { }
 
@@ -53,13 +55,22 @@ export class MyListComponent implements OnInit {
     if(bool){
       model.style.display = 'flex';
       body.classList.add('model');
+      document.getElementById('Panel1').style.display = 'flex';
     }else{
       model.style.display = 'none';
       body.classList.remove('model');
+      document.getElementById('Panel1').style.display = 'none';
     }
   }
 
+  changeLocation(){
+    this.pos.lat = parseFloat(this.order.destination.substring( 0,this.order.destination.indexOf(',') ));
+    this.pos.lng = parseFloat(this.order.destination.substring( this.order.destination.indexOf(',')+1,this.order.destination.length ));
+  }
+
   finishOrder(){
+    alert('No action specified.');
+    return;
     this.order.status = 'Finished';
     this.baskService.updateOrder(this.order).subscribe(data=>{
       if(data=='Success'){
@@ -112,6 +123,7 @@ export class MyListComponent implements OnInit {
     this.restService.getItemsByFids(fids).subscribe(data=>{
       if(!data)return;
       this.items = data;
+      this.count = this.items.length;
     });
   }
 

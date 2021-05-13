@@ -6,7 +6,6 @@ import { ItemsComponent } from './Components/items/items.component';
 import { LoginComponent } from './Components/login/login.component';
 import { MyListComponent } from './Components/my-list/my-list.component';
 import { MyRestaurantsComponent } from './Components/my-restaurants/my-restaurants.component';
-import { OrderComponent } from './Components/order/order.component';
 import { PageNotFoundComponent } from './Components/page-not-found/page-not-found.component';
 import { ProfileComponent } from './Components/profile/profile.component';
 import { RegisterComponent } from './Components/register/register.component';
@@ -23,9 +22,7 @@ const routes: Routes = [
     {path:'Orders',component:RestaurantPendingComponent},
     {path:'My-List',component:MyListComponent},
   ]},
-  {path:'My-Basket',component:BasketComponent,children:[
-    {path:':name',component:OrderComponent},
-  ]},
+  {path:'My-Basket',component:BasketComponent},
   {path:'Login',component:LoginComponent},
   {path:'Register',component:RegisterComponent},
   {path:'Register',component:RegisterComponent},

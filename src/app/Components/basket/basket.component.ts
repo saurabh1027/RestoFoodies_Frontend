@@ -60,12 +60,6 @@ export class BasketComponent implements OnInit {
     }
   }
 
-  scrollToOrder(){
-    setTimeout(() => {
-      document.documentElement.scrollTop=725;
-    }, 200);
-  }
-  
   removeItem(fid:number){
     for(let i=0;i<this.items.length;i++){
       if(this.items[i].fid===fid){

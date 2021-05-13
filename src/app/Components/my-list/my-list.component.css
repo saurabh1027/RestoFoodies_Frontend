@@ -1,6 +1,7 @@
 .container{
     font-family: 'poppins',sans-serif;
     padding: 0 2.5%;
+    min-height: 80vh;
 }
 .topbar{
     display: flex;
@@ -17,9 +18,6 @@
     cursor: pointer;
     outline: none;
     border-radius: 5px;
-}
-.list{
-    border: 1px solid;
 }
 .list .nothing{
     display: flex;
@@ -42,36 +40,73 @@
         width: 100%;
     }
 }
-.orders .order{
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.orders{
+    width: 100%;
+    text-align: center;
+    min-width: 600px;
+    border: 1px solid #777;
+    border-collapse: collapse;
 }
-#panel{
+.orders td,.orders th{
+    border: 1px solid #777;
+    padding: 5px;
+}
+#Panel1{
     position: fixed;
     display: none;
     align-items: center;
     justify-content: center;
-    background-color: rgb(146, 146, 146,50%);
+    background: rgb(76 76 76 / 90%);
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     font-family: 'poppins',sans-serif;
 }
-#panel .box{
-    min-width: 350px;
-    width: 90%;
+#Map{
+    display: none;
     height: 90vh;
-    min-height: 400px;
+    width: 90vw;
+}
+agm-map{
+    width: 100%;
+    height: 100%;
+}
+.close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 20px;
+    font-size: 25px;
+    color: #fff;
+}
+#OrderBox{
+    display: none;
+    height: 90vh;
+    width: 90vw;
+}
+#OrderBox .box{
+    width: 100%;
     background-color: #fff;
 }
-#panel .box .header{
+#OrderBox .box .header{
     height: 50px;
-    border: 1px solid #111;
     width: 100%;
+    border-bottom: 1px solid #777;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
+}
+#OrderBox .box .header .count{
+    color: #333;
+    font-weight: 600;
+}
+#OrderBox .box .header button{
+    padding: 10px 30px;
+    border: none;
+    color: #fff;
+    background: #01639c;
+    cursor: pointer;
+    outline: none;
 }

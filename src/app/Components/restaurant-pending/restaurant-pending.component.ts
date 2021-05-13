@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component , OnInit, ViewChild } from '@angular/core';
 import { Restaurant } from 'src/app/Models/Restaurant';
 import { User } from 'src/app/Models/User';
 import { BasketService } from 'src/app/Services/basket.service';
@@ -15,12 +15,9 @@ import { Order1 } from 'src/app/Models/Order1';
   styleUrls: ['./restaurant-pending.component.css']
 })
 export class RestaurantPendingComponent implements OnInit {
-  @ViewChild('restSelect') restSelect:ElementRef;
   restaurant:Restaurant=new Restaurant(0,'','','','','','','','');
   user:User=new User(0,'','','','','','','','','');
   pos:{lat:number,lng:number}={lat:0,lng:0};
-  lat:number=0;
-  lng:number=0;
   orders:Order1[]=[];
   order : Order1 = new Order1(0,'','','','','',0,'','')
   items:Food_Item[]=[];
@@ -75,39 +72,35 @@ export class RestaurantPendingComponent implements OnInit {
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
         this.pos = {lat:position.coords.latitude , lng:position.coords.longitude};
-        this.getRestaurantPlacedOrdersByBranch();
+        this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
       });
     }
   }
 
-  getRestaurantPlacedOrdersByBranch(){
-    if(!this.restSelect.nativeElement.value)return;
-    this.baskService.getRestaurantPlacedOrdersByBranch(this.restSelect.nativeElement.value,this.restaurant.name).subscribe(data=>{
+  getRestaurantPlacedOrdersByBranch(branch:string){
+    console.log(branch);
+    if(!branch)return;
+    this.baskService.getRestaurantPlacedOrdersByBranch(branch,this.restaurant.name).subscribe(data=>{
       if(data){
         this.orders = data;
       }
     });
   }
   
-  getItemsOfOrderByOid(oid:number){
-    let fids:number[]=[];
+  getItemsOfOrder(){
     this.cnt = 0;
-    for(let i=0;i<this.orders.length;i++){
-      if(this.orders[i].oid===oid){
-        fids = JSON.parse(this.orders[i].items);
-        this.restService.getItemsByFids(fids).subscribe(data=>{
-          this.items = (data)?data:[];
-          for(let i=0;i<this.items.length;i++){
-            if(this.items[i].status==='Out Of Stock'){
-              this.cnt++;
-            }
-          }
-          setTimeout(() => {
-            document.documentElement.scrollTop=725;
-          }, 200);
-        });
+    let fids : number[] = JSON.parse(this.order.items);
+    this.restService.getItemsByFids(fids).subscribe(data=>{
+      this.items = (data)?data:[];
+      for(let i=0;i<this.items.length;i++){
+        if(this.items[i].status==='Out Of Stock'){
+          this.cnt++;
+        }
       }
-    }
+      setTimeout(() => {
+        document.documentElement.scrollTop=725;
+      }, 200);
+    });
   }
   
   addOrderToList(oid:number){
@@ -115,7 +108,7 @@ export class RestaurantPendingComponent implements OnInit {
       if(!data)return;
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',icon:'success'});
-        this.getRestaurantPlacedOrdersByBranch();
+        this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
         this.items = [];
         this.order = new Order1(0,'','','','','',0,'','');
       }else{
@@ -131,7 +124,7 @@ export class RestaurantPendingComponent implements OnInit {
     this.baskService.updateItems(this.items).subscribe(data=>{
       if(data==='Success'){
         this.cnt = 0;
-        this.getItemsOfOrderByOid(this.order.oid);
+        this.getItemsOfOrder();
       }
     });
   }
@@ -140,7 +133,7 @@ export class RestaurantPendingComponent implements OnInit {
     this.baskService.rejectOrder(oid).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'});
-        this.getRestaurantPlacedOrdersByBranch();
+        this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
         this.items = [];
         this.order = new Order1(0,'','','','','',0,'','');
       }else{
