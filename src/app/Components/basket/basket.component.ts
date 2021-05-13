@@ -19,6 +19,7 @@ export class BasketComponent implements OnInit {
   pos:{lat:number,lng:number}={lat:0,lng:0};
   loggedIn:boolean=false;
   items:Food_Item[]=[];
+  orders:Order1[]=[];
   order1:Order1=new Order1(0,'','0,0','','Placed','',0,'','');
   delivery_charge:number=50;
 
@@ -90,6 +91,15 @@ export class BasketComponent implements OnInit {
         break;
       }
     }
+  }
+
+  assignContact(contact:string){
+    this.user.contact = contact;
+    this.baskService.getOrdersByContact(contact).subscribe(data=>{
+      if(data){
+        this.orders = data;
+      }
+    });
   }
 
   placeOrder(){
