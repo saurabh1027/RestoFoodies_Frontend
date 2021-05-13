@@ -95,11 +95,11 @@ export class BasketComponent implements OnInit {
 
   assignContact(contact:string){
     this.user.contact = contact;
-    this.baskService.getOrdersByContact(contact).subscribe(data=>{
-      if(data){
-        this.orders = data;
-      }
-    });
+    // this.baskService.getOrdersByContact(contact).subscribe(data=>{
+    //   if(data){
+    //     this.orders = data;
+    //   }
+    // });
   }
 
   placeOrder(){

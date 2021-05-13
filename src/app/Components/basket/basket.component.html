@@ -1,4 +1,23 @@
 <div class="container">
+
+    <div class="column">
+
+        <div class="group" *ngIf='!user.contact'>
+            <input type="text" name="contact" placeholder="Enter contact" pattern="[0-9]{10}" #contact='ngModel' ngModel required>
+            <div *ngIf='contact.errors'>
+                <small *ngIf='contact.errors.pattern'>Contact must be of 10 digits.</small>
+                <small *ngIf='contact.errors.required && contact.touched'>Contact cannot be empty.</small>
+            </div>
+            <button [disabled]='contact.errors' (click)='assignContact(contact.value)'>Submit</button>
+        </div>
+
+        <div class="orders" *ngIf='user.contact'>
+
+            hello
+        </div>
+
+    </div>
+
     <div class="basket">
 
         <div class="header" *ngIf='rname'>
@@ -38,7 +57,39 @@
 
         
     </div>
+
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- Models -->
 <div id="map">

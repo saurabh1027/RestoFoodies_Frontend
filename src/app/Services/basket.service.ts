@@ -41,8 +41,8 @@ export class BasketService {
     return this.http.post(this.baseUrl+'update-order',order,{responseType:'text'})
   }
 
-  public getOrdersByContact(contact:string):Observable<Order1[]>{
-    return this.http.post<Order1[]>(this.baseUrl+'get-order-by-contact')
-  }
+  // public getOrdersByContact(contact:string):Observable<Order1[]>{
+  //   return this.http.post<Order1[]>(this.baseUrl+'get-order-by-contact')
+  // }
 
 }
