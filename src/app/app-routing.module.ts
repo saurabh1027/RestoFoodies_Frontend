@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminComponent } from './Components/admin/admin.component';
 import { BasketComponent } from './Components/basket/basket.component';
+import { DeliveryComponent } from './Components/delivery/delivery.component';
 import { HomeComponent } from './Components/home/home.component';
 import { ItemsComponent } from './Components/items/items.component';
 import { LoginComponent } from './Components/login/login.component';
@@ -21,11 +23,15 @@ const routes: Routes = [
     {path:'Restaurant',component:MyRestaurantsComponent},
     {path:'Orders',component:RestaurantPendingComponent},
     {path:'My-List',component:MyListComponent},
+    {path:'Delivery',component : DeliveryComponent}
   ]},
+  
   {path:'My-Basket',component:BasketComponent},
   {path:'Login',component:LoginComponent},
   {path:'Register',component:RegisterComponent},
-  {path:'Register',component:RegisterComponent},
+  
+  {path : 'Admin' , component : AdminComponent},
+  
   {path:'Items/:keyword',component:ItemsComponent},
   {path:'**',component:PageNotFoundComponent}
 ];

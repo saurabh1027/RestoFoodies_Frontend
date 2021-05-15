@@ -8,6 +8,7 @@ import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { UserService } from 'src/app/Services/user.service';
 import Swal from 'sweetalert2';
 import * as $ from 'jquery';
+import { Order1 } from 'src/app/Models/Order1';
 
 @Component({
   selector: 'app-items',
@@ -17,7 +18,7 @@ import * as $ from 'jquery';
 export class ItemsComponent implements OnInit {
   user:User=new User(0,'','','','Customer','','','','','user.jpg');
   keyword:string='';
-  orders:Order[]=[];
+  orders:Order1[]=[];
   items:Food_Item[]=[];
   fid:number=0;
   food_item:Food_Item=null;

@@ -24,7 +24,7 @@ export class RestaurantProfileComponent implements OnInit {
   items:Food_Item[]=[];
   loggedIn:boolean=false;
   item:Food_Item=new Food_Item(0,'',0,'',0,'','',false,'',0,'','','',0);
-  orders:Order[]=[];
+  orders:Order1[]=[];
   user:User=new User(0,'','','','','','','','','');
 
   constructor(private baskService:BasketService,private restService:RestaurantService,private active:ActivatedRoute,
@@ -110,7 +110,7 @@ export class RestaurantProfileComponent implements OnInit {
   getOrders(){
     (this.loggedIn)?
     this.baskService.getOrdersByUsername(this.user.username).subscribe(data=>{
-      this.orders=data;
+      this.orders = data;
     }):
     this.orders = JSON.parse(localStorage.getItem('orders'));
   }

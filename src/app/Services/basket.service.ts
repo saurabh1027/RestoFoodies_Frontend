@@ -28,8 +28,14 @@ export class BasketService {
     return this.http.patch(this.baseUrl+'Items',items,{responseType:'text'});
   }
   
-  public getOrdersByUsername(username:string):Observable<Order[]>{
-    return this.http.get<Order[]>(this.baseUrl+'Customers/'+username+'/Orders');
+  public getOrdersByUsername(username:string):Observable<Order1[]>{
+    return this.http.get<Order1[]>(this.baseUrl+'Customers/'+username+'/Orders');
+  }
+
+  public getOrdersByLocation(location : string) : Observable<Order1[]>{
+    let params = new HttpParams();
+    params = params.append('location',location);
+    return this.http.get<Order1[]>(this.baseUrl+'Delivery' , {params : params})
   }
   
   public updateOrder(order:Order1){

@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
       if(!data)this.router.navigate(['Login']);
       this.user = data;
       (this.user.role==='Vendor')?this.router.navigate(['Profile','My-List']):
+      (this.user.role==='Delivery')?this.router.navigate(['Profile' , 'Delivery']):
       ((this.user.role==='Customer')?this.router.navigate(['My-Basket']):
         console.log("other roles")
       );

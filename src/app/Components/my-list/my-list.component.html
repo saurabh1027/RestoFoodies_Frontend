@@ -5,10 +5,8 @@
             <option value="{{b}}" *ngFor='let b of branches'>{{b}}</option>
         </select>
     </div>
+
     <div class="list">
-        <div class="nothing" *ngIf='!(orders.length>0)'>
-            <span>No orders added!</span>
-        </div>
         <table class="orders">
             <tr>
                 <th>Id</th>
@@ -31,8 +29,13 @@
                 </td>
             </tr>
         </table>
+
+        <div class="nothing" *ngIf='!(orders.length>0)'>
+            <span>No orders added!</span>
+        </div>
     </div>
 </div>
+
 
 <!-- Panel -->
 <div id="Panel1">

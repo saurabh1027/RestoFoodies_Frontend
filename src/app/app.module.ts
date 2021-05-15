@@ -23,12 +23,33 @@ import { RestaurantPendingComponent } from './Components/restaurant-pending/rest
 import { MyListComponent } from './Components/my-list/my-list.component';
 import { RestaurantsComponent } from './Components/restaurants/restaurants.component';
 import { RestaurantProfileComponent } from './Components/restaurant-profile/restaurant-profile.component';
+import { AdminComponent } from './Components/admin/admin.component';
+import { DeliveryComponent } from './Components/delivery/delivery.component';
 /*import { AuthInterceptor } from './Services/auth.interceptor'; */
 
 @NgModule({
   declarations: [
-    AppComponent,HomeComponent,LoginComponent,PageNotFoundComponent, HeaderComponent, RegisterComponent, OffersComponent, ProfileComponent, MenuComponent, BasketComponent, OrderComponent, MyRestaurantsComponent, ItemsComponent, RestaurantPendingComponent, MyListComponent, RestaurantsComponent, RestaurantProfileComponent
+    AppComponent,
+    HomeComponent,
+    LoginComponent,
+    PageNotFoundComponent,
+    HeaderComponent,
+    RegisterComponent,
+    OffersComponent,
+    ProfileComponent,
+    MenuComponent,
+    BasketComponent,
+    OrderComponent,
+    MyRestaurantsComponent,
+    ItemsComponent,
+    RestaurantPendingComponent,
+    MyListComponent,
+    RestaurantsComponent,
+    RestaurantProfileComponent,
+    AdminComponent,
+    DeliveryComponent
   ],
+
   imports: [
     BrowserModule,
     CommonModule,
@@ -39,7 +60,9 @@ import { RestaurantProfileComponent } from './Components/restaurant-profile/rest
       apiKey:'AIzaSyDhFPQeg3ZjTSUDdJp_YCgtqAH9cIFWN0Q'
     })
   ],
+
   providers: [ CookieService , /*[{provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor,multi:true}] */],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
