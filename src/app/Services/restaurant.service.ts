@@ -22,10 +22,19 @@ export class RestaurantService {
   public getLocations():Observable<string[]>{
     return this.http.get<string[]>(this.baseUrl+'get-locations');
   }
-
+  
   public getAllItems(city:string):Observable<Food_Item[]>{
     return (city==='')? this.http.post<Food_Item[]>(this.baseUrl+'get-all-items',null):
     this.http.post<Food_Item[]>(this.baseUrl+'get-all-city-items',city);
+  }
+  
+  public getCategoriesByCnames(cnames:string[]):Observable<Category[]>{
+    return this.http.post<Category[]>(this.baseUrl+'get-categories-by-cnames',cnames);
+  }
+  
+  public getItemsOfKeywords(keyword:string,city:string):Observable<Food_Item[]>{
+    return (city==='')?this.http.post<Food_Item[]>(this.baseUrl+'get-keyword-items/'+keyword,null):
+      this.http.post<Food_Item[]>(this.baseUrl+'get-city-keyword-items/'+keyword,city);
   }
 
   // In Use
@@ -77,35 +86,28 @@ export class RestaurantService {
   public getRestaurantByUsername(username:string):Observable<Restaurant>{
     return this.http.get<Restaurant>(this.baseUrl+'/Users/'+username+'/Restaurant');
   }
-
-  //Above are done
-
-
-
   
   public addCategory(category:Category){
-    return this.http.post(this.baseUrl+'add-category',category,{responseType:'text'});
+    return this.http.post(this.baseUrl+'Category',category,{responseType:'text'});
   }
   
   public deleteRestaurant(rid:number){
-    return this.http.post(this.baseUrl+"delete-restaurant/"+rid,null,{responseType:"text"});
-  }
-  
-  public getCategoriesByCnames(cnames:string[]):Observable<Category[]>{
-    return this.http.post<Category[]>(this.baseUrl+'get-categories-by-cnames',cnames);
+    return this.http.delete(this.baseUrl+"Restaurant/"+rid,{responseType:"text"});
   }
   
   public updateRestaurant(rest:Restaurant){
-    return this.http.post(this.baseUrl+'update-restaurant',rest,{responseType:'text'});
+    return this.http.patch(this.baseUrl+'Restaurant',rest,{responseType:'text'});
   }
   
   public getFoodItems(cname:string,rid:number):Observable<Food_Item[]>{
-    return this.http.post<Food_Item[]>(this.baseUrl+'get-food-items/'+rid,cname);
+    let params : HttpParams = new HttpParams();
+    params = params.append('cname',cname);
+    return this.http.get<Food_Item[]>(this.baseUrl+'Restaurant/'+rid+'Items',{ params:params });
   }
 
-  public getItemsOfKeywords(keyword:string,city:string):Observable<Food_Item[]>{
-    return (city==='')?this.http.post<Food_Item[]>(this.baseUrl+'get-keyword-items/'+keyword,null):
-      this.http.post<Food_Item[]>(this.baseUrl+'get-city-keyword-items/'+keyword,city);
-  }
+
+
+
+
 
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Jwt } from '../Models/Jwt';
 import { Observable } from 'rxjs';
 import { User } from '../Models/User';
@@ -9,14 +9,14 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class UserService {
-  username : string = '';
   baseUrl : string = 'http://localhost:8080/';
-  token:string;
-  constructor(private http:HttpClient,private router:Router) {}
+  constructor(private http:HttpClient) {}
   
   // In Use
   public getUserByToken(token):Observable<User>{
-    return this.http.post<User>(this.baseUrl+'ValidateToken',token);
+    let params : HttpParams = new HttpParams();
+    params = params.append('token',token);
+    return this.http.get<User>(this.baseUrl+'User',{ params:params });
   }  
   
   public authenticateUser(user):Observable<Jwt>{
@@ -26,11 +26,11 @@ export class UserService {
   public updateUserPic(file:File){
     let formdata : FormData = new FormData();
     formdata.append('file',file,file.name);
-    return this.http.post(this.baseUrl+"update-user-pic",formdata,{responseType:'text'});
+    return this.http.patch(this.baseUrl+"User-Profile",formdata,{responseType:'text'});
   }
   
   public updateUser(user:User){
-    return this.http.post(this.baseUrl+"update-user",user,{responseType:'text'});
+    return this.http.patch(this.baseUrl+"User",user,{responseType:'text'});
   }
   
   public deleteUser(username:string){
@@ -38,7 +38,9 @@ export class UserService {
   }
   
   public getUserByUsername(username:string):Observable<User>{
-    return this.http.post<User>(this.baseUrl+'get-user',username);
+    let params : HttpParams = new HttpParams();
+    params = params.append('username',username);
+    return this.http.get<User>(this.baseUrl+'User',{ params:params });
   }
   
   public saveUser(user):Observable<Jwt>{
