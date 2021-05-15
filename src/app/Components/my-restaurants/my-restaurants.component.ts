@@ -164,7 +164,7 @@ export class MyRestaurantsComponent implements OnInit {
         rest.branch+=',';
         console.log(rest);
         this.restService.addRestaurant(rest).subscribe(data=>{
-          if(data=='Restaurant added successfully'){
+          if(data=='Success'){
             Swal.fire({ title:'Good Job!',text:data,icon:'success' });
             this.toggleModel('RestoForm1',false);
             this.rest = new Restaurant(0,'','','','','','','','');

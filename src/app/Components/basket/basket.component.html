@@ -2,18 +2,33 @@
 
     <div class="column">
 
-        <div class="group" *ngIf='!user.contact'>
-            <input type="text" name="contact" placeholder="Enter contact" pattern="[0-9]{10}" #contact='ngModel' ngModel required>
-            <div *ngIf='contact.errors'>
-                <small *ngIf='contact.errors.pattern'>Contact must be of 10 digits.</small>
-                <small *ngIf='contact.errors.required && contact.touched'>Contact cannot be empty.</small>
+        <div class="contact-form" *ngIf='!user.contact'>
+            <div class="group">
+                <input type="text" name="contact" placeholder="Enter contact" pattern="[0-9]{10}" #contactValue #contact='ngModel' ngModel required>
+                <div *ngIf='contact.errors'>
+                    <small *ngIf='contact.errors.pattern'>Contact must be of 10 digits.</small>
+                    <small *ngIf='contact.errors.required && contact.touched'>Contact cannot be empty.</small>
+                </div>
             </div>
-            <button [disabled]='contact.errors' (click)='assignContact(contact.value)'>Submit</button>
+            <!-- <button [disabled]='contact.errors' (click)='assignContact(contact.value)'>Submit</button> -->
+            <button (click)='toggleModel("OtpForm",true)' [disabled]='contact.errors'>Send OTP</button>
         </div>
 
         <div class="orders" *ngIf='user.contact'>
-
-            hello
+            <table class="orders-table">
+                <tr>
+                    <th>Recipient</th>
+                    <th>Status</th>
+                    <th>Price(&#8377;)</th>
+                    <th></th>
+                </tr>
+                <tr *ngFor='let o of orders'>
+                    <td>{{o.recipient_name}}</td>
+                    <td>{{o.status}}</td>
+                    <td>{{o.price}}</td>
+                    <td><button>View More</button></td>
+                </tr>
+            </table>
         </div>
 
     </div>
@@ -62,35 +77,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- Models -->
 <div id="map">
     <i (click)='toggleMap("map",false)' class="fas fa-times"></i>
@@ -99,7 +85,17 @@
     </agm-map>  
 </div>
 <div id="Panel">
-    <div id="ContactModel">
-
+    <div id="OtpForm">
+        <p>Enter OTP</p>
+        <div class="group">
+            <div class="input-box">
+                <input type="number" max="9" min="0" #otp1='ngModel' [(ngModel)]='otp[0]' pattern="[0-9]{1}" required>
+                <input type="number" max="9" min="0" #otp2='ngModel' [(ngModel)]='otp[1]' pattern="[0-9]{1}" required>
+                <input type="number" max="9" min="0" #otp3='ngModel' [(ngModel)]='otp[2]' pattern="[0-9]{1}" required>
+                <input type="number" max="9" min="0" #otp4='ngModel' [(ngModel)]='otp[3]' pattern="[0-9]{1}" required>
+            </div>
+            <small [class.d-none]='(otp1.valid && otp2.valid && otp3.valid && otp4.valid) || (otp1.untouched && otp2.untouched && otp3.untouched && otp4.untouched)'>OTP must contain at least 1 integer.</small>
+        </div>
+        <button [disabled]='!(otp1.valid && otp2.valid && otp3.valid && otp4.valid)' (click)='validateOtp()'>Submit</button>
     </div>
 </div>

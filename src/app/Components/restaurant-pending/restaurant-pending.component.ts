@@ -78,9 +78,8 @@ export class RestaurantPendingComponent implements OnInit {
   }
 
   getRestaurantPlacedOrdersByBranch(branch:string){
-    console.log(branch);
     if(!branch)return;
-    this.baskService.getRestaurantPlacedOrdersByBranch(branch,this.restaurant.name).subscribe(data=>{
+    this.baskService.getRestaurantOrdersByBranch('Placed',branch,this.restaurant.name).subscribe(data=>{
       if(data){
         this.orders = data;
       }
@@ -103,9 +102,10 @@ export class RestaurantPendingComponent implements OnInit {
     });
   }
   
-  addOrderToList(oid:number){
-    this.restService.addOrderToList(oid,this.restaurant.rid).subscribe(data=>{
-      if(!data)return;
+  // addOrderToList(oid:number){
+  //   this.restService.addOrderToList(oid,this.restaurant.rid).subscribe(data=>{
+  acceptOrder(order:Order1){
+    this.baskService.updateOrder(order).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',icon:'success'});
         this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
@@ -129,8 +129,9 @@ export class RestaurantPendingComponent implements OnInit {
     });
   }
 
-  rejectOrder(oid:number){
-    this.baskService.rejectOrder(oid).subscribe(data=>{
+  rejectOrder(order:Order1){
+    order.status = 'Rejected';
+    this.baskService.updateOrder(order).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'});
         this.getRestaurantPlacedOrdersByBranch(this.branches[0]);

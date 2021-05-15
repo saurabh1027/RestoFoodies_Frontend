@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from 'src/app/Models/User';
 import { BasketService } from 'src/app/Services/basket.service';
@@ -22,6 +22,8 @@ export class BasketComponent implements OnInit {
   orders:Order1[]=[];
   order1:Order1=new Order1(0,'','0,0','','Placed','',0,'','');
   delivery_charge:number=50;
+  otp:number[]=[];
+  @ViewChild('contactValue') contact:ElementRef;
 
   constructor(private userService:UserService,private baskService:BasketService,private router:Router) { }
 
@@ -30,6 +32,32 @@ export class BasketComponent implements OnInit {
     this.order1.rname=this.rname;
     this.getUserByToken();
     this.getCurrentLocation();
+    //remove below code
+    // this.user.contact = '8888888888';
+    // this.baskService.getOrdersByContact(this.user.contact).subscribe(data=>{
+    //   if(data){
+    //     this.orders = data;
+    //   }
+    // });
+  }
+  
+  validateOtp(){
+    let str:string = '';
+    for(let i=0;i<4;i++){
+      str += this.otp[i];
+    }
+    if(str==='8888'){
+      Swal.fire({title:'Success',text:'OTP matched!',icon:'success'});
+      this.user.contact = this.contact.nativeElement.value;
+      this.baskService.getOrdersByContact(this.user.contact).subscribe(data=>{
+        if(data){
+          this.orders = data;
+        }
+      });
+      this.toggleModel("OtpForm",false);
+    }else{
+      Swal.fire({title:'Unauthorized Access',text:'OTP do not match!',icon:'error'});
+    }
   }
 
   getUserByToken(){
@@ -91,15 +119,6 @@ export class BasketComponent implements OnInit {
         break;
       }
     }
-  }
-
-  assignContact(contact:string){
-    this.user.contact = contact;
-    // this.baskService.getOrdersByContact(contact).subscribe(data=>{
-    //   if(data){
-    //     this.orders = data;
-    //   }
-    // });
   }
 
   placeOrder(){

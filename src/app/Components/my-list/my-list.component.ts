@@ -111,7 +111,7 @@ export class MyListComponent implements OnInit {
   }
 
   getListOrdersOfRestaurantByBranch(branch:string){
-    this.restService.getListOrdersOfRestaurantByBranch(branch,this.restaurant.rid).subscribe(data=>{
+    this.baskService.getRestaurantOrdersByBranch('Accepted',branch,this.restaurant.name).subscribe(data=>{
       if(data){
         this.orders = data;
       }

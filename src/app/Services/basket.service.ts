@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Food_Item } from '../Models/Food_Item';
@@ -14,35 +14,36 @@ export class BasketService {
   constructor(private http:HttpClient) { }
   
   public placeOrder(order:Order1){
-    return this.http.post(this.baseUrl+'place-order',order,{responseType:"text"});
+    return this.http.post(this.baseUrl+'Order',order,{responseType:"text"});
   }
   
-  public getRestaurantPlacedOrdersByBranch(branch:string,rname:string):Observable<Order1[]>{
-    return this.http.post<Order1[]>(this.baseUrl+'get-restaurant-placed-orders/'+rname,branch);
+  public getRestaurantOrdersByBranch(status:string,branch:string,rname:string):Observable<Order1[]>{
+    let params = new HttpParams();
+    params = params.append('branch',branch);
+    params = params.append('status',status);
+    return this.http.get<Order1[]>(this.baseUrl+'Restaurants/'+rname+'/Orders',{ params : params });
   }
-  
+
   public updateItems(items:Food_Item[]){
-    return this.http.post(this.baseUrl+'update-items',items,{responseType:'text'});
-  }
-  
-  public rejectOrder(oid:number){
-    return this.http.post(this.baseUrl+'reject-order',oid,{responseType:'text'});
+    return this.http.patch(this.baseUrl+'Items',items,{responseType:'text'});
   }
   
   public getOrdersByUsername(username:string):Observable<Order[]>{
-    return this.http.post<Order[]>(this.baseUrl+'get-orders',username);
+    return this.http.get<Order[]>(this.baseUrl+'Customers/'+username+'/Orders');
   }
   
+  public updateOrder(order:Order1){
+    return this.http.patch(this.baseUrl+'Order',order,{responseType:'text'});
+  }
+  
+  public getOrdersByContact(contact:string):Observable<Order1[]>{
+    let params:HttpParams = new HttpParams();
+    params = params.append('contact',contact);
+    return this.http.get<Order1[]>(this.baseUrl+'Orders',{params:params});
+  }
+
   public addItemToOrder(oid:number,item:Food_Item){
     return this.http.post(this.baseUrl+'add-order-item/'+oid,item,{responseType:'text'});
   }
-
-  public updateOrder(order:Order1){
-    return this.http.post(this.baseUrl+'update-order',order,{responseType:'text'})
-  }
-
-  // public getOrdersByContact(contact:string):Observable<Order1[]>{
-  //   return this.http.post<Order1[]>(this.baseUrl+'get-order-by-contact')
-  // }
-
+  
 }

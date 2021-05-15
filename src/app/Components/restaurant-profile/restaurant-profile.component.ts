@@ -54,16 +54,16 @@ export class RestaurantProfileComponent implements OnInit {
   }
 
   getRestaurantByName(rname:string){
-    this.restService.getRestaurantByRname(rname).subscribe(data=>{
-      if(data===null){
+    this.restService.getRestaurantByName(rname).subscribe(data=>{
+      if(!data){
         Swal.fire({title:'Error Occured',text:'Something went wrong!',icon:'error'});
-        return;
+      }else{
+        this.restaurant = data;
+        this.pos.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
+        this.pos.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
+        this.getCategoriesOfRestaurant();
+        this.getOrders();
       }
-      this.restaurant = data;
-      this.pos.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
-      this.pos.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
-      this.getCategoriesOfRestaurant();
-      this.getOrders();
     });
   }
 
@@ -86,7 +86,7 @@ export class RestaurantProfileComponent implements OnInit {
   }
 
   getFoodItems(){
-    this.restService.getRestaurantAvailableItems(this.restaurant.rid).subscribe(data=>{
+    this.restService.getRestaurantItems(this.restaurant.rid,'Available').subscribe(data=>{
       this.food_items = (data===null)?[]:data;
       this.getCategoryFoodItems("All");
     });

@@ -40,6 +40,45 @@ agm-map{
     width: 65%;
     border: 1px solid #111;
     height: 100%;
+    padding: 20px;
+}
+.orders-table{
+    width: 100%;
+}
+.container .column .contact-form{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.contact-form .group{
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+}
+.contact-form .group input{
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #777;
+    outline: none;
+}
+.contact-form .group small{
+    color: #f00;
+}
+.contact-form button{
+    width: 350px;
+    padding: 10px;
+    color: #fff;
+    border: none;
+    background: #0175ad;
+    cursor: pointer;
+    outline: none;
+}
+.contact-form button:disabled{
+    background-color: #5e91a0;
 }
 .container .basket{
     width: 35%;
@@ -116,6 +155,7 @@ agm-map{
 
 
 #Panel{
+    font-family: 'poppins',sans-serif;
     position: fixed;
     width: 100%;
     height: 100%;
@@ -124,4 +164,58 @@ agm-map{
     background: rgb(76 76 76 / 90%);
     z-index: 1;
     display: none;
+    align-items: center;
+    justify-content: center;
+}
+#OtpForm{
+    display: none;
+    margin: 30px;
+    padding: 30px 50px;
+    background-color: #ffffff;
+    flex-direction: column;
+}
+#OtpForm p{
+    text-align: center;
+    padding: 10px;
+    font-size: 25px;
+    color: #333;
+    font-weight: 600;
+}
+#OtpForm .input-box{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    align-items: center;
+}
+#OtpForm .input-box input{
+    width: 50px;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #777;
+}
+#OtpForm .input-box input::-webkit-outer-spin-button,
+#OtpForm .input-box input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+}
+#OtpForm .group{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#OtpForm .group small{
+    color: #f00;
+}
+#OtpForm button{
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    color: #fff;
+    border: none;
+    background-color: #0175ad;
+}
+#OtpForm button:disabled{
+    background-color: #5e91a0;
 }
