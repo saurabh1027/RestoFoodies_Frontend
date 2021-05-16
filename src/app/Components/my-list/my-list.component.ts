@@ -25,7 +25,7 @@ export class MyListComponent implements OnInit {
   rid:number=0;
   items:Food_Item[]=[];
   branches:string[]=[];
-  order:Order1 = new Order1(0,'','','','','',0,'','');
+  order:Order1 = new Order1(0,'','','','','',0,'','','');
   count:number = 0;
 
   constructor(private userService:UserService,private restService:RestaurantService,private baskService:BasketService,private router:Router) { }
@@ -69,15 +69,15 @@ export class MyListComponent implements OnInit {
   }
 
   finishOrder(){
-    alert('No action specified.');
-    return;
     this.order.status = 'Finished';
     this.baskService.updateOrder(this.order).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations',text:'Order is submitted successfully!',icon:'success'});
         this.getListOrdersOfRestaurantByBranch(this.branches[0]);
+        this.toggleModel('OrderBox',false);
         this.items = [];
-        this.order = new Order1(0,'','','','','',0,'','');
+        this.order = new Order1(0,'','','','','',0,'','','');
+        this.count = 0;
       }
       else{
         Swal.fire({title:'Sorry!',text:data,icon:'error'});

@@ -20,7 +20,7 @@ export class BasketComponent implements OnInit {
   loggedIn:boolean=false;
   items:Food_Item[]=[];
   orders:Order1[]=[];
-  order1:Order1=new Order1(0,'','0,0','','Placed','',0,'','');
+  order1:Order1=new Order1(0,'','0,0','','Placed','',0,'','','');
   delivery_charge:number=50;
   otp:number[]=[];
   @ViewChild('contactValue') contact:ElementRef;

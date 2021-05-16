@@ -19,7 +19,7 @@ export class RestaurantPendingComponent implements OnInit {
   user:User=new User(0,'','','','','','','','','');
   pos:{lat:number,lng:number}={lat:0,lng:0};
   orders:Order1[]=[];
-  order : Order1 = new Order1(0,'','','','','',0,'','')
+  order : Order1 = new Order1(0,'','','','','',0,'','','')
   items:Food_Item[]=[];
   cnt:number=0;
   branches:string[]=[];
@@ -105,12 +105,13 @@ export class RestaurantPendingComponent implements OnInit {
   // addOrderToList(oid:number){
   //   this.restService.addOrderToList(oid,this.restaurant.rid).subscribe(data=>{
   acceptOrder(order:Order1){
+    order.status = 'Accepted';
     this.baskService.updateOrder(order).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',icon:'success'});
         this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
         this.items = [];
-        this.order = new Order1(0,'','','','','',0,'','');
+        this.order = new Order1(0,'','','','','',0,'','','');
       }else{
         Swal.fire({title:'Sorry!',text:data,icon:'error'});
       }
@@ -136,7 +137,7 @@ export class RestaurantPendingComponent implements OnInit {
         Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'});
         this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
         this.items = [];
-        this.order = new Order1(0,'','','','','',0,'','');
+        this.order = new Order1(0,'','','','','',0,'','','');
       }else{
         Swal.fire({title:'Sorry',text:data,icon:'error'});
       }

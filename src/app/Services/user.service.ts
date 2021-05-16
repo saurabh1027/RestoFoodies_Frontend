@@ -38,9 +38,7 @@ export class UserService {
   }
   
   public getUserByUsername(username:string):Observable<User>{
-    let params : HttpParams = new HttpParams();
-    params = params.append('username',username);
-    return this.http.get<User>(this.baseUrl+'User',{ params:params });
+    return this.http.get<User>(this.baseUrl+'Users/'+username);
   }
   
   public saveUser(user):Observable<Jwt>{

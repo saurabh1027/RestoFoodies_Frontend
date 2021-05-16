@@ -15,19 +15,23 @@ import Swal from 'sweetalert2';
 export class DeliveryComponent implements OnInit {
 
   resultedLocations : string[] = []
-  orders : Order1 [] = []
+  orders : Order1[] = []
   locations : string[] = []
   user : User = new User(0,'','','','','','','','','');
-
+  pos:{                                 //Syntax :-        
+    lat : number,                       //     variable_name : hord-coded-data-type = value
+    lng : number
+  } = {
+    lat : 0,
+    lng : 0
+  }
   constructor(private restService : RestaurantService,
      private basketService : BasketService,
      private userService : UserService,
      private router : Router) { }
 
-
   ngOnInit(): void {
-    this.getUserByToken()
-    this.getLocations()
+    this.getUserByToken();
   }
 
   getUserByToken() {
@@ -38,20 +42,33 @@ export class DeliveryComponent implements OnInit {
           this.router.navigate(["Login"])
         }
         else{
-          this.user = data
+          this.user = data;
           if (this.user.role!=('Delivery')){
             this.router.navigate(["Login"])
           }
+          if(!this.user.location){
+            this.getLocations();
+          }
+          this.getFinishedOrdersByLocation();
+          this.currentLocation();
         }
-        this.getFinishedOrdersByLocation()
       })
   }
 
   getFinishedOrdersByLocation(){
     if(this.user.location){
       this.basketService.getOrdersByLocation(this.user.location).subscribe(data => {
-        if(data) this.orders = data
+        if(data) this.orders = data;
       })
+    }
+  }
+
+  currentLocation(){
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
+        this.pos.lat = position.coords.latitude;
+        this.pos.lng = position.coords.longitude;
+      });
     }
   }
 
@@ -61,18 +78,60 @@ export class DeliveryComponent implements OnInit {
     });
   }
 
+  toggleModel(modelName:string,bool:boolean){
+    let model = document.getElementById(modelName);
+    let body = document.getElementsByTagName('body')[0];
+    if(bool){
+      document.getElementById('Panel').style.display = 'flex';
+      model.style.display = 'flex';
+      body.classList.add('model');
+    }else{
+      document.getElementById('Panel').style.display = 'none';
+      model.style.display = 'flex';
+      body.classList.remove('model');
+    }
+  }
+
   updateLocations(location : string){
-    this.resultedLocations = []
-    console.log(location)
-    for(let i = 0; i < this.locations.length ; i++)
-    {
-      if(this.locations[i].toUpperCase().includes(location.toUpperCase()))
+    this.resultedLocations = [];
+    if(location){
+      for(let i = 0; i < this.locations.length ; i++)
       {
-        if(!this.resultedLocations.includes(this.resultedLocations[i]))
-        this.resultedLocations.push(this.resultedLocations[i])
+        if(this.locations[i].toUpperCase().includes(location.toUpperCase()))
+        {
+          if(!this.resultedLocations.includes(this.resultedLocations[i]))
+            this.resultedLocations.push(this.locations[i])
+        }
       }
     }
-    console.log(this.resultedLocations)
+  }
+
+  selectLocation(location:string){
+    this.user.location = location;
+    this.userService.updateUser(this.user).subscribe();
+    this.toggleModel('LocationForm',false);
+    this.getFinishedOrdersByLocation();
+  }
+
+  addOrderToBox(order:Order1){
+    order.dname = this.user.username;
+    order.status = "Delivering";
+    this.basketService.updateOrder(order).subscribe(data=>{
+      if(data=='Success'){
+        Swal.fire({
+          title:'Congratulations!',
+          text:'Order added successfully!',
+          icon:'success'
+        });
+        this.getFinishedOrdersByLocation();
+      }else{
+        Swal.fire({
+          title:'Sorry!',
+          text:data,
+          icon:'error'
+        });
+      }
+    });
   }
 
 }

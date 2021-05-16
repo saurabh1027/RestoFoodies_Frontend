@@ -1,6 +1,27 @@
 <div class="container">
-    <div class="nothing">
+    <div class="EmptyLocation" *ngIf='!user.location'>
+        <p class="title">Empty Delivery Location</p>
+        <button (click)='toggleModel("LocationForm",true)'>Select</button>
+    </div>
 
+    <div class="box" *ngIf='user.location'>
+        <div class="EmptyOrders" *ngIf='!orders.length>0'>
+            <p class="title">No Orders Available</p>
+        </div>
+
+        <div class="orders" *ngIf='orders.length>0'>
+            <div id="map">
+                <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [fullscreenControl]='true'>
+                    <agm-marker [latitude]='o.destination.substring(0,o.destination.indexOf(","))'
+                        [longitude]='o.destination.substring(o.destination.indexOf(",")+1,o.destination.length)'
+                        *ngFor='let o of orders'>
+                        <agm-info-window>
+                            <button (click)='addOrderToBox(o)'>Add</button>
+                        </agm-info-window>
+                    </agm-marker>
+                </agm-map>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -11,9 +32,10 @@
 <!-- Models -->
 <div id="Panel">
     <div id="LocationForm">
-        <div class="group">
-            <input type="text" name="location" #location  (keyup) = "updateLocations(location.value)" placeholder = "Enter your location">
-            {{location.value}}
-        </div>
+        <p class="title">Delivery Location</p>
+        <input type="text" name="location" #location (keyup)="updateLocations(location.value)" placeholder="Enter your location">
+        <ul class="results">
+            <li (click)='selectLocation(l)' *ngFor='let l of resultedLocations'>{{l}}</li>
+        </ul>
     </div>
 </div>

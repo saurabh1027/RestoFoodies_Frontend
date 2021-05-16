@@ -25,6 +25,7 @@ import { RestaurantsComponent } from './Components/restaurants/restaurants.compo
 import { RestaurantProfileComponent } from './Components/restaurant-profile/restaurant-profile.component';
 import { AdminComponent } from './Components/admin/admin.component';
 import { DeliveryComponent } from './Components/delivery/delivery.component';
+import { BoxComponent } from './Components/box/box.component';
 /*import { AuthInterceptor } from './Services/auth.interceptor'; */
 
 @NgModule({
@@ -47,7 +48,8 @@ import { DeliveryComponent } from './Components/delivery/delivery.component';
     RestaurantsComponent,
     RestaurantProfileComponent,
     AdminComponent,
-    DeliveryComponent
+    DeliveryComponent,
+    BoxComponent
   ],
 
   imports: [
