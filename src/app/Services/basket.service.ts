@@ -17,11 +17,15 @@ export class BasketService {
     return this.http.post(this.baseUrl+'Order',order,{responseType:"text"});
   }
   
-  public getRestaurantOrdersByBranch(status:string,branch:string,rname:string):Observable<Order1[]>{
+  public getRestaurantOrdersByBid(status:string,bid:number,rname:string):Observable<Order1[]>{
     let params = new HttpParams();
-    params = params.append('branch',branch);
+    params = params.append('bid',bid+'');
     params = params.append('status',status);
     return this.http.get<Order1[]>(this.baseUrl+'Restaurants/'+rname+'/Orders',{ params : params });
+  }
+
+  public getDeliveringOrdersByDname(dname:string):Observable<Order1[]>{
+    return this.http.get<Order1[]>(this.baseUrl+'Delivery/'+dname+'/Orders');
   }
 
   public updateItems(items:Food_Item[]){

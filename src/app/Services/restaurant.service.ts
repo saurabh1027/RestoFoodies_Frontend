@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Branch } from '../Models/Branch';
 import { Category } from '../Models/Category';
 import { Food_Item } from '../Models/Food_Item';
 import { Order1 } from '../Models/Order1';
@@ -39,8 +40,8 @@ export class RestaurantService {
 
   // In Use
 
-  public addRestaurant(restaurant:Restaurant){
-    return this.http.post(this.baseUrl+'Restaurant',restaurant,{responseType:"text"});
+  public addRestaurant(restaurant:Restaurant):Observable<number>{
+    return this.http.post<number>(this.baseUrl+'Restaurant',restaurant);
   }
   
   public addRestaurantProfile(file:File){
@@ -83,8 +84,8 @@ export class RestaurantService {
     return this.http.patch(this.baseUrl+'Item',item,{responseType:'text'});
   }
   
-  public getRestaurantByUsername(username:string):Observable<Restaurant>{
-    return this.http.get<Restaurant>(this.baseUrl+'/Users/'+username+'/Restaurant');
+  public getRestaurantByUid(uid:number):Observable<Restaurant>{
+    return this.http.get<Restaurant>(this.baseUrl+'/Users/'+uid+'/Restaurant');
   }
   
   public addCategory(category:Category){
@@ -102,12 +103,19 @@ export class RestaurantService {
   public getFoodItems(cname:string,rid:number):Observable<Food_Item[]>{
     let params : HttpParams = new HttpParams();
     params = params.append('cname',cname);
-    return this.http.get<Food_Item[]>(this.baseUrl+'Restaurant/'+rid+'Items',{ params:params });
+    return this.http.get<Food_Item[]>(this.baseUrl+'Restaurant/'+rid+'/Items',{ params:params });
   }
 
+  public addBranch(branch:Branch){
+    return this.http.post(this.baseUrl+'Restaurants/'+branch.rid+'/Branch',branch,{responseType:'text'});
+  }
 
+  public getBranches(rid:number):Observable<Branch[]>{
+    return this.http.get<Branch[]>(this.baseUrl+'Restaurants/'+rid+'/Branches');
+  }
 
-
-
+  public getBranchOfRestaurantByLocation(location:string,rid:number):Observable<Branch>{
+    return this.http.get<Branch>(this.baseUrl+'Restaurants/'+rid+'/Branches/'+location);
+  }
 
 }

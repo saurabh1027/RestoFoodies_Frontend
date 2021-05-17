@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Food_Item } from 'src/app/Models/Food_Item';
 import { Order1 } from 'src/app/Models/Order1';
+import { Branch } from 'src/app/Models/Branch';
 
 @Component({
   selector: 'app-restaurant-pending',
@@ -15,14 +16,14 @@ import { Order1 } from 'src/app/Models/Order1';
   styleUrls: ['./restaurant-pending.component.css']
 })
 export class RestaurantPendingComponent implements OnInit {
-  restaurant:Restaurant=new Restaurant(0,'','','','','','','','');
+  restaurant:Restaurant=new Restaurant(0,'','','','','',0);
   user:User=new User(0,'','','','','','','','','');
   pos:{lat:number,lng:number}={lat:0,lng:0};
   orders:Order1[]=[];
-  order : Order1 = new Order1(0,'','','','','',0,'','','')
+  order : Order1 = new Order1(0,'','','','','','',0,0,'','')
   items:Food_Item[]=[];
   cnt:number=0;
-  branches:string[]=[];
+  branches:Branch[]=[];
 
   constructor(private restService:RestaurantService,private baskService:BasketService,private userService:UserService
     ,private router:Router) { }
@@ -37,49 +38,48 @@ export class RestaurantPendingComponent implements OnInit {
       if(data){
         this.user = data;
         if(!(this.user.role==='Vendor')) this.router.navigate(['Profile']);
-        this.getRestaurantByUsername();
+        this.getRestaurantByUid();
       }else{
         this.router.navigate(['Login']);
       } 
     });
   }
   
-  getRestaurantByUsername(){
-    this.restService.getRestaurantByUsername(this.user.username).subscribe(data=>{
+  getRestaurantByUid(){
+    this.restService.getRestaurantByUid(this.user.uid).subscribe(data=>{
       if(data){
         this.restaurant=data;
         this.getCurrentLocation();
-        this.getBranches(this.restaurant.branch);
+        this.getBranches();
       }else{
         this.router.navigate(['Profile','Restaurant']);
       }
     });
   }
 
-  getBranches(branch:string){
-    let str:string='';
-    for(let i=0;i<branch.length;i++){
-      if(branch[i]===','){
-        this.branches.push(str);
-        str='';
-      }else{
-        str = str + branch[i];
+  getBranches(){
+    this.restService.getBranches(this.restaurant.rid).subscribe(data=>{
+      if(data){
+        this.branches = data;
+        this.pos.lat = parseFloat(this.branches[0].location.substring(0,this.branches[0].location.indexOf(',')));
+        this.pos.lng = parseFloat(this.branches[0].location.substring(this.branches[0].location.indexOf(',')+1
+        ,this.branches[0].location.length));
+        this.getRestaurantPlacedOrdersByBid(this.branches[0].bid);
       }
-    }
+    });
   }
-
+  
   getCurrentLocation(){
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
         this.pos = {lat:position.coords.latitude , lng:position.coords.longitude};
-        this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
       });
     }
   }
-
-  getRestaurantPlacedOrdersByBranch(branch:string){
-    if(!branch)return;
-    this.baskService.getRestaurantOrdersByBranch('Placed',branch,this.restaurant.name).subscribe(data=>{
+  
+  getRestaurantPlacedOrdersByBid(bid:number){
+    if(bid==0)return;
+    this.baskService.getRestaurantOrdersByBid('Placed',bid,this.restaurant.name).subscribe(data=>{
       if(data){
         this.orders = data;
       }
@@ -102,16 +102,14 @@ export class RestaurantPendingComponent implements OnInit {
     });
   }
   
-  // addOrderToList(oid:number){
-  //   this.restService.addOrderToList(oid,this.restaurant.rid).subscribe(data=>{
   acceptOrder(order:Order1){
     order.status = 'Accepted';
     this.baskService.updateOrder(order).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',icon:'success'});
-        this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
+        this.getRestaurantPlacedOrdersByBid(this.branches[0].bid);
         this.items = [];
-        this.order = new Order1(0,'','','','','',0,'','','');
+        this.order = new Order1(0,'','','','','','',0,0,'','');
       }else{
         Swal.fire({title:'Sorry!',text:data,icon:'error'});
       }
@@ -135,9 +133,9 @@ export class RestaurantPendingComponent implements OnInit {
     this.baskService.updateOrder(order).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',text:'Order Rejected!',icon:'success'});
-        this.getRestaurantPlacedOrdersByBranch(this.branches[0]);
+        this.getRestaurantPlacedOrdersByBid(this.branches[0].bid);
         this.items = [];
-        this.order = new Order1(0,'','','','','',0,'','','');
+        this.order = new Order1(0,'','','','','','',0,0,'','');
       }else{
         Swal.fire({title:'Sorry',text:data,icon:'error'});
       }

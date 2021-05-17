@@ -1,1 +1,10 @@
-<p>box works!</p>
+<div class="container">
+    <div *ngIf='!(orders.length>0)' class="nothing">
+        <p class="title">No orders added!</p>
+        <a routerLink="/Profile/Delivery">Click here to add orders.</a>
+    </div>
+
+    <div class="orders" *ngIf='orders.length>0'>
+        
+    </div>
+</div>

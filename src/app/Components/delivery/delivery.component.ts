@@ -13,18 +13,12 @@ import Swal from 'sweetalert2';
   styleUrls: ['./delivery.component.css']
 })
 export class DeliveryComponent implements OnInit {
-
   resultedLocations : string[] = []
   orders : Order1[] = []
   locations : string[] = []
   user : User = new User(0,'','','','','','','','','');
-  pos:{                                 //Syntax :-        
-    lat : number,                       //     variable_name : hord-coded-data-type = value
-    lng : number
-  } = {
-    lat : 0,
-    lng : 0
-  }
+  pos:{ lat : number, lng : number } = { lat : 0 , lng : 0 }
+
   constructor(private restService : RestaurantService,
      private basketService : BasketService,
      private userService : UserService,
@@ -58,6 +52,7 @@ export class DeliveryComponent implements OnInit {
   getFinishedOrdersByLocation(){
     if(this.user.location){
       this.basketService.getOrdersByLocation(this.user.location).subscribe(data => {
+        console.log(data)
         if(data) this.orders = data;
       })
     }

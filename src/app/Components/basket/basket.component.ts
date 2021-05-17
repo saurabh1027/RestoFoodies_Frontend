@@ -7,6 +7,9 @@ import { MouseEvent as AGMMouseEvent } from '@agm/core';
 import { Food_Item } from 'src/app/Models/Food_Item';
 import { Order1 } from 'src/app/Models/Order1';
 import Swal from 'sweetalert2';
+import { RestaurantService } from 'src/app/Services/restaurant.service';
+import { Restaurant } from 'src/app/Models/Restaurant';
+import { Branch } from 'src/app/Models/Branch';
 
 @Component({
   selector: 'app-basket',
@@ -20,65 +23,85 @@ export class BasketComponent implements OnInit {
   loggedIn:boolean=false;
   items:Food_Item[]=[];
   orders:Order1[]=[];
-  order1:Order1=new Order1(0,'','0,0','','Placed','',0,'','','');
+  order1:Order1=new Order1(0,'','','0,0','','Placed','',0,0,'','');
   delivery_charge:number=50;
   otp:number[]=[];
   @ViewChild('contactValue') contact:ElementRef;
+  restaurant : Restaurant = new Restaurant(0,'','','','','',0);
+  branch:Branch=new Branch(0,'','',0);
 
-  constructor(private userService:UserService,private baskService:BasketService,private router:Router) { }
-
+  constructor(private userService:UserService,private restService:RestaurantService,private baskService:BasketService,private router:Router) { }
+  
   ngOnInit(): void {
-    this.rname = localStorage.getItem('Restaurant');
-    this.order1.rname=this.rname;
     this.getUserByToken();
+    this.getRestaurantByName();
     this.getCurrentLocation();
-    //remove below code
-    // this.user.contact = '8888888888';
-    // this.baskService.getOrdersByContact(this.user.contact).subscribe(data=>{
-    //   if(data){
-    //     this.orders = data;
-    //   }
-    // });
+  }  
+  
+  getUserByToken(){
+    let token = sessionStorage.getItem("UserToken");
+    if(!token){
+      this.loggedIn=false;
+      this.getItems();
+    }else{
+      this.userService.getUserByToken(token).subscribe(data=>{
+        if(!data)this.loggedIn=false;
+        else{
+          this.user = data;
+          if(this.user.role!=="Customer"){
+            this.router.navigate(['Profile']);
+          }
+          this.loggedIn=true;
+        }
+        this.getItems();
+      });
+    }
   }
+
+  getRestaurantByName(){
+    if(localStorage.getItem('Restaurant')){
+      this.order1.rname = localStorage.getItem('Restaurant');
+      this.restService.getRestaurantByName(this.order1.rname).subscribe(data=>{
+        if(data){
+          this.restaurant=data;
+          this.getBranchOfRestaurant();
+        }  
+      });  
+    }
+  }  
+
+  getBranchOfRestaurant(){
+    let location:string = '';
+    if(this.loggedIn){
+      location = this.user.location;
+    }else{
+      location = localStorage.getItem('UserLocation');
+    }  
+    this.restService.getBranchOfRestaurantByLocation(location,this.restaurant.rid).subscribe(data=>{
+      if(data){
+        this.branch = data;
+      }  
+    });  
+  }  
   
   validateOtp(){
     let str:string = '';
     for(let i=0;i<4;i++){
       str += this.otp[i];
-    }
+    }  
     if(str==='8888'){
       Swal.fire({title:'Success',text:'OTP matched!',icon:'success'});
       this.user.contact = this.contact.nativeElement.value;
       this.baskService.getOrdersByContact(this.user.contact).subscribe(data=>{
         if(data){
           this.orders = data;
-        }
-      });
+        }  
+      });  
       this.toggleModel("OtpForm",false);
     }else{
       Swal.fire({title:'Unauthorized Access',text:'OTP do not match!',icon:'error'});
-    }
-  }
-
-  getUserByToken(){
-    let token = sessionStorage.getItem("UserToken");
-    if(!token){
-      this.loggedIn=false;
-      this.getItems();
-      return;
-    }
-    this.userService.getUserByToken(token).subscribe(data=>{
-      if(!data)this.loggedIn=false;
-      else{
-        this.user = data;
-        if(this.user.role!=="Customer"){
-          this.router.navigate(['Profile']);
-        }
-        this.loggedIn=true;
-      }
-      this.getItems();
-    });
-  }
+    }  
+  }  
 
   getCurrentLocation(){
     if(navigator.geolocation){
@@ -122,6 +145,7 @@ export class BasketComponent implements OnInit {
   }
 
   placeOrder(){
+    this.order1.source = this.branch.location;
     this.baskService.placeOrder(this.order1).subscribe(data=>{
       if(data==='Success'){
         Swal.fire({
@@ -149,7 +173,7 @@ export class BasketComponent implements OnInit {
       if(JSON.parse(localStorage.getItem('Food_Items'))!=null){
         this.items=JSON.parse(localStorage.getItem('Food_Items'));
         this.order1.price=0;
-        this.order1.branch = localStorage.getItem('UserLocation');
+        this.order1.bid = this.branch.bid;
         for(let i=0;i<this.items.length;i++){
           fids.push(this.items[i].fid);
         }

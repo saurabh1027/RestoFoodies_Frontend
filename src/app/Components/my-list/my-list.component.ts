@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Branch } from 'src/app/Models/Branch';
 import { Food_Item } from 'src/app/Models/Food_Item';
 import { Order1 } from 'src/app/Models/Order1';
 import { Restaurant } from 'src/app/Models/Restaurant';
@@ -15,7 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./my-list.component.css']
 })
 export class MyListComponent implements OnInit {
-  restaurant:Restaurant=new Restaurant(0,'','','','','','','','');
+  restaurant:Restaurant=new Restaurant(0,'','','','','',0);
   @ViewChild('select') select:ElementRef;
   @ViewChild('arrow') arrow:ElementRef;
   user:User=new User(0,'','','','','','','','','');
@@ -24,8 +25,8 @@ export class MyListComponent implements OnInit {
   pos:{lat:number,lng:number} = {lat:0,lng:0};
   rid:number=0;
   items:Food_Item[]=[];
-  branches:string[]=[];
-  order:Order1 = new Order1(0,'','','','','',0,'','','');
+  branches:Branch[]=[];
+  order:Order1 = new Order1(0,'','','','','','',0,0,'','');
   count:number = 0;
 
   constructor(private userService:UserService,private restService:RestaurantService,private baskService:BasketService,private router:Router) { }
@@ -73,10 +74,10 @@ export class MyListComponent implements OnInit {
     this.baskService.updateOrder(this.order).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations',text:'Order is submitted successfully!',icon:'success'});
-        this.getListOrdersOfRestaurantByBranch(this.branches[0]);
+        this.getListOrdersOfRestaurantByBid(this.branches[0].bid);
         this.toggleModel('OrderBox',false);
         this.items = [];
-        this.order = new Order1(0,'','','','','',0,'','','');
+        this.order = new Order1(0,'','','','','','',0,0,'','');
         this.count = 0;
       }
       else{
@@ -86,7 +87,7 @@ export class MyListComponent implements OnInit {
   }
 
   getRestaurantByUsername(){
-    this.restService.getRestaurantByUsername(this.user.username).subscribe(data=>{
+    this.restService.getRestaurantByUid(this.user.uid).subscribe(data=>{
       if(data){
         this.restaurant = data;
         this.getBranches();
@@ -97,25 +98,25 @@ export class MyListComponent implements OnInit {
   }
 
   getBranches(){
-    let branches:string = this.restaurant.branch;
-    let str:string = '';
-    for(let i=0;i<branches.length;i++){
-      if(branches.charAt(i)==','){
-        this.branches.push(str);
-        str='';
-      }else{
-        str = str + branches.charAt(i);
-      }
-    }
-    this.getListOrdersOfRestaurantByBranch(this.branches[0]);
-  }
-
-  getListOrdersOfRestaurantByBranch(branch:string){
-    this.baskService.getRestaurantOrdersByBranch('Accepted',branch,this.restaurant.name).subscribe(data=>{
+    this.restService.getBranches(this.restaurant.rid).subscribe(data=>{
       if(data){
-        this.orders = data;
+        this.branches = data;
+        this.pos.lat = parseFloat(this.branches[0].location.substring(0,this.branches[0].location.indexOf(',')));
+        this.pos.lng = parseFloat(this.branches[0].location.substring(this.branches[0].location.indexOf(',')+1
+          ,this.branches[0].location.length));
+        this.getListOrdersOfRestaurantByBid(this.branches[0].bid);
       }
     });
+  }
+
+  getListOrdersOfRestaurantByBid(bid:number){
+    if(bid!=0){
+      this.baskService.getRestaurantOrdersByBid('Accepted',bid,this.restaurant.name).subscribe(data=>{
+        if(data){
+          this.orders = data;
+        }
+      });
+    }
   }
 
   getAvailableItemsOfOrder(order:Order1){

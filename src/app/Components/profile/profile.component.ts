@@ -11,7 +11,7 @@ import { User } from 'src/app/Models/User';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  rest : Restaurant = new Restaurant(0,'','','','','','','','');
+  rest : Restaurant = new Restaurant(0,'','','','','',0);
   user : User = new User(0,'','','User','Customer','','','','','user.jpg');
   user1 : User = new User(0,'','','','Customer','','','','','user.jpg');
 
@@ -28,7 +28,7 @@ export class ProfileComponent implements OnInit {
     this.userService.getUserByToken(sessionStorage.getItem("UserToken")).subscribe(data=>{
       if(!data)this.router.navigate(['Login']);
       this.user = data;
-      (this.user.role==='Vendor')?this.router.navigate(['Profile','My-List']):
+      (this.user.role==='Vendor')?this.router.navigate(['Profile','Restaurant']):
       (this.user.role==='Delivery')?this.router.navigate(['Profile' , 'Delivery']):
       (this.user.role === 'Admin')?this.router.navigate(['Profile' , 'Admin']):
       ((this.user.role==='Customer')?this.router.navigate(['My-Basket']):
@@ -53,7 +53,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  toggleModel(modelName:string,bool:boolean){//Using
+  toggleModel(modelName:string,bool:boolean){
     this.toggleSlideBar(false);
     let model = document.getElementById(modelName);
     let body = document.getElementsByTagName('body')[0];

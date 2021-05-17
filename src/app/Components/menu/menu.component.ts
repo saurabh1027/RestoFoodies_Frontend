@@ -129,12 +129,16 @@ export class MenuComponent implements OnInit {
         Swal.fire({title:data,icon:'error'});
       }else if(this.pic!=undefined){
         this.restService.addFoodItemPic(this.pic).subscribe(data=>{
-          (data=='Success')?Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'}):Swal.fire({title:data,text:'Failed to update',icon:'error'});
-          if(data=='Success')this.toggleModel('UpdateItemForm',false);
+          if(data=='Success'){
+            Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'})
+            this.toggleModel('UpdateItemForm',false); 
+          }else{  
+            Swal.fire({title:data,text:'Failed to update',icon:'error'});
+          }
         });
       }else{
         Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'});
-        this.toggleItemModel('UpdateItemForm',null,false);
+        this.toggleModel('UpdateItemForm',false); 
       }
     });
   }
