@@ -129,24 +129,39 @@
         <i class="fas fa-times close" (click)='toggleModel("AddUserModel",false)'></i>
         <span class="title">Add New User</span>
         <div class="form">
+
             <div class="group">
                 <label>Default Username : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
                 <input type="text" #username2='ngModel' name="username2" [(ngModel)]='user2.username' maxlength="30" required>
                 <small [class.d-none]='username2.valid || username2.untouched'>Username cannot be empty.</small>
             </div>
-            <div class="group">
-                <label>Fullname : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
-                <input type="text" name="fullname2" required #fullname2='ngModel' [(ngModel)]="user2.fullname" maxlength="50">
-                <small [class.d-none]='fullname2.valid || fullname2.untouched'>Fullname cannot be empty.</small>
-            </div>
+
             <div class="group">
                 <label>Default Password : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
                 <div class="password">
                     <input #password2='ngModel' type="password" name="password2" [(ngModel)]='user2.password' required id="password2">
                     <i id='eye2' class="fas fa-eye" (click)='togglePasswordVisibility("eye2","password2")'></i>
                 </div>
-                <small [class.d-none]='password1.valid || password1.untouched'>Password cannot be empty.</small>
+                <small [class.d-none]='password2.valid || password2.untouched'>Password cannot be empty.</small>
             </div>
+
+            <div class="group">
+                <label>Fullname : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+                <input type="text" name="fullname2" required #fullname2='ngModel' [(ngModel)]="user2.fullname" maxlength="50">
+                <small [class.d-none]='fullname2.valid || fullname2.untouched'>Fullname cannot be empty.</small>
+            </div>
+
+            <div class="group">
+                <label>Contact : <span title = "Required" style="color : red ; font-size : 12px">*</span></label>
+                <div class="contact">
+                    <input type="text" #contact2 = 'ngModel' name="contact2" [(ngModel)] = 'user2.contact' pattern = '[0-9]{10}'required>
+                </div>
+                <div *ngIf='contact2.errors && (contact2.invalid && contact2.touched)'>
+                    <small *ngIf='contact2.errors.required'>Contact cannot be empty.</small>
+                    <small *ngIf='contact2.errors.pattern'>Contact must be of at least 10 digits.</small>
+                </div>
+            </div>
+
             <div class="flex group">
                 <label>Role : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
                 <select name="role" [(ngModel)]='user2.role' required>
@@ -156,10 +171,12 @@
                     <option value="Admin">Admin</option>
                 </select>
             </div>
+
             <div class="group">
                 <label>Email Id :</label>
                 <input type="text" name="email1" [(ngModel)]='user2.email' #email1='ngModel'>
             </div>
+
             <div class="buttons">
                 <input type="submit" [disabled] = 'AddUserModel.invalid' value="Update">
                 <input type="reset" (click)='deleteUser(user2.username)' value="Delete User Profile">

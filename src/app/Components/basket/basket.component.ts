@@ -146,6 +146,7 @@ export class BasketComponent implements OnInit {
 
   placeOrder(){
     this.order1.source = this.branch.location;
+    this.order1.bid = this.branch.bid;
     this.baskService.placeOrder(this.order1).subscribe(data=>{
       if(data==='Success'){
         Swal.fire({
