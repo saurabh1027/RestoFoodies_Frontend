@@ -1,8 +1,8 @@
 <div class="container">
     <div class="topbar">
         <span>Orders</span>
-        <select #restSelect (change)='getRestaurantPlacedOrdersByBranch(restSelect.value)'>
-            <option value="{{branch}}" *ngFor='let branch of branches'>{{branch}}</option>
+        <select #restSelect (change)='getRestaurantPlacedOrdersByBid(restSelect.value)'>
+            <option value="{{branch.bid}}" *ngFor='let branch of branches'>{{branch.bname}}</option>
         </select>
     </div>
     <div class="map" *ngIf='orders.length>0'>

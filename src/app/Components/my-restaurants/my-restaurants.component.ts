@@ -6,6 +6,7 @@ import { User } from 'src/app/Models/User';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { UserService } from 'src/app/Services/user.service';
 import Swal from 'sweetalert2';
+import { Branch } from 'src/app/Models/Branch';
 
 @Component({
   selector: 'app-my-restaurants',
@@ -13,11 +14,13 @@ import Swal from 'sweetalert2';
   styleUrls: ['./my-restaurants.component.css']
 })
 export class MyRestaurantsComponent implements OnInit {
-  branches:string[]=[];
+  branches:Branch[]=[];
+  branch:Branch = new Branch(0,'','',0);
   user:User=new User(0,'','','','','','','','','');
-  restaurant : Restaurant = new Restaurant(0,'','','','','','','','');
-  rest : Restaurant = new Restaurant(0,'','','','','','','','');
+  restaurant : Restaurant = new Restaurant(0,'','','','','',0);
+  rest : Restaurant = new Restaurant(0,'','','','','',0);
   pos={lat:0,lng:0};
+  bname:string='';
 
   constructor(private userService:UserService,private router:Router,private restService:RestaurantService) { }
 
@@ -33,25 +36,23 @@ export class MyRestaurantsComponent implements OnInit {
       }else{
         this.user = data;
         if(this.user.role!=='Vendor')this.router.navigate(['Login']);
-        this.getRestaurantByUsername(this.user.username);
+        this.getRestaurantByUid(this.user.uid);
       }
     });
   }
 
-  getRestaurantByUsername(username:string){
-    this.restService.getRestaurantByUsername(username).subscribe(data=>{
+  getRestaurantByUid(uid:number){
+    this.restService.getRestaurantByUid(uid).subscribe(data=>{
       if(data){
         this.restaurant = data;
-        this.getBranches(this.restaurant.branch);
-        this.pos.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
-        this.pos.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
+        this.getBranches();
       }else{
-        this.restaurant = new Restaurant(0,'','','','','','','','');
+        this.restaurant = new Restaurant(0,'','','','','',0);
         this.getCurrentLocation();
       }
     });
   }
-
+  
   getCurrentLocation(){
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition((position:GeolocationPosition)=>{
@@ -59,17 +60,16 @@ export class MyRestaurantsComponent implements OnInit {
       });
     }
   }
-
-  getBranches(branch:string){
-    let str : string = '';
-    for(let i=0;i<branch.length;i++){
-      if(branch[i]===','){
-        this.branches.push(str);
-        str='';
-      }else{
-        str = str + branch[i];
+  
+  getBranches(){
+    this.restService.getBranches(this.restaurant.rid).subscribe(data=>{
+      if(data){
+        this.branches = data;
+        this.pos.lat = parseFloat(this.branches[0].location.substring(0,this.branches[0].location.indexOf(',')));
+        this.pos.lng = parseFloat(this.branches[0].location.substring(this.branches[0].location.indexOf(',')+1
+          ,this.branches[0].location.length));
       }
-    }
+    });
   }
 
   checkFile(event){}
@@ -103,7 +103,7 @@ export class MyRestaurantsComponent implements OnInit {
           if(data=='Success'){
             Swal.fire('Deleted!','Your restaurant is deleted.','success');
             this.toggleModel("RestoUpdateForm",false);
-            this.getRestaurantByUsername(this.user.username);
+            this.getRestaurantByUid(this.user.uid);
           }else{
             Swal.fire(data,'Unable to delete restaurant.','error');
           }
@@ -113,7 +113,6 @@ export class MyRestaurantsComponent implements OnInit {
   }
   
   updateRestaurant(rest:Restaurant,files:FileList){
-    rest.latlng = this.pos.lat+','+this.pos.lng;
     if(files.length==1){
       let file:File = files[0];
       this.restService.addRestaurantProfile(file).subscribe(data=>{
@@ -156,22 +155,27 @@ export class MyRestaurantsComponent implements OnInit {
   }
   
   addRestaurant(rest:Restaurant,files:FileList){
-    rest.latlng = this.pos.lat+','+this.pos.lng;
+    this.branch = new Branch(0,this.bname,this.pos.lat+','+this.pos.lng,this.restaurant.rid);
     this.restService.addRestaurantProfile(files[0]).subscribe(data=>{
       if(data==='Success'){
         rest.profile = files[0].name;
-        rest.username = this.user.username;
-        rest.branch+=',';
-        console.log(rest);
+        rest.uid = this.user.uid;
         this.restService.addRestaurant(rest).subscribe(data=>{
-          if(data=='Success'){
-            Swal.fire({ title:'Good Job!',text:data,icon:'success' });
-            this.toggleModel('RestoForm1',false);
-            this.rest = new Restaurant(0,'','','','','','','','');
-            this.getRestaurantByUsername(this.user.username);
-          }else{
-            Swal.fire({ title:data,icon:'error' });
+          if(data!==0){
+            this.branch.rid = data;
+            this.restService.addBranch(this.branch).subscribe(data=>{
+              if(data=='Success'){
+                Swal.fire({ title:'Good Job!',text:'Restaurant added successfully!',icon:'success' });
+                this.bname = '';
+                this.toggleModel('RestoForm1',false);
+                this.rest = new Restaurant(0,'','','','','',0);
+                this.getRestaurantByUid(this.user.uid);
+              }else{
+                Swal.fire({ title:data,icon:'error' });
+              }
+            });
           }
+
         });
       }else{
         Swal.fire({title:'Sorry!',text:data,icon:'error'});

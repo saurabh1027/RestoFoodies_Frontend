@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/Models/Category';
 import { Food_Item } from 'src/app/Models/Food_Item';
-import { Order } from 'src/app/Models/Order';
 import { Order1 } from 'src/app/Models/Order1';
 import { Restaurant } from 'src/app/Models/Restaurant';
 import { User } from 'src/app/Models/User';
@@ -17,8 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./restaurant-profile.component.css']
 })
 export class RestaurantProfileComponent implements OnInit {
-  restaurant:Restaurant=new Restaurant(0,'','','','','','','','');
-  pos:{lat:number,lng:number}={lat:0,lng:0};
+  restaurant:Restaurant=new Restaurant(0,'','','','','',0);
   restCategories:Category[]=[];
   food_items:Food_Item[]=[];
   items:Food_Item[]=[];
@@ -59,8 +57,6 @@ export class RestaurantProfileComponent implements OnInit {
         Swal.fire({title:'Error Occured',text:'Something went wrong!',icon:'error'});
       }else{
         this.restaurant = data;
-        this.pos.lat = parseFloat(this.restaurant.latlng.substring(0,this.restaurant.latlng.indexOf(',')));
-        this.pos.lng = parseFloat(this.restaurant.latlng.substring(this.restaurant.latlng.indexOf(',')+1,this.restaurant.latlng.length));
         this.getCategoriesOfRestaurant();
         this.getOrders();
       }

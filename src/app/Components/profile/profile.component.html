@@ -26,8 +26,8 @@
         <li (click)='toggleModel("UserProfileModel",true)' *ngIf='user.role==="Admin"'>Manage Users</li>
         <a routerLink="/Profile/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>Orders</li></a>
         <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List</li></a>
-        <li (click)='toggleModel("LocationForm",true)' *ngIf='user.role=="Delivery"'>Change Location</li>
-        <a routerLink="/Profile/Box" (click)='toggleSlideBar(false)' *ngIf='user.role==="Delivery"'><li>Delivery Box</li></a>
+        <a routerLink="/Profile/Delivery" (click)='toggleSlideBar(false)' *ngIf='user.role=="Delivery"'><li>Delivery</li></a>
+        <a routerLink="/Profile/Box" (click)='toggleSlideBar(false)' *ngIf='user.role==="Delivery"'><li>Box</li></a>
     </ul>
 </div>
 
