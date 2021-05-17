@@ -13,7 +13,9 @@ import { User } from 'src/app/Models/User';
 export class ProfileComponent implements OnInit {
   rest : Restaurant = new Restaurant(0,'','','','','','','','');
   user : User = new User(0,'','','User','Customer','','','','','user.jpg');
-  user1 : User = new User(0,'vendor','','','Customer','','','','','user.jpg');
+  user1 : User = new User(0,'','','','Customer','','','','','user.jpg');
+
+  user2 : User = new User(0,'','','','','','','','','user.jpg');
   
   constructor(private router:Router,private userService:UserService) { }
 
@@ -28,6 +30,7 @@ export class ProfileComponent implements OnInit {
       this.user = data;
       (this.user.role==='Vendor')?this.router.navigate(['Profile','My-List']):
       (this.user.role==='Delivery')?this.router.navigate(['Profile' , 'Delivery']):
+      (this.user.role === 'Admin')?this.router.navigate(['Profile' , 'Admin']):
       ((this.user.role==='Customer')?this.router.navigate(['My-Basket']):
         console.log("other roles")
       );
@@ -129,6 +132,17 @@ export class ProfileComponent implements OnInit {
         });
       }
     });
+  }
+
+  addUser(){
+    this.userService.addUser(this.user2).subscribe(data =>{
+      if(data == "Success"){
+        Swal.fire({ title : 'Congratulations!' , text :'User information is Added! ', icon : 'success'});
+        this.toggleModel('AddUserModel',false);
+      }else{
+        Swal.fire( {title : data , text : 'Failure in adding user', icon : 'error'});
+      }
+    })
   }
 
 }
