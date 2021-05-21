@@ -63,6 +63,11 @@ app-restaurant-pending{
 #UserEditProfileModel{
     display: none;
 }
+
+#AddUserModel{
+    display : none;
+}
+
 .form{
     user-select: none;
     padding: 40px;

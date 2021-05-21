@@ -25,6 +25,7 @@ const routes: Routes = [
     {path:'Orders',component:RestaurantPendingComponent},
     {path:'My-List',component:MyListComponent},
     {path:'Delivery',component : DeliveryComponent},
+    {path : 'Admin' , component : AdminComponent},
     {path:'Box',component : BoxComponent}
   ]},
   

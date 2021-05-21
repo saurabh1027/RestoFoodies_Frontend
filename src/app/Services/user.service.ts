@@ -43,6 +43,10 @@ export class UserService {
   
   public saveUser(user):Observable<Jwt>{
     return this.http.post<Jwt>(this.baseUrl+"save-user",user);
-  }    
+  }
+  
+  public addUser(user : User){
+    return this.http.post(this.baseUrl + "add-user", user , {responseType : 'text'});
+  }
 
 }
