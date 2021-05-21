@@ -1,3 +1,49 @@
 <div class="container">
-    <span>This is ADMIN Page!</span>
+
+    <div class="rest">
+        <div class="group">
+            <label>
+                List of Restaurants
+            </label>
+
+            <table>
+                <tr>
+                    <th>RID</th>
+                    <th>Restaurant Name</th>
+                    <th>Contact</th>
+                </tr>
+                <tr *ngFor='let restaurant of restaurants'>
+                    <td>{{restaurant.rid}}</td>
+                    <td>{{restaurant.name}}</td>
+                    <td>{{restaurant.contact}}</td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    
+    <div class="delivery">
+        <div class = "title">
+            List of Delivery Persons
+        </div>
+        
+        <table>
+            <tr>
+                <th>UID</th>
+                <th>Username</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Location</th>
+            </tr><br>
+            <tr *ngFor='let user of users'>
+                <td>{{user.uid}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.contact}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.location}}</td>
+            </tr>
+        </table>
+            
+    </div>
+
 </div>

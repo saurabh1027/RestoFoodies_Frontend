@@ -49,4 +49,10 @@ export class UserService {
     return this.http.post(this.baseUrl + "add-user", user , {responseType : 'text'});
   }
 
+  public getUserByRole(role : string) : Observable<User[]>{
+    let params = new HttpParams()
+    params = params.append('role',role)
+    return this.http.get<User[]>(this.baseUrl + "get-user-by-role" , {params : params})
+  }
+
 }

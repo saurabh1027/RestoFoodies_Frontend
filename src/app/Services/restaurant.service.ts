@@ -118,4 +118,8 @@ export class RestaurantService {
     return this.http.get<Branch>(this.baseUrl+'Restaurants/'+rid+'/Branches/'+location);
   }
 
+  public getRestaurants() : Observable<Restaurant[]>{
+    return this.http.get<Restaurant[]>(this.baseUrl+'/Admin/Restaurants')
+  }
+
 }
