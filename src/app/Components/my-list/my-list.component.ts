@@ -120,11 +120,16 @@ export class MyListComponent implements OnInit {
   }
 
   getAvailableItemsOfOrder(order:Order1){
-    let fids:number[] = JSON.parse(order.items);
-    this.restService.getItemsByFids(fids).subscribe(data=>{
+    let items : { fids:number[] , quantities:number[] };
+    items = JSON.parse(order.items);
+    this.restService.getItemsByFids(items.fids).subscribe(data=>{
       if(!data)return;
       this.items = data;
       this.count = this.items.length;
+      for(let i=0;i<this.items.length;i++){
+        this.items[i].price = (this.items[i].price/this.items[i].quantity) * items.quantities[i];
+        this.items[i].quantity = items.quantities[i];
+      }
     });
   }
 

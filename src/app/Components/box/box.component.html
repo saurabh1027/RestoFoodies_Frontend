@@ -1,10 +1,85 @@
+<p class="title">Delivering Orders</p>
+
 <div class="container">
     <div *ngIf='!(orders.length>0)' class="nothing">
         <p class="title">No orders added!</p>
         <a routerLink="/Profile/Delivery">Click here to add orders.</a>
     </div>
 
-    <div class="orders" *ngIf='orders.length>0'>
-        
+    <div id="map" *ngIf='orders.length>0'>
+        <i class="fas fa-clipboard-list" (click)='toggleModel("Bill",true)'></i>
+        <div class="controls">
+            <i class="fas fa-chevron-left" (click)='manageOrders(false)'></i>
+            <i class="fas fa-chevron-right" (click)='manageOrders(true)'></i>
+        </div>
+        <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [fullscreenControl]='true' [zoom]='zoom' (mapClick)='chooseLocation($event)'>
+
+            <!-- Source -->
+            <agm-marker
+                [latitude]='order.source.substring( 0,order.source.indexOf(",") )'
+                [longitude]='order.source.substring( order.source.indexOf(",")+1,order.source.length )'
+                (markerClick)='focusOnMarker(true)'
+                [iconUrl]='{
+                    url:"http://maps.google.com/mapfiles/kml/pal2/icon32.png",
+                    scaledSize:{
+                        width:35,height:35
+                    }
+                }'>
+                <agm-info-window>
+                    <div class="details">
+                        <span class="name" title="Restaurant Name">{{restaurant.name}}</span>
+                        <span class="contact" title="Contact">{{restaurant.contact}}</span>
+                    </div>
+                </agm-info-window>
+            </agm-marker>
+
+            <!-- Destination -->
+            <agm-marker
+                [latitude]='order.destination.substring( 0,order.destination.indexOf(",") )'
+                [longitude]='order.destination.substring( order.destination.indexOf(",")+1,order.destination.length )'
+                (markerClick)='focusOnMarker(false)'
+                [iconUrl]='{
+                    url:"http://maps.google.com/mapfiles/kml/pal2/icon58.png",
+                    scaledSize:{
+                        width:40,height:40
+                    }
+                }'>
+                <agm-info-window>
+                    <div class="details">
+                        <span class="name" title="Recipient Name">{{order.recipient_name}}</span>
+                        <span class="contact" title="Contact">{{order.contact}}</span>
+                    </div>
+                </agm-info-window>
+            </agm-marker>
+
+        </agm-map>
+    </div>
+</div>
+
+
+<!-- Models -->
+<div id="Panel">
+    <div id="Bill" *ngIf='orders.length>0'>
+        <i (click)='toggleModel("Bill",false)' class="fas fa-times"></i>
+        <div class="header">
+            <span>Price: {{order.price}}&#8377;</span>
+            <button (click)='deliverOrder(order)'>Submit</button>
+        </div>
+        <table class="items">
+            <tr>    
+                <th>Name</th>
+                <th>Price(&#8377;)</th>
+                <th>Quantity</th>
+                <th>Picture</th>
+            </tr>
+            <tr *ngFor='let item of items'>
+                <td>{{item.fname}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.quantity}}</td>
+                <td>
+                    <a target="_blank" href="/assets/images/food_items/{{item.pic}}">View</a>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>

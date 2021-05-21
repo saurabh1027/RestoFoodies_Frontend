@@ -169,16 +169,18 @@ export class BasketComponent implements OnInit {
   }
 
   getItems(){
-    let fids:number[]=[];
+    let items : {fids:number[],quantities:number[]} = {fids:[],quantities:[]};
+    // let fids:number[]=[];
     if(!this.loggedIn){
       if(JSON.parse(localStorage.getItem('Food_Items'))!=null){
         this.items=JSON.parse(localStorage.getItem('Food_Items'));
         this.order1.price=0;
         this.order1.bid = this.branch.bid;
         for(let i=0;i<this.items.length;i++){
-          fids.push(this.items[i].fid);
+          items.fids.push(this.items[i].fid);
+          items.quantities.push(this.items[i].quantity);
         }
-        this.order1.items = JSON.stringify(fids);
+        this.order1.items = JSON.stringify(items);
         for(let i=0;i<this.items.length;i++){
           this.order1.price += this.items[i].price;
         }
