@@ -88,13 +88,16 @@ export class RestaurantPendingComponent implements OnInit {
   
   getItemsOfOrder(){
     this.cnt = 0;
-    let fids : number[] = JSON.parse(this.order.items);
-    this.restService.getItemsByFids(fids).subscribe(data=>{
+    let items : {fids:number[],quantities:number[]} ; 
+    items = JSON.parse(this.order.items);
+    this.restService.getItemsByFids(items.fids).subscribe(data=>{
       this.items = (data)?data:[];
       for(let i=0;i<this.items.length;i++){
         if(this.items[i].status==='Out Of Stock'){
           this.cnt++;
         }
+        this.items[i].price = (this.items[i].price/this.items[i].quantity) * items.quantities[i] ;
+        this.items[i].quantity = items.quantities[i];
       }
       setTimeout(() => {
         document.documentElement.scrollTop=725;

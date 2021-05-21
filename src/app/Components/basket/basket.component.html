@@ -65,7 +65,7 @@
             <form #PlaceOrder='ngForm' (ngSubmit)='placeOrder()' class="order_details">
                 <input type="text" placeholder="Enter Recipient's name" pattern='[A-Za-z ]{1,30}' name='recipient_name' [(ngModel)]='order1.recipient_name' required>
                 <input type="number" pattern='[0-9]{10}' placeholder="Enter Recipient's Contact" name='contact' [(ngModel)]='order1.contact' required>
-                <span (click)='toggleModel("map",true)'>Delivery Location: <i class="fas fa-map-marker-alt"></i></span>
+                <span (click)='toggleMap("map",true)'>Delivery Location: <i class="fas fa-map-marker-alt"></i></span>
                 <button [disabled]='PlaceOrder.invalid' type="submit">Place Order</button>
             </form>
         </div>

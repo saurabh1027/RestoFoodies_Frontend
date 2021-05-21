@@ -1,3 +1,10 @@
+.title{
+    font-size: 25px;
+    font-weight: 600;
+    margin: 5vh 5% 0;
+    font-family: 'poppins',sans-serif;
+    user-select: none;
+}
 #Panel{
     font-family: 'poppins',sans-serif;
     width: 100%;
@@ -59,11 +66,68 @@
 
 
 
+#Bill{
+    width: 500px;
+    min-width: 330px;
+    min-height: 80vh;
+    background-color: #fff;
+    display: none;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 0;
+    margin: 10vh 20px;
+    row-gap: 10px;
+}
+#Bill .fa-times{
+    position: absolute;
+    margin: 20px;
+    top: 0;
+    right: 0;
+    font-size: 25px;
+    color: #fff;
+}
+#Bill .header{
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    padding: 10px 0;
+    align-items: center;
+}
+#Bill .header button{
+    padding: 10px 30px;
+    border: none;
+    background-color: rgb(0, 123, 255);
+    color: #fff;
+    cursor: pointer;
+}
+#Bill .items{
+    border: 1px solid #777;
+    overflow-x: auto;
+    border-collapse: collapse;
+}
+#Bill .items th{
+    padding: 20px;
+    font-size: 18px;
+}
+#Bill .items td{
+    border-top: 1px solid #777;
+    border-bottom: 1px solid #777;
+    padding: 10px;
+    vertical-align: middle;
+    text-align: center;
+}
+#Bill .items td a{
+    font-weight: 600;
+    color: darkblue;
+}
+
+
 
 
 .container{
     height: 75vh;
     min-height: 75vh;
+    position: relative;
     font-family: 'poppins',sans-serif;
 }
 .EmptyLocation{
@@ -109,11 +173,44 @@
     color: #555;
 }
 .orders{
-    height: 100%;
-    width: 100%;
-}
-.orders #map{
     width: 80%;
     height: 80%;
-    margin: 10%;
+    margin: 1vh 10% 5vh;
+    position: relative;
+}
+.orders #map{
+    width: 100%;
+    height: 100%;
+}
+#map .controls{
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    margin: 20px;
+    padding: 10px 15px;
+    display: flex;
+    column-gap: 20px;
+    background-color: #fff;
+    color: #666;
+}
+#map .controls i{
+    cursor: pointer;
+}
+#map i.fa-clipboard-list{
+    position: absolute;
+    z-index: 1;
+    margin: 20px;
+    background: #fff;
+    padding: 10px 20px;
+    color: #666;
+}
+#map .details{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    padding: 10px;
+    align-items: center;
+}
+#map .details .name{
+    font-weight: 600;
 }
