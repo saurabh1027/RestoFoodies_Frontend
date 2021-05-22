@@ -12,7 +12,7 @@
     margin: 50px auto;
     display: block;
 }
-#Map,#Map1{
+#Map,#Map1,#Map2{
     position: fixed;
     height: 90vh;
     width: 90vw;
@@ -23,7 +23,7 @@
     background: #eee;
     color: #fff;
 }
-#Map .close,#Map1 .close{
+#Map .close,#Map1 .close,#Map2 .close{
     top: 0;
     position: absolute;
     color: #333;
@@ -88,8 +88,14 @@ agm-map{
     color: #fff;
 }
 .profile{
-    width: 100%;
     position: relative;
+    min-height: 40vh;
+    width: 100%;
+    background-color: #6905c3;
+    display: flex;
+    align-items: center;
+    column-gap: 25px;
+    padding: 0 10vw;
 }
 .profile i.fa-edit{
     position: absolute;
@@ -97,51 +103,71 @@ agm-map{
     background: #eee;
     border-radius: 0 0 10px 0;
 }
-.profile .deletebtn{
-    padding: 15px;
-    right: 0;
-    color: #f00;
-    background: #eee;
-    border-radius: 0 0 0 10px;
-    position: absolute;
+.profile .img{
+    width: 300px;
+    height: 30vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .profile img{
-    width: 100%;
+    user-select: none;
+    -webkit-user-drag: none;
+    max-width: 100%;
+    max-height: 100%;
 }
-.profile .name{
-    font-size: 60px;
+.profile .details{
+    width: 300px;
+    height: 30vh;
+    padding-top: 20px;
+    display: flex;
+    color: #fff;
+    flex-direction: column;
+}
+.profile .details .name{
+    font-size: 30px;
     font-weight: 600;
+}
+.profile .details .categories{
+    font-size: 18px;
+    color: #bbb;
+}
+.profile .fa-edit{
     position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -80%);
-    color: white;
-    font-family: 'Averia Serif Libre', cursive;
-}
-@media screen and (max-width:750px){
-    .profile .name{
-        font-size: 50px;
-    }
-}
-@media screen and (max-width:630px){
-    .profile .name{
-        font-size: 40px;
-    }
-}
-@media screen and (max-width:500px){
-    .profile .name{
-        font-size: 30px;
-    }
+    top: 0;
+    left: 0;
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------------------Panel-Start---------------------------------------------*/
+
+
+#AddBranchForm{
+    margin: 30vh 0 10vh;
+    display: none;
+}
 #RestoForm1{
+    margin: 10vh 0 10vh;
     display: none;
 }
 #RestoUpdateForm{
+    margin: 17.5vh 0 10vh;
     display: none;
 }
-/*------------------------------------------------Panel-Start---------------------------------------------*/
 #Panel1{
     font-family: 'poppins',sans-serif;
     width: 100%;
@@ -164,8 +190,6 @@ agm-map{
     align-items: center;
     justify-content: center;
     background: #fff;
-    margin: 10vh 0;
-    min-height: 80vh;
     min-width: 350px;
     width: 500px;
 }

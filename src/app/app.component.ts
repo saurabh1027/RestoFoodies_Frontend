@@ -9,10 +9,6 @@ import { Component } from '@angular/core';
         <span>Copyrights 2021, @copyrights.RestoFoodies.com</span>
     </div>
   `,
-  styles: [
-    '.footer{display:flex;justify-content:center;align-items:center;padding:20px;}'+
-    '.footer span{font-size:16px;font-weight:600;font-family:"poppins",sans-serif;color:#333;}',
-    'filter : invert(1) hue-rotate(180deg);'
-  ]
+  styleUrls: [ './app.component.css' ]
 })
 export class AppComponent {}

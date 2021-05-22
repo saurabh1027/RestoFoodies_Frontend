@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./restaurant-profile.component.css']
 })
 export class RestaurantProfileComponent implements OnInit {
-  restaurant:Restaurant=new Restaurant(0,'','','','','',0);
+  restaurant:Restaurant=new Restaurant(0,'','','','','nothing.png',0);
   restCategories:Category[]=[];
   food_items:Food_Item[]=[];
   items:Food_Item[]=[];
@@ -67,18 +67,22 @@ export class RestaurantProfileComponent implements OnInit {
     this.restCategories = [];
     let str:string = '';
     let cnames:string[]=[];
-    for(let i=0;i<this.restaurant.categories.length;i++){
-      if(this.restaurant.categories[i]==','){
-        cnames.push(str);
-        str = '';
-      }else{
-        str += this.restaurant.categories[i];
+    if(this.restaurant.categories){
+      for(let i=0;i<this.restaurant.categories.length;i++){
+        if(this.restaurant.categories[i]==','){
+          cnames.push(str);
+          str = '';
+        }else{
+          str += this.restaurant.categories[i];
+        }
       }
+      this.restService.getCategoriesByCnames(cnames).subscribe(data=>{
+        this.restCategories = data;
+        this.getFoodItems();
+      });
+    }else{
+      this.restaurant.categories = '';
     }
-    this.restService.getCategoriesByCnames(cnames).subscribe(data=>{
-      this.restCategories = data;
-      this.getFoodItems();
-    });
   }
 
   getFoodItems(){
@@ -114,7 +118,6 @@ export class RestaurantProfileComponent implements OnInit {
   addItem(item:Food_Item){
     let rname:string = localStorage.getItem('Restaurant');
     let items:Food_Item[]=[];
-    //If restaurant is same
     if(rname==this.restaurant.name){
       items=JSON.parse(localStorage.getItem('Food_Items'));
       if(items==null || items==undefined){

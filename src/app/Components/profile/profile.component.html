@@ -1,41 +1,40 @@
 <!--Content-->
-<div class="container">
-    <div class="profile">
-        <i class="fas fa-bars" (click)='toggleSlideBar(true)' title="Task-Bar"></i>
-        <div class="details">
-            <div>
-                <p class="fullname">{{user.fullname}}</p>
-                <p class="username" title="username">{{user.username}}</p>
-            </div>
-            <a href="assets/images/user_pictures/{{user.profile}}" target="_blank"><img src="assets/images/user_pictures/{{user.profile}}"></a>
-        </div>
-    </div>
-</div>
+<i class="fas fa-bars" (click)='toggleSlideBar(true)'></i>
 <router-outlet></router-outlet>
 
 
 
 <!--Models-->
 <div id="slidebar">
-    <p class="title">Task Bar</p>
     <i class="fas fa-times" (click)='toggleSlideBar(false)'></i>
+    <div class="user-profile">
+        <a href="assets/images/user_pictures/{{user.profile}}" target="_blank"><img src="assets/images/user_pictures/{{user.profile}}"></a>
+        <p class="fullname">{{user.fullname}}</p>
+    </div>
     <ul class="action-list">
-        <li (click)='toggleModel("EditUserProfileModel",true)'>Edit Profile</li>
-        <a *ngIf='user.role==="Customer"' routerLink="/My-Basket"><li>Basket</li></a>
-        <a (click)='toggleSlideBar(false)' routerLink="/Profile/Restaurant" *ngIf='user.role==="Vendor"'><li>Restaurant</li></a>
-        <li (click)='toggleModel("UserProfileModel",true)' *ngIf='user.role==="Admin"'>Manage Users</li>
-        <li (click)='toggleModel("AddUserModel",true)' *ngIf='user.role==="Admin"'>Add New Users</li>
-        <a routerLink="/Profile/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>Orders</li></a>
-        <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List</li></a>
-        <a routerLink="/Profile/Delivery" (click)='toggleSlideBar(false)' *ngIf='user.role=="Delivery"'><li>Delivery</li></a>
+        <span [class.d-none]='user.role=="Admin"'>Pages</span>
+        <a (click)='toggleSlideBar(false)' routerLink="/Profile/Restaurant" *ngIf='user.role==="Vendor"'><li>Restaurant Profile</li></a>
+        <a routerLink="/Profile/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>New orders</li></a>
+        <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List of orders</li></a>
+        <a routerLink="/Profile/Delivery" (click)='toggleSlideBar(false)' *ngIf='user.role=="Delivery"'><li>New orders</li></a>
         <a routerLink="/Profile/Box" (click)='toggleSlideBar(false)' *ngIf='user.role==="Delivery"'><li>Box</li></a>
+        <!-- <a *ngIf='user.role==="Customer"' routerLink="/My-Basket"><li>Basket</li></a> -->
+        <span>Actions</span>
+        <li (click)='toggleSlideBar(false);toggleModel("EditUserProfileModel","Panel",true)'>Edit Profile</li>
+        <li (click)='toggleSlideBar(false);toggleModel("RestoUpdateForm","Panel1",true)' *ngIf='user.role==="Vendor"'>Edit Restaurant Profile</li>
+        <li (click)='toggleSlideBar(false);toggleModel("AddBranchForm","Panel1",true)' *ngIf='user.role==="Vendor"'>Add Branch</li>
+        <li (click)='toggleSlideBar(false);toggleModel("AddCategoryForm","Panel2",true)' *ngIf='user.role==="Vendor"'>Add Category</li>
+        <li (click)='toggleSlideBar(false);toggleModel("SelectCategoryForm","Panel2",true)' *ngIf='user.role==="Vendor"'>Select Category</li>
+        <li (click)='toggleSlideBar(false);toggleModel("AddItemForm","Panel2",true)' *ngIf='user.role==="Vendor"'>Add Food Item</li>
+        <li (click)='toggleSlideBar(false);toggleModel("UserProfileModel","Panel",true)' *ngIf='user.role==="Admin"'>Manage Users</li>
+        <li (click)='toggleSlideBar(false);toggleModel("AddUserModel","Panel",true)' *ngIf='user.role==="Admin"'>Add New Users</li>
     </ul>
 </div>
 
 <div id="Panel">
     
     <form #EditUserProfileModel='ngForm' id="EditUserProfileModel" (ngSubmit)='updateUserProfile(file.files[0],user)' class="form">
-        <i class="fas fa-times close" (click)='toggleModel("EditUserProfileModel",false)'></i>
+        <i class="fas fa-times close" (click)='toggleModel("EditUserProfileModel","Panel",false)'></i>
         <span class="title">Update Your Profile</span>
         <div class="group">
             <label>Username : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
@@ -70,7 +69,6 @@
         </div>
     </form>
     
-    <!-- Admin-Models Start -->
     <form #UserProfileModel='ngForm' (ngSubmit)='getUserByUsername(username1.value)' id="UserProfileModel" class="form small">
         <span class="title">Update User Profile</span>
         <div class="group">
@@ -80,12 +78,12 @@
         </div>
         <div class="buttons">
             <input type="submit" value="Search">
-            <input type="reset" value="Cancel" (click)='toggleModel("UserProfileModel",false)'>
+            <input type="reset" value="Cancel" (click)='toggleModel("UserProfileModel","Panel",false)'>
         </div>
     </form>
     
     <form #UserEditProfileModel='ngForm' (ngSubmit)='updateUserProfile(file1.files[0],user1)' id="UserEditProfileModel" class="form">
-        <i class="fas fa-times close" (click)='toggleModel("UserEditProfileModel",false)'></i>
+        <i class="fas fa-times close" (click)='toggleModel("UserEditProfileModel","Panel",false)'></i>
         <span class="title">Update Your Profile</span>
         <div class="group">
             <label>Password : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
@@ -124,67 +122,60 @@
         </div>
     </form>
 
-
     <form #AddUserModel = 'ngForm' (ngSubmit) = 'addUser()' id="AddUserModel" class="form">
-        <i class="fas fa-times close" (click)='toggleModel("AddUserModel",false)'></i>
+        <i class="fas fa-times close" (click)='toggleModel("AddUserModel","Panel",false)'></i>
         <span class="title">Add New User</span>
-        <div class="form">
+        <div class="group">
+            <label>Default Username : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <input type="text" #username2='ngModel' name="username2" [(ngModel)]='user2.username' maxlength="30" required>
+            <small [class.d-none]='username2.valid || username2.untouched'>Username cannot be empty.</small>
+        </div>
 
-            <div class="group">
-                <label>Default Username : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
-                <input type="text" #username2='ngModel' name="username2" [(ngModel)]='user2.username' maxlength="30" required>
-                <small [class.d-none]='username2.valid || username2.untouched'>Username cannot be empty.</small>
+        <div class="group">
+            <label>Default Password : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <div class="password">
+                <input #password2='ngModel' type="password" name="password2" [(ngModel)]='user2.password' required id="password2">
+                <i id='eye2' class="fas fa-eye" (click)='togglePasswordVisibility("eye2","password2")'></i>
             </div>
+            <small [class.d-none]='password2.valid || password2.untouched'>Password cannot be empty.</small>
+        </div>
 
-            <div class="group">
-                <label>Default Password : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
-                <div class="password">
-                    <input #password2='ngModel' type="password" name="password2" [(ngModel)]='user2.password' required id="password2">
-                    <i id='eye2' class="fas fa-eye" (click)='togglePasswordVisibility("eye2","password2")'></i>
-                </div>
-                <small [class.d-none]='password2.valid || password2.untouched'>Password cannot be empty.</small>
+        <div class="group">
+            <label>Fullname : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <input type="text" name="fullname2" required #fullname2='ngModel' [(ngModel)]="user2.fullname" maxlength="50">
+            <small [class.d-none]='fullname2.valid || fullname2.untouched'>Fullname cannot be empty.</small>
+        </div>
+
+        <div class="group">
+            <label>Contact : <span title = "Required" style="color : red ; font-size : 12px">*</span></label>
+            <div class="contact">
+                <input type="text" #contact2 = 'ngModel' name="contact2" [(ngModel)] = 'user2.contact' pattern = '[0-9]{10}'required>
             </div>
-
-            <div class="group">
-                <label>Fullname : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
-                <input type="text" name="fullname2" required #fullname2='ngModel' [(ngModel)]="user2.fullname" maxlength="50">
-                <small [class.d-none]='fullname2.valid || fullname2.untouched'>Fullname cannot be empty.</small>
+            <div *ngIf='contact2.errors && (contact2.invalid && contact2.touched)'>
+                <small *ngIf='contact2.errors.required'>Contact cannot be empty.</small>
+                <small *ngIf='contact2.errors.pattern'>Contact must be of at least 10 digits.</small>
             </div>
+        </div>
 
-            <div class="group">
-                <label>Contact : <span title = "Required" style="color : red ; font-size : 12px">*</span></label>
-                <div class="contact">
-                    <input type="text" #contact2 = 'ngModel' name="contact2" [(ngModel)] = 'user2.contact' pattern = '[0-9]{10}'required>
-                </div>
-                <div *ngIf='contact2.errors && (contact2.invalid && contact2.touched)'>
-                    <small *ngIf='contact2.errors.required'>Contact cannot be empty.</small>
-                    <small *ngIf='contact2.errors.pattern'>Contact must be of at least 10 digits.</small>
-                </div>
-            </div>
+        <div class="flex group">
+            <label>Role : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
+            <select name="role" [(ngModel)]='user2.role' required>
+                <option value="Vendor">Vendor</option>
+                <option value="Delivery">Delivery</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
 
-            <div class="flex group">
-                <label>Role : <span title="Required" style="color: #f00;font-size: 12px;">*</span></label>
-                <select name="role" [(ngModel)]='user2.role' required>
-                    <option value="Vendor">Vendor</option>
-                    <option value="Delivery">Delivery</option>
-                    <option value="Admin">Admin</option>
-                </select>
-            </div>
+        <div class="group">
+            <label>Email Id :</label>
+            <input type="text" name="email1" [(ngModel)]='user2.email' #email1='ngModel'>
+        </div>
 
-            <div class="group">
-                <label>Email Id :</label>
-                <input type="text" name="email1" [(ngModel)]='user2.email' #email1='ngModel'>
-            </div>
-
-            <div class="buttons">
-                <input type="submit" [disabled] = 'AddUserModel.invalid' value="Update">
-                <input type="reset" (click)='deleteUser(user2.username)' value="Delete User Profile">
-            </div>
-
+        <div class="buttons">
+            <input type="submit" [disabled] = 'AddUserModel.invalid' value="Update">
+            <input type="reset" (click)='deleteUser(user2.username)' value="Delete User Profile">
         </div>
 
     </form>
-
-    <!-- Admin-Models End -->
 
 </div>

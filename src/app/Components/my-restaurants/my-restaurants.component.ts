@@ -16,6 +16,7 @@ import { Branch } from 'src/app/Models/Branch';
 export class MyRestaurantsComponent implements OnInit {
   branches:Branch[]=[];
   branch:Branch = new Branch(0,'','',0);
+  branch1:Branch = new Branch(0,'','',0);
   user:User=new User(0,'','','','','','','','','');
   restaurant : Restaurant = new Restaurant(0,'','','','','',0);
   rest : Restaurant = new Restaurant(0,'','','','','',0);
@@ -74,15 +75,16 @@ export class MyRestaurantsComponent implements OnInit {
 
   checkFile(event){}
 
-  toggleModel(modelName:string,bool:boolean){
+  toggleModel(modelName:string,panelName:string,bool:boolean){
     let model = document.getElementById(modelName);
+    let panel = document.getElementById(panelName);
     let body = document.getElementsByTagName('body')[0];
     if(bool){
-      document.getElementById('Panel1').style.display = 'flex';
+      panel.style.display = 'flex';
       body.classList.add('model');
       model.style.display = 'flex';
     }else{
-      document.getElementById('Panel1').style.display = 'none';
+      panel.style.display = 'none';
       body.classList.remove('model');
       model.style.display = 'none';
     }
@@ -102,7 +104,7 @@ export class MyRestaurantsComponent implements OnInit {
         this.restService.deleteRestaurant(rid).subscribe(data=>{
           if(data=='Success'){
             Swal.fire('Deleted!','Your restaurant is deleted.','success');
-            this.toggleModel("RestoUpdateForm",false);
+            this.toggleModel("RestoUpdateForm","Panel1",false);
             this.getRestaurantByUid(this.user.uid);
           }else{
             Swal.fire(data,'Unable to delete restaurant.','error');
@@ -121,7 +123,7 @@ export class MyRestaurantsComponent implements OnInit {
           this.restService.updateRestaurant(rest).subscribe(data=>{
             if(data=='Success'){
               Swal.fire({title:'Congratulations!',text:'Restaurant Updated Successfully.',icon:'success'});
-              this.toggleModel('RestoUpdateForm',false);
+              this.toggleModel('RestoUpdateForm',"Panel",false);
             }else{
               Swal.fire({title:'Sorry!',text:data,icon:'error'});
             }
@@ -134,7 +136,7 @@ export class MyRestaurantsComponent implements OnInit {
       this.restService.updateRestaurant(rest).subscribe(data=>{
         if(data=='Success'){
           Swal.fire({title:'Congratulations!',text:'Restaurant Updated Successfully.',icon:'success'});
-          this.toggleModel('RestoUpdateForm',false);
+          this.toggleModel('RestoUpdateForm',"Panel",false);
         }else{
           Swal.fire({title:'Sorry!',text:data,icon:'error'});
         }
@@ -143,6 +145,7 @@ export class MyRestaurantsComponent implements OnInit {
   }
   
   toggleMap(mapName:string,modelName:string,bool:boolean){
+    this.getCurrentLocation();
     let map = document.getElementById(mapName);
     let model = document.getElementById(modelName);
     if(bool){
@@ -167,7 +170,7 @@ export class MyRestaurantsComponent implements OnInit {
               if(data=='Success'){
                 Swal.fire({ title:'Good Job!',text:'Restaurant added successfully!',icon:'success' });
                 this.bname = '';
-                this.toggleModel('RestoForm1',false);
+                this.toggleModel('RestoForm1',"Panel",false);
                 this.rest = new Restaurant(0,'','','','','',0);
                 this.getRestaurantByUid(this.user.uid);
               }else{
@@ -188,6 +191,21 @@ export class MyRestaurantsComponent implements OnInit {
       lat:$event.coords.lat,
       lng:$event.coords.lng
     }
+  }
+
+  addBranch(){
+    this.branch1.rid = this.restaurant.rid;
+    this.branch1.location = this.pos.lat + ',' + this.pos.lng;
+    console.log(this.branch1);
+    this.restService.addBranch(this.branch1).subscribe(data=>{
+      if(data=='Success'){
+        Swal.fire({title:'Congratulations!',text:'Branch added successfully.',icon:'success'});
+        this.toggleModel('AddBranchForm','Panel1',false);
+        this.getRestaurantByUid(this.user.uid);
+      }else{
+        Swal.fire({title:'Sorry!',text:data,icon:'error'});
+      }
+    });
   }
 
 }

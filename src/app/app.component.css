@@ -1,0 +1,12 @@
+.footer{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+.footer span{
+    font-size:16px;
+    font-weight:600;
+    font-family:"poppins",sans-serif;
+    color:#333;
+}

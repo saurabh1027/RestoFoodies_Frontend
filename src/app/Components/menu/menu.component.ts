@@ -68,15 +68,16 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  toggleModel(modelName:string,bool:boolean){
+  toggleModel(modelName:string,panelName:string,bool:boolean){
+    let panel = document.getElementById(panelName);
     let model = document.getElementById(modelName);
     let body = document.getElementsByTagName('body')[0];
     if(bool){
-      document.getElementById('Panel2').style.display = 'flex';
+      panel.style.display = 'flex';
       body.classList.add('model');
       model.style.display = 'flex';
     }else{
-      document.getElementById('Panel2').style.display = 'none';
+      panel.style.display = 'none';
       body.classList.remove('model');
       model.style.display = 'none';
     }
@@ -92,7 +93,7 @@ export class MenuComponent implements OnInit {
           this.restService.updateRestaurant(this.restaurant).subscribe(data=>{
             if(data=='Success'){
               Swal.fire({title:'Category added successfully!',icon:'success'});
-              this.toggleModel('AddCategoryForm',false);
+              this.toggleModel('AddCategoryForm',"Panel2",false);
               this.getCategoriesByCnames();
             }else{
               Swal.fire({title:'Sorry!',text:data,icon:'error'});
@@ -116,7 +117,7 @@ export class MenuComponent implements OnInit {
       }):Swal.fire({title:data,icon:'error'});
       this.pic = undefined;
       if(data==='Success'){
-        this.toggleModel('AddItemForm',false);
+        this.toggleModel('AddItemForm',"Panel2",false);
       }
     });
   }
@@ -131,14 +132,14 @@ export class MenuComponent implements OnInit {
         this.restService.addFoodItemPic(this.pic).subscribe(data=>{
           if(data=='Success'){
             Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'})
-            this.toggleModel('UpdateItemForm',false); 
+            this.toggleModel('UpdateItemForm',"Panel2",false); 
           }else{  
             Swal.fire({title:data,text:'Failed to update',icon:'error'});
           }
         });
       }else{
         Swal.fire({'title':'Congratulations!',text:'Item updated successfully',icon:'success'});
-        this.toggleModel('UpdateItemForm',false); 
+        this.toggleModel('UpdateItemForm',"Panel2",false); 
       }
     });
   }

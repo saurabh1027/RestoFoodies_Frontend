@@ -1,7 +1,12 @@
 <div class="container">
     <div class="profile">
-        <img src="assets/images/restaurants/banner1.jpg" alt="banner">
-        <span class="name">{{restaurant.name}}</span>
+        <div class="img">
+            <img src="assets/images/restaurants/{{restaurant.profile}}" alt="profile">
+        </div>
+        <div class="details">
+            <span class="name">{{restaurant.name}}</span>
+            <span class="categories" *ngIf='restaurant.categories'>{{restaurant.categories.substring(0,restaurant.categories.length-1)}}</span>
+        </div>
     </div>
 
     <div class="me">
@@ -32,8 +37,8 @@
                     <div class="details">
                         <div class="left-box">
                             <span class="item-name">{{item.fname}}({{item.quantity}})</span>
-                            <span *ngIf='item.ingredients!=""' class="ingredients" title="Used Ingredients">{{item.ingredients.substring(0,20)}}...</span>
-                            <span *ngIf='item.description!=""' class="description" title="More Information">{{item.description.substring(0,20)}}...</span>
+                            <span *ngIf='item.ingredients' class="ingredients" title="Used Ingredients">{{item.ingredients.substring(0,20)}}...</span>
+                            <span *ngIf='item.description' class="description" title="More Information">{{item.description.substring(0,20)}}...</span>
                         </div>
                         <div class="right-box">
                             <span *ngIf='item.vegeterian' class="veg-nonveg veg" title="{{item.vegeterian}}"></span>

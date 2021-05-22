@@ -1,19 +1,10 @@
 <div class="menu">
-    <div class="topbar">
-        <p class="title">Menu</p>
-        <i class="fas fa-ellipsis-v" (mouseenter)='toggleMenuActionsModel()'></i>
-        <ul id="MenuActions">
-            <li (click)="toggleModel('AddCategoryForm',true)">Add Category</li>
-            <li (click)="toggleModel('SelectCategoryForm',true)">Select Category</li>
-            <li (click)="toggleModel('AddItemForm',true)">Add Food Item</li>
-        </ul>
-    </div>
-
+    
     <div class="food-items">
 
         <div *ngIf='!(food_items.length>0)' class="nothing">
             <p>No items added yet!</p>
-            <button (click)='toggleModel("AddItemForm",true)'>Add Food Item</button>
+            <button (click)='toggleModel("AddItemForm","Panel2",true)'>Add Food Item</button>
         </div>
         <div *ngIf='food_items.length>0' class='list'>
             <div class="item" *ngFor='let i of food_items'>
@@ -23,8 +14,8 @@
                 <div class="details">
                     <div class="left-box">
                         <span class="item-name">{{i.fname}}({{i.quantity}})</span>
-                        <span *ngIf='i.ingredients!=""' class="ingredients" title="Used Ingredients">{{i.ingredients.substring(0,20)}}...</span>
-                        <span *ngIf='i.description!=""' class="description" title="More Information">{{i.description.substring(0,20)}}...</span>
+                        <span *ngIf='i.ingredients' class="ingredients" title="Used Ingredients">{{i.ingredients.substring(0,20)}}...</span>
+                        <span *ngIf='i.description' class="description" title="More Information">{{i.description.substring(0,20)}}...</span>
                     </div>
                     <div class="right-box">
                         <span *ngIf='i.vegeterian' class="veg-nonveg veg" title="{{i.vegeterian}}"></span>
@@ -33,7 +24,7 @@
                     </div>
                 </div>
                 <div class="buttons">
-                    <button name="edit" (click)='item=i;toggleModel("UpdateItemForm",true)'>Edit</button>
+                    <button name="edit" (click)='item=i;toggleModel("UpdateItemForm","Panel2",true)'>Edit</button>
                     <button name="delete" (click)='deleteFoodItem(i.fid)'>Delete</button>
                 </div>
             </div>
@@ -52,7 +43,7 @@
 <div id="Panel2">
 
     <div id="SelectCategoryForm">
-        <i class="fas fa-times close" (click)="toggleModel('SelectCategoryForm',false)"></i>
+        <i class="fas fa-times close" (click)="toggleModel('SelectCategoryForm','Panel2',false)"></i>
         <p class="title">Select Category</p>
         <div class="group">
             <span class="category" (click)='getFoodItems("All")'>All</span>
@@ -61,6 +52,7 @@
     </div>
 
     <form id="AddItemForm" #AddItemForm='ngForm' class="form" (ngSubmit)='addFoodItem()'>
+        <i class="fas fa-times close" (click)="toggleModel('AddItemForm','Panel2',false)"></i>
         <p class="title">Add Food Item</p>
         <div class="group">
             <label>Name of food item: </label>
@@ -108,11 +100,12 @@
         </div>
         <div class="buttons">
             <input type="submit" [disabled]='AddItemForm.invalid || fileSizeExceeded' class="btn submitbtn" value="Submit">
-            <input type="reset" class="btn cancelbtn" (click)='toggleModel("AddItemForm",false)' value="Cancel">
+            <input type="reset" class="btn cancelbtn" (click)='toggleModel("AddItemForm","Panel2",false)' value="Cancel">
         </div>
     </form>
 
     <form #UpdateItemForm='ngForm' (ngSubmit)='updateItem(item)' class="form" id="UpdateItemForm">
+        <i class="fas fa-times close" (click)="toggleModel('UpdateItemForm','Panel2',false)"></i>
         <p class="title">Update Food-Item Details</p>
         <div class="group">
             <label>Name of the food item:</label>
@@ -167,13 +160,12 @@
         </div>
         <div class="buttons">
             <input type="submit" [disabled]='UpdateItemForm.invalid || fileSizeExceeded' value="Submit">
-            <input type="button" style="background-color: #f00;" (click)='toggleModel("UpdateItemForm",false)' value="Cancel">
+            <input type="button" style="background-color: #f00;" (click)='toggleModel("UpdateItemForm","Panel2",false)' value="Cancel">
         </div>
     </form>
 
     <form id="AddCategoryForm" #AddCategoryForm='ngForm' class="form" (ngSubmit)='addCategory(newCategory)'>
-
-        <i class="fas fa-times close" (click)='toggleModel("AddCategoryForm",false)'></i>
+        <i class="fas fa-times close" (click)='toggleModel("AddCategoryForm","Panel2",false)'></i>
         <span class="title" style="margin-bottom: 20px;">Add New Category</span>
         <div class="group">
             <label>Category Name: </label>

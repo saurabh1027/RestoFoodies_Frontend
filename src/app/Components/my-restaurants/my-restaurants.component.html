@@ -1,22 +1,22 @@
 <div class="container nothing" *ngIf='restaurant.rid===0'>
     <p class="welcome">Welcome to your profile</p>
     <p class="message">You have not added your restaurant yet!</p>
-    <button (click)='toggleModel("RestoForm1",true)' class="addbtn">Add Restaurant</button>
+    <button (click)='toggleModel("RestoForm1","Panel1",true)' class="addbtn">Add Restaurant</button>
 </div>
 
 <div class="container" *ngIf='restaurant.rid!==0'>
     <div class="profile">
-        <i class="fas fa-edit" title="Update Restaurant Profile" (click)='toggleModel("RestoUpdateForm",true)'></i>
-        <img src="assets/images/restaurants/banner1.jpg" alt="banner">
-        <span class="name">{{restaurant.name}}</span>
+        <div class="img">
+            <img src="assets/images/restaurants/{{restaurant.profile}}" alt="profile">
+        </div>
+        <div class="details">
+            <span class="name">{{restaurant.name}}</span>
+            <span class="services">
+                <span *ngFor='let branch of branches'>{{branch.bname}} </span>
+            </span>
+            <span class="categories" *ngIf='restaurant.categories'>{{restaurant.categories.substring(0,restaurant.categories.length-1)}}</span>
+        </div>
     </div>
-
-    <div id="RestoMap">
-        <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='14' [fullscreenControl]='true'>
-            <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
-        </agm-map>
-    </div>
-    
     <app-menu [restaurant]='restaurant'></app-menu>
 
 </div>
@@ -28,7 +28,7 @@
 <div id="Panel1">
 
     <form id="RestoUpdateForm" #RestoUpdateForm='ngForm' (ngSubmit)='updateRestaurant(restaurant,file2.files)' class='form'>
-        <i class="fas fa-times close" (click)='toggleModel("RestoUpdateForm",false)'></i>
+        <i class="fas fa-times close" (click)='toggleModel("RestoUpdateForm","Panel1",false)'></i>
         <span class="title" style="margin-bottom: 20px;">Update Restaurant Profile</span>
         <div class="group">
             <label>Restaurant Name: </label>
@@ -63,7 +63,7 @@
     </form>
     
     <form #RestoForm1='ngForm' class="form" id="RestoForm1" (ngSubmit)='addRestaurant(rest,file1.files)'>
-        <i class="fas fa-times close" (click)='toggleModel("RestoForm1",false)'></i>
+        <i class="fas fa-times close" (click)='toggleModel("RestoForm1","Panel1",false)'></i>
         <span class="title" style="margin-bottom: 20px;">Add New Restaurant</span>
         <div class="group">
             <label>Restaurant Name: </label>
@@ -105,6 +105,26 @@
         </div>
     </form>
 
+    <!-- Currently not Available -->
+    <form id="AddBranchForm" class="form" #AddBranchForm='ngForm' (ngSubmit)='addBranch()'>
+        <i class="fas fa-times close" (click)='toggleModel("AddBranchForm","Panel1",false)'></i>
+        <p class="title">Add New Branch</p>
+        <div class="group">
+            <label>Branch Name:</label>
+            <input type="text" #branch2='ngModel' name="branch2" pattern='[a-zA-Z]{1,30}' maxlength="30" [(ngModel)]="branch1.bname" required>
+            <div *ngIf='branch2.errors && (branch2.invalid && branch2.touched)'>
+                <small *ngIf='branch2.errors.required'>Restaurant branch cannot be empty.</small>
+                <small *ngIf='branch2.errors.pattern'>Branch should contain only alphabets.</small>
+            </div>
+        </div>
+        <div class="group">
+            <label for="mapbtn" class="mapbtn" (click)='toggleMap("Map2","AddBranchForm",true)'>Location: <i id="mapbtn" class="fas fa-map-marked-alt"></i></label>
+        </div>
+        <div class="buttons">
+            <input type="submit" [disabled]='AddBranchForm.form.invalid' value='Submit'>
+        </div>
+    </form>
+
 </div>
 
 
@@ -119,6 +139,12 @@
 </div>
 <div id="Map1">
     <i class="fas fa-times close" (click)='toggleMap("Map1","RestoForm1",false)'></i>
+    <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='14' [fullscreenControl]='true' (mapClick)='chooseLocation($event)'>
+        <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
+    </agm-map>
+</div>
+<div id="Map2">
+    <i class="fas fa-times close" (click)='toggleMap("Map2","AddBranchForm",false)'></i>
     <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='14' [fullscreenControl]='true' (mapClick)='chooseLocation($event)'>
         <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
     </agm-map>

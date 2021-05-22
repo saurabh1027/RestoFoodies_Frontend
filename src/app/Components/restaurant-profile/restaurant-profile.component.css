@@ -6,6 +6,68 @@
     font-family: 'poppins',sans-serif;
     min-height: 75vh;
 }
+.profile{
+    min-height: 40vh;
+    width: 100%;
+    background-color: #6905c3;
+    display: flex;
+    align-items: center;
+    column-gap: 25px;
+    padding: 0 10vw;
+}
+.profile .img{
+    width: 300px;
+    height: 30vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile img{
+    user-select: none;
+    -webkit-user-drag: none;
+    max-width: 100%;
+    max-height: 100%;
+}
+.profile .details{
+    width: 300px;
+    height: 30vh;
+    padding-top: 20px;
+    display: flex;
+    color: #fff;
+    flex-direction: column;
+}
+.profile .details .name{
+    font-size: 30px;
+    font-weight: 600;
+}
+.profile .details .categories{
+    font-size: 18px;
+    color: #bbb;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .me .topbar{
     width: 100%;
@@ -21,45 +83,9 @@
     letter-spacing: 1px;
     user-select: none;
 }
-
-.profile{
-    width: 100%;
-    position: relative;
-}
-.profile img{
-    width: 100%;
-}
-.profile .name{
-    font-size: 60px;
-    font-weight: 600;
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -80%);
-    color: white;
-    font-family: 'Averia Serif Libre', cursive;
-}
-
-@media screen and (max-width:750px){
-    .profile .name{
-        font-size: 50px;
-    }
-}
-@media screen and (max-width:630px){
-    .profile .name{
-        font-size: 40px;
-    }
-}
-@media screen and (max-width:500px){
-    .profile .name{
-        font-size: 30px;
-    }
-}
-
 .me .food-items{
     position: relative;
 }
-
 .me .nothing{
     height: 350px;
     width: 100%;
@@ -67,7 +93,6 @@
     justify-content: center;
     align-items: center;
 }
-
 .me .nothing p{
     font-size: 25px;
     font-weight: 600;
