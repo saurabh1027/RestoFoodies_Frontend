@@ -29,8 +29,13 @@ export class RestaurantProfileComponent implements OnInit {
     private userService:UserService,private router:Router) { }
 
   ngOnInit(): void {
+    let rname:string = this.active.snapshot.paramMap.get('rname');
+    let name1:string = '';
+    for(let i=0;i<rname.length;i++){
+      name1 += (rname.charAt(i)=='_') ? ' ' : rname.charAt(i);
+    }
     this.isLoggedIn();
-    this.getRestaurantByName(this.active.snapshot.paramMap.get('rname'));
+    this.getRestaurantByName(name1);
   }
 
   isLoggedIn(){

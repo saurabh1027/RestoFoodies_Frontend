@@ -17,6 +17,7 @@ import { Branch } from 'src/app/Models/Branch';
   styleUrls: ['./basket.component.css']
 })
 export class BasketComponent implements OnInit {
+  otp:number[]=[];
   user:User=new User(0,'','','','','','','','','');
   rname:string='';
   pos:{lat:number,lng:number}={lat:0,lng:0};
@@ -25,9 +26,8 @@ export class BasketComponent implements OnInit {
   orders:Order1[]=[];
   order1:Order1=new Order1(0,'','','0,0','','Placed','',0,0,'','');
   delivery_charge:number=50;
-  otp:number[]=[];
   @ViewChild('contactValue') contact:ElementRef;
-  restaurant : Restaurant = new Restaurant(0,'','','','','',0);
+  restaurant : Restaurant = new Restaurant(0,'','','','','nothing.png',0);
   branch:Branch=new Branch(0,'','',0);
 
   constructor(private userService:UserService,private restService:RestaurantService,private baskService:BasketService,private router:Router) { }
@@ -51,6 +51,7 @@ export class BasketComponent implements OnInit {
           if(this.user.role!=="Customer"){
             this.router.navigate(['Profile']);
           }
+          this.user.contact = '';
           this.loggedIn=true;
         }
         this.getItems();
@@ -90,7 +91,6 @@ export class BasketComponent implements OnInit {
       str += this.otp[i];
     }  
     if(str==='8888'){
-      Swal.fire({title:'Success',text:'OTP matched!',icon:'success'});
       this.user.contact = this.contact.nativeElement.value;
       this.baskService.getOrdersByContact(this.user.contact).subscribe(data=>{
         if(data){
@@ -208,8 +208,16 @@ export class BasketComponent implements OnInit {
     }
   }
 
-  toggleMap(modelName:string,bool:boolean){
-    document.getElementById(modelName).style.display = (bool)?'flex':'none';
+  toggleMap(mapName:string,modelName:string,bool:boolean){
+    let map = document.getElementById(mapName);
+    let model = document.getElementById(modelName);
+    if(bool){
+      map.style.display = 'flex';
+      model.style.display = 'none';
+    }else{
+      map.style.display = 'none';
+      model.style.display = 'flex';
+    }
   }
 
 }
