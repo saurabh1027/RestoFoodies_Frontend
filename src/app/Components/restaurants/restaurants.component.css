@@ -16,14 +16,14 @@
 }
 .box .topbar{
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px 30px;
+    padding: 20px 10vw;
 }
 .box .topbar .count{
     user-select: none;
     font-size: 18px;
     font-weight: 600;
+    text-transform: capitalize;
 }
 
 

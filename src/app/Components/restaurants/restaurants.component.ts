@@ -28,6 +28,9 @@ export class RestaurantsComponent implements OnInit {
       this.userService.getUserByToken(token).subscribe(data=>{
         if(data){
           this.user = data;
+          if(!this.user.location){
+            this.router.navigate(['/']);
+          }
           this.loggedIn = true;
           this.checkLocation();
         }

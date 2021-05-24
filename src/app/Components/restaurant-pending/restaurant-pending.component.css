@@ -2,6 +2,7 @@
     font-family: 'poppins',sans-serif;
     box-sizing: border-box;
     width: 100%;
+    user-select: none;
 }
 .topbar{
     padding: 30px;
@@ -11,14 +12,17 @@
 }
 .topbar span{
     font-size: 25px;
+    color: #353535;
     font-weight: 600;
 }
 .topbar select{
     padding: 10px;
+    background-color: #353535;
+    color: #fff;
+    border: none;
     min-width: 200px;
     outline: none;
     cursor: pointer;
-    border-radius: 5px;
 }
 .nothing{
     min-height: 70vh;

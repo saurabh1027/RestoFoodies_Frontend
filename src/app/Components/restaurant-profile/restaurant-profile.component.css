@@ -9,7 +9,7 @@
 .profile{
     min-height: 40vh;
     width: 100%;
-    background-color: #6905c3;
+    background-color: #353535;
     display: flex;
     align-items: center;
     column-gap: 25px;
@@ -86,7 +86,7 @@
 
 
 .me{
-    padding: 5vh 5vw;
+    padding: 5vh 5vw 0;
 }
 .me .title{
     font-size: 30px;
@@ -145,7 +145,6 @@
     grid-template-columns: 300px 300px 300px 300px;
     grid-auto-flow: row;
     align-items: flex-start;
-    min-height: 80vh;
     justify-content: center;
     column-gap: 20px;
     row-gap: 20px;

@@ -4,7 +4,6 @@ import { Restaurant } from 'src/app/Models/Restaurant';
 import { User } from 'src/app/Models/User';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { UserService } from 'src/app/Services/user.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin',
@@ -19,6 +18,7 @@ export class AdminComponent implements OnInit {
   constructor(private userService : UserService , private router : Router , private restservce : RestaurantService) { }
 
   ngOnInit(): void {
+    document.querySelector('.fa-bars').classList.add('dark-grey');
     this.getUserByRole()
     this.getRestaurants()
   }

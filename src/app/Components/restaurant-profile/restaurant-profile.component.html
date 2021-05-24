@@ -1,7 +1,9 @@
 <div class="container">
     <div class="profile">
         <div class="img">
-            <img src="assets/images/restaurants/{{restaurant.profile}}" alt="profile">
+            <a routerLink="/assets/images/restaurants/{{restaurant.profile}}" target="_blank">
+                <img src="assets/images/restaurants/{{restaurant.profile}}" alt="profile">
+            </a>
         </div>
         <div class="details">
             <span class="name">{{restaurant.name}}</span>
@@ -45,101 +47,6 @@
                     </div>
 
                 </div>
-                <div class="item" *ngFor='let item of items'>
-                    <div class="img">
-                        <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
-                    </div>
-
-                    <div class="details">
-                        <div class="top">
-                            <span class="price">{{item.price}}&#8377;</span>
-                            <div *ngIf='item.vegeterian' class="veg-nonveg veg"></div>
-                            <div *ngIf='!item.vegeterian' class="veg-nonveg non-veg"></div>
-                        </div>
-                        <p class="item-name">{{item.fname}} * {{item.quantity}}</p>
-                    </div>
-
-                    <div class="buttons">
-                        <button (click)='addItem(item)'>Add to Basket</button>
-                    </div>
-
-                </div>
-                <div class="item" *ngFor='let item of items'>
-                    <div class="img">
-                        <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
-                    </div>
-
-                    <div class="details">
-                        <div class="top">
-                            <span class="price">{{item.price}}&#8377;</span>
-                            <div *ngIf='item.vegeterian' class="veg-nonveg veg"></div>
-                            <div *ngIf='!item.vegeterian' class="veg-nonveg non-veg"></div>
-                        </div>
-                        <p class="item-name">{{item.fname}} * {{item.quantity}}</p>
-                    </div>
-
-                    <div class="buttons">
-                        <button (click)='addItem(item)'>Add to Basket</button>
-                    </div>
-
-                </div>
-                <div class="item" *ngFor='let item of items'>
-                    <div class="img">
-                        <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
-                    </div>
-
-                    <div class="details">
-                        <div class="top">
-                            <span class="price">{{item.price}}&#8377;</span>
-                            <div *ngIf='item.vegeterian' class="veg-nonveg veg"></div>
-                            <div *ngIf='!item.vegeterian' class="veg-nonveg non-veg"></div>
-                        </div>
-                        <p class="item-name">{{item.fname}} * {{item.quantity}}</p>
-                    </div>
-
-                    <div class="buttons">
-                        <button (click)='addItem(item)'>Add to Basket</button>
-                    </div>
-
-                </div>
-                <div class="item" *ngFor='let item of items'>
-                    <div class="img">
-                        <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
-                    </div>
-
-                    <div class="details">
-                        <div class="top">
-                            <span class="price">{{item.price}}&#8377;</span>
-                            <div *ngIf='item.vegeterian' class="veg-nonveg veg"></div>
-                            <div *ngIf='!item.vegeterian' class="veg-nonveg non-veg"></div>
-                        </div>
-                        <p class="item-name">{{item.fname}} * {{item.quantity}}</p>
-                    </div>
-
-                    <div class="buttons">
-                        <button (click)='addItem(item)'>Add to Basket</button>
-                    </div>
-
-                </div>
-                <div class="item" *ngFor='let item of items'>
-                    <div class="img">
-                        <a href="assets/images/food_items/{{item.pic}}" target="_blank"><img src="assets/images/food_items/{{item.pic}}"></a>
-                    </div>
-
-                    <div class="details">
-                        <div class="top">
-                            <span class="price">{{item.price}}&#8377;</span>
-                            <div *ngIf='item.vegeterian' class="veg-nonveg veg"></div>
-                            <div *ngIf='!item.vegeterian' class="veg-nonveg non-veg"></div>
-                        </div>
-                        <p class="item-name">{{item.fname}} * {{item.quantity}}</p>
-                    </div>
-
-                    <div class="buttons">
-                        <button (click)='addItem(item)'>Add to Basket</button>
-                    </div>
-
-                </div>
 
             </div>
 
@@ -147,25 +54,4 @@
 
     </div>
     
-</div>
-
-
-<!-- Models -->
-<form id="AddOrderItemModel" #AddOrderItemModel='ngForm' (ngSubmit)='addItemToOrder(oid.value)'>
-    <select #oid>
-        <option value="" selected disabled>Select Order</option>
-        <option value="{{order.oid}}" *ngFor='let order of orders'>{{order.name}}</option>
-    </select>
-    <div class="buttons">
-        <button type="submit" class="submitbtn">Submit</button>
-        <button type="reset" (click)='toggleModel("AddOrderItemModel",false)' class="cancelbtn">Cancel</button>
-    </div>
-</form>
-
-<div id="NoOrderModel">
-    <span>You have not created any orders yet!</span>
-    <div class="buttons">
-        <a routerLink="/Profile/My-Basket">New</a>
-        <button (click)='toggleModel("NoOrderModel",false)' class="cancelbtn">Cancel</button>
-    </div>
 </div>

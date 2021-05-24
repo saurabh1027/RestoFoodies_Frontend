@@ -1,5 +1,5 @@
 <!--Content-->
-<i class="fas fa-bars" (click)='toggleSlideBar(true)'></i>
+<i class="fas fa-bars white" (click)='toggleSlideBar(true)'></i>
 <router-outlet></router-outlet>
 
 
@@ -12,13 +12,12 @@
         <p class="fullname">{{user.fullname}}</p>
     </div>
     <ul class="action-list">
-        <span [class.d-none]='user.role=="Admin"'>Pages</span>
-        <a (click)='toggleSlideBar(false)' routerLink="/Profile/Restaurant" *ngIf='user.role==="Vendor"'><li>Restaurant Profile</li></a>
-        <a routerLink="/Profile/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>New orders</li></a>
-        <a routerLink="/Profile/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List of orders</li></a>
-        <a routerLink="/Profile/Delivery" (click)='toggleSlideBar(false)' *ngIf='user.role=="Delivery"'><li>New orders</li></a>
-        <a routerLink="/Profile/Box" (click)='toggleSlideBar(false)' *ngIf='user.role==="Delivery"'><li>Box</li></a>
-        <!-- <a *ngIf='user.role==="Customer"' routerLink="/My-Basket"><li>Basket</li></a> -->
+        <span *ngIf='user.role!=="Admin"'>Pages</span>
+        <a (click)='toggleSlideBar(false)' routerLink="Restaurant" *ngIf='user.role==="Vendor"'><li>Restaurant Profile</li></a>
+        <a routerLink="Restaurant/Orders" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>New orders</li></a>
+        <a routerLink="Restaurant/My-List" (click)='toggleSlideBar(false)' *ngIf='user.role==="Vendor"'><li>List of orders</li></a>
+        <a routerLink="/Profile/Delivery" (click)='toggleSlideBar(false)' *ngIf='user.role=="Delivery"'><li>Pick up orders</li></a>
+        <a routerLink="/Profile/Box" (click)='toggleSlideBar(false)' *ngIf='user.role==="Delivery"'><li>Deliver orders</li></a>
         <span>Actions</span>
         <li (click)='toggleSlideBar(false);toggleModel("EditUserProfileModel","Panel",true)'>Edit Profile</li>
         <li (click)='toggleSlideBar(false);toggleModel("RestoUpdateForm","Panel1",true)' *ngIf='user.role==="Vendor"'>Edit Restaurant Profile</li>
@@ -27,7 +26,7 @@
         <li (click)='toggleSlideBar(false);toggleModel("SelectCategoryForm","Panel2",true)' *ngIf='user.role==="Vendor"'>Select Category</li>
         <li (click)='toggleSlideBar(false);toggleModel("AddItemForm","Panel2",true)' *ngIf='user.role==="Vendor"'>Add Food Item</li>
         <li (click)='toggleSlideBar(false);toggleModel("UserProfileModel","Panel",true)' *ngIf='user.role==="Admin"'>Manage Users</li>
-        <li (click)='toggleSlideBar(false);toggleModel("AddUserModel","Panel",true)' *ngIf='user.role==="Admin"'>Add New Users</li>
+        <li (click)='toggleSlideBar(false);toggleModel("AddUserModel","Panel",true)' *ngIf='user.role==="Admin"'>Add New User</li>
     </ul>
 </div>
 

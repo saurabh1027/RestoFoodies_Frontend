@@ -48,6 +48,9 @@ export class BasketComponent implements OnInit {
         if(!data)this.loggedIn=false;
         else{
           this.user = data;
+          if(!this.user.location){
+            this.router.navigate(['/']);
+          }
           if(this.user.role!=="Customer"){
             this.router.navigate(['Profile']);
           }
@@ -154,6 +157,7 @@ export class BasketComponent implements OnInit {
           text:'Order is placed.',
           icon:'success'
         });
+        this.toggleModel('PlaceOrder',false);
         localStorage.removeItem('Restaurant');
         localStorage.removeItem('Food_Items');
         this.rname='';
@@ -171,21 +175,19 @@ export class BasketComponent implements OnInit {
   getItems(){
     let items : {fids:number[],quantities:number[]} = {fids:[],quantities:[]};
     // let fids:number[]=[];
-    if(!this.loggedIn){
-      if(JSON.parse(localStorage.getItem('Food_Items'))!=null){
-        this.items=JSON.parse(localStorage.getItem('Food_Items'));
-        this.order1.price=0;
-        this.order1.bid = this.branch.bid;
-        for(let i=0;i<this.items.length;i++){
-          items.fids.push(this.items[i].fid);
-          items.quantities.push(this.items[i].quantity);
-        }
-        this.order1.items = JSON.stringify(items);
-        for(let i=0;i<this.items.length;i++){
-          this.order1.price += this.items[i].price;
-        }
-        this.order1.price+=this.delivery_charge;
+    if(JSON.parse(localStorage.getItem('Food_Items'))!=null){
+      this.items=JSON.parse(localStorage.getItem('Food_Items'));
+      this.order1.price=0;
+      this.order1.bid = this.branch.bid;
+      for(let i=0;i<this.items.length;i++){
+        items.fids.push(this.items[i].fid);
+        items.quantities.push(this.items[i].quantity);
       }
+      this.order1.items = JSON.stringify(items);
+      for(let i=0;i<this.items.length;i++){
+        this.order1.price += this.items[i].price;
+      }
+      this.order1.price+=this.delivery_charge;
     }
   }
 

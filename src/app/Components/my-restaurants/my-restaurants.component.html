@@ -7,18 +7,19 @@
 <div class="container" *ngIf='restaurant.rid!==0'>
     <div class="profile">
         <div class="img">
-            <img src="assets/images/restaurants/{{restaurant.profile}}" alt="profile">
+            <a routerLink="/assets/images/restaurants/{{restaurant.profile}}" target="_blank">
+                <img src="assets/images/restaurants/{{restaurant.profile}}" alt="profile">
+            </a>
         </div>
         <div class="details">
-            <span class="name">{{restaurant.name}}</span>
-            <span class="services">
-                <span *ngFor='let branch of branches'>{{branch.bname}} </span>
-            </span>
+            <div class="row"> 
+                <span class="name">{{restaurant.name}}</span>
+                <i class="fas fa-map-marker-alt" title="View all branches" (click)='toggleModel("Map3","Panel1",true)'></i>    
+            </div>
             <span class="categories" *ngIf='restaurant.categories'>{{restaurant.categories.substring(0,restaurant.categories.length-1)}}</span>
         </div>
     </div>
-    <app-menu [restaurant]='restaurant'></app-menu>
-
+    <router-outlet></router-outlet>
 </div>
 
 
@@ -125,6 +126,18 @@
         </div>
     </form>
 
+    <div id="Map3">
+        <i class="fas fa-times close" (click)='toggleModel("Map3","Panel1",false)'></i>
+        <agm-map [latitude]='pos.lat' [longitude]='pos.lng' [zoom]='4' [fullscreenControl]='true' (mapClick)='chooseLocation($event)'>
+            <agm-marker *ngFor='let b of branches' 
+                [latitude]='b.location.substring(0,b.location.indexOf(","))'
+                [longitude]='b.location.substring(b.location.indexOf(",")+1,b.location.length)'
+                title="{{b.bname}}"
+            >
+            </agm-marker>
+        </agm-map>
+    </div>
+    
 </div>
 
 
@@ -149,3 +162,4 @@
         <agm-marker [latitude]='pos.lat' [longitude]='pos.lng'></agm-marker>
     </agm-map>
 </div>
+<!-- Map3 is in #Panel1 -->

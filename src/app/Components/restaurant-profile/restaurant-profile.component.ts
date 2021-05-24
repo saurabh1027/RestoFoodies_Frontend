@@ -22,7 +22,7 @@ export class RestaurantProfileComponent implements OnInit {
   items:Food_Item[]=[];
   loggedIn:boolean=false;
   item:Food_Item=new Food_Item(0,'',0,'',0,'','',false,'',0,'','','',0);
-  orders:Order1[]=[];
+  // orders:Order1[]=[];
   user:User=new User(0,'','','','','','','','','');
 
   constructor(private baskService:BasketService,private restService:RestaurantService,private active:ActivatedRoute,
@@ -45,6 +45,9 @@ export class RestaurantProfileComponent implements OnInit {
       this.userService.getUserByToken(token).subscribe(data=>{
         if(data){
           this.user=data;
+          if(!this.user.location){
+            this.router.navigate(['/']);
+          }
           if(this.user.role!=='Customer'){
             this.router.navigate(['Profile']);
           }
@@ -63,7 +66,7 @@ export class RestaurantProfileComponent implements OnInit {
       }else{
         this.restaurant = data;
         this.getCategoriesOfRestaurant();
-        this.getOrders();
+        // this.getOrders();
       }
     });
   }
@@ -112,13 +115,13 @@ export class RestaurantProfileComponent implements OnInit {
     }
   }
 
-  getOrders(){
-    (this.loggedIn)?
-    this.baskService.getOrdersByUsername(this.user.username).subscribe(data=>{
-      this.orders = data;
-    }):
-    this.orders = JSON.parse(localStorage.getItem('orders'));
-  }
+  // getOrders(){
+  //   (this.loggedIn)?
+  //   this.baskService.getOrdersByUsername(this.user.username).subscribe(data=>{
+  //     this.orders = data;
+  //   }):
+  //   this.orders = JSON.parse(localStorage.getItem('orders'));
+  // }
   
   addItem(item:Food_Item){
     let rname:string = localStorage.getItem('Restaurant');
@@ -150,11 +153,6 @@ export class RestaurantProfileComponent implements OnInit {
 
   toggleModel(modelName:string,bool:boolean){
     document.getElementById(modelName).style.display = (bool)?'flex':'none';
-  }
-
-  addItemToOrder(oid:number){
-    alert(oid);
-    this.baskService.addItemToOrder(oid,this.item).subscribe(data=>console.log(data));
   }
 
 }

@@ -1,4 +1,13 @@
 <div class="menu">
+
+    <p class="title">Menu</p>
+
+    <div class="category-list">
+        <div class="category-box">
+            <span class="category-name selected" title="All verieties of food items" (click)='getFoodItems("All")'>All</span>
+            <span class="category-name" title="{{category.description}}" (click)='getFoodItems(category.cname)' *ngFor="let category of restCategories">{{category.cname}}</span>
+        </div>
+    </div>
     
     <div class="food-items">
 
@@ -12,16 +21,12 @@
                     <a href="assets/images/food_items/{{i.pic}}" target="_blank"><img src="assets/images/food_items/{{i.pic}}"></a>
                 </div>
                 <div class="details">
-                    <div class="left-box">
-                        <span class="item-name">{{i.fname}}({{i.quantity}})</span>
-                        <span *ngIf='i.ingredients' class="ingredients" title="Used Ingredients">{{i.ingredients.substring(0,20)}}...</span>
-                        <span *ngIf='i.description' class="description" title="More Information">{{i.description.substring(0,20)}}...</span>
+                    <div class="top">
+                        <span class="price">{{i.price}}&#8377;</span>
+                        <div *ngIf='i.vegeterian' class="veg-nonveg veg"></div>
+                        <div *ngIf='!i.vegeterian' class="veg-nonveg non-veg"></div>
                     </div>
-                    <div class="right-box">
-                        <span *ngIf='i.vegeterian' class="veg-nonveg veg" title="{{i.vegeterian}}"></span>
-                        <span *ngIf='!i.vegeterian' class="veg-nonveg non-veg" title="{{i.vegeterian}}"></span>
-                        <span class="price" title="Price">{{i.price}} &#8377;</span>
-                    </div>
+                    <p class="item-name">{{i.fname}} * {{i.quantity}}</p>
                 </div>
                 <div class="buttons">
                     <button name="edit" (click)='item=i;toggleModel("UpdateItemForm","Panel2",true)'>Edit</button>

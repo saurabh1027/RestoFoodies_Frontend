@@ -9,10 +9,10 @@
         <a class="user-icon" *ngIf='user.role==="Vendor"' title="User Profile" routerLink='/Profile/Restaurant'><i class="fas fa-user-cog"></i></a>
         <a class="user-icon" *ngIf='user.role==="Delivery"' title="User Profile" routerLink='/Profile/Delivery'><i class="fas fa-user-cog"></i></a>
         <a class="user-icon" *ngIf='user.role==="Customer"' title="Basket" routerLink='/My-Basket'><i class="fas fa-shopping-basket"></i></a>
-        
+        <a class="user-icon" *ngIf='user.role==="Admin"' title="Profile" routerLink='/Admin'><i class="fas fa-user-cog"></i></a>
+
         <!-- Do it later -->
         <!-- <i class="fas fa-search" title="Search Items" (click)='toggleSearchBar()' *ngIf='user.role==="Customer"'></i> -->
-        
         
         <div class="auth">
             <a *ngIf="!loggedIn" routerLink="/Login" title="Login"><i class="fas fa-sign-in-alt"></i></a>

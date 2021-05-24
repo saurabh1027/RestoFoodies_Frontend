@@ -33,6 +33,7 @@ export class DeliveryComponent implements OnInit {
      private router : Router) { }
 
   ngOnInit(): void {
+    document.querySelector('.fa-bars').classList.add('dark-grey');
     this.getUserByToken();
   }
 
@@ -95,11 +96,11 @@ export class DeliveryComponent implements OnInit {
     let model = document.getElementById(modelName);
     let body = document.getElementsByTagName('body')[0];
     if(bool){
-      document.getElementById('Panel').style.display = 'flex';
+      document.getElementById('Panel1').style.display = 'flex';
       model.style.display = 'flex';
       body.classList.add('model');
     }else{
-      document.getElementById('Panel').style.display = 'none';
+      document.getElementById('Panel1').style.display = 'none';
       model.style.display = 'flex';
       body.classList.remove('model');
     }

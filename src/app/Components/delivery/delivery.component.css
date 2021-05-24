@@ -1,11 +1,14 @@
 .title{
-    font-size: 25px;
+    font-size: 30px;
     font-weight: 600;
-    margin: 5vh 5% 0;
+    width: 100%;
+    text-align: center;
+    margin: 5vh 0;
+    color: #353535;
     font-family: 'poppins',sans-serif;
     user-select: none;
 }
-#Panel{
+#Panel1{
     font-family: 'poppins',sans-serif;
     width: 100%;
     height: 100vh;
@@ -174,8 +177,8 @@
 }
 .orders{
     width: 80%;
-    height: 80%;
-    margin: 1vh 10% 5vh;
+    height: 100%;
+    margin: 0 10% 2vh;
     position: relative;
 }
 .orders #map{

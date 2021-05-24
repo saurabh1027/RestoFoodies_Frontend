@@ -1,23 +1,27 @@
 .container{
     font-family: 'poppins',sans-serif;
-    padding: 0 2.5%;
-    min-height: 80vh;
+    box-sizing: border-box;
+    user-select: none;
 }
 .topbar{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px;
+    padding: 30px;
 }
 .topbar .title{
     font-size: 25px;
     font-weight: 600;
+    color: #353535;
 }
 .topbar select{
     padding: 10px;
+    background-color: #353535;
+    color: #fff;
+    border: none;
     cursor: pointer;
     outline: none;
-    border-radius: 5px;
+    min-width: 200px;
 }
 .list .nothing{
     display: flex;

@@ -145,10 +145,10 @@ export class MyRestaurantsComponent implements OnInit {
   }
   
   toggleMap(mapName:string,modelName:string,bool:boolean){
-    this.getCurrentLocation();
     let map = document.getElementById(mapName);
     let model = document.getElementById(modelName);
     if(bool){
+      this.getCurrentLocation();
       map.style.display = "block";
       model.style.display = "none";
     }else{
@@ -196,7 +196,6 @@ export class MyRestaurantsComponent implements OnInit {
   addBranch(){
     this.branch1.rid = this.restaurant.rid;
     this.branch1.location = this.pos.lat + ',' + this.pos.lng;
-    console.log(this.branch1);
     this.restService.addBranch(this.branch1).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',text:'Branch added successfully.',icon:'success'});

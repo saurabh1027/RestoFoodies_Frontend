@@ -12,7 +12,7 @@
     margin: 50px auto;
     display: block;
 }
-#Map,#Map1,#Map2{
+#Map,#Map1,#Map2,#Map3{
     position: fixed;
     height: 90vh;
     width: 90vw;
@@ -23,7 +23,7 @@
     background: #eee;
     color: #fff;
 }
-#Map .close,#Map1 .close,#Map2 .close{
+#Map .close,#Map1 .close,#Map2 .close,#Map3 .close{
     top: 0;
     position: absolute;
     color: #333;
@@ -91,7 +91,7 @@ agm-map{
     position: relative;
     min-height: 40vh;
     width: 100%;
-    background-color: #6905c3;
+    background-color: #353535;
     display: flex;
     align-items: center;
     column-gap: 25px;
@@ -118,12 +118,18 @@ agm-map{
     max-height: 100%;
 }
 .profile .details{
-    width: 300px;
     height: 30vh;
     padding-top: 20px;
     display: flex;
     color: #fff;
+    user-select: none;
     flex-direction: column;
+}
+.profile .details .row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
 }
 .profile .details .name{
     font-size: 30px;

@@ -32,9 +32,9 @@ export class BasketService {
     return this.http.patch(this.baseUrl+'Items',items,{responseType:'text'});
   }
   
-  public getOrdersByUsername(username:string):Observable<Order1[]>{
-    return this.http.get<Order1[]>(this.baseUrl+'Customers/'+username+'/Orders');
-  }
+  // public getOrdersByUsername(username:string):Observable<Order1[]>{
+  //   return this.http.get<Order1[]>(this.baseUrl+'Customers/'+username+'/Orders');
+  // }
 
   public getOrdersByLocation(location : string) : Observable<Order1[]>{
     let params = new HttpParams();

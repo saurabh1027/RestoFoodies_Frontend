@@ -1,6 +1,6 @@
 <div class="container">
     <div class="topbar">
-        <span>Orders</span>
+        <span>New Placed Orders</span>
         <select #restSelect (change)='getRestaurantPlacedOrdersByBid(restSelect.value)'>
             <option value="{{branch.bid}}" *ngFor='let branch of branches'>{{branch.bname}}</option>
         </select>

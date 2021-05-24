@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
       this.userService.getUserByToken(token).subscribe(data=>{
         if(data){
           this.user = data;
+          if(this.user.role!='Customer') this.router.navigate(['Profile']);
           this.loggedIn = true;
           this.checkLocation();
         }
@@ -41,13 +42,14 @@ export class HomeComponent implements OnInit {
   }
   
   checkLocation(){
-    (this.user.role!=="Customer") ? this.router.navigate(['Profile']) : (
-      (this.user.location) ? this.router.navigate(['Restaurants']) : (
-        (localStorage.getItem('UserLocation')) ? this.router.navigate(['Restaurants']) : this.getLocations()
-      )
-    );
+    if(this.loggedIn){
+      if(this.user.location) this.router.navigate(['Restaurants']);
+    }else{
+      if(localStorage.getItem('UserLocation')) this.router.navigate(['Restaurants']);
+    }
+    this.getLocations();
   }
-
+  
   getLocations(){
     this.restService.getLocations().subscribe(data=>{
       if(data) this.locations = data;

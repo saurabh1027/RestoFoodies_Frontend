@@ -6,16 +6,22 @@ app-restaurant-pending{
 }
 /*--------------------------------------------Models--------------------------------------------*/
 
-i.fas.fa-bars{
+.fa-bars{
     position: absolute;
     margin: 30px;
     font-size: 30px;
     z-index: 1;
+}
+.white{
     color: #ddd;
+}
+.dark-grey{
+    color: #353535;
 }
 #slidebar{
     font-family: 'poppins',sans-serif;
     height: 100vh;
+    user-select: none;
     position: fixed;
     min-width: 350px;
     top: 0;
@@ -25,21 +31,24 @@ i.fas.fa-bars{
     z-index: 2;
     overflow-y: auto;
 }
-/* #slidebar::-webkit-scrollbar{
-    width: 10px;
-    background-color: #777;
+#slidebar::-webkit-scrollbar{
+    width: 7px;
+}
+#slidebar::-webkit-scrollbar-track{
+    background-color: #fff;
+    border-radius: 10px;
 }
 #slidebar::-webkit-scrollbar-thumb{
-    background-color: #333;
-    width: 2px;
-} */
+    background-color: #777;
+    border-radius: 10px;
+}
 #slidebar.active{
     transform: translateX(100%);
 }
 #slidebar .fa-times{
     position: absolute;
     top: 0;
-    color: #aaa;
+    color: #fff;
     right: 0;
     font-size: 25px;
     margin: 10px;
@@ -49,12 +58,15 @@ i.fas.fa-bars{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 20px 0;
+    padding: 30px;
+    background: #545454;
+    color: #fff;
 }
 .user-profile img{
     width: 150px;
     height: 150px;
     border-radius: 50%;
+    -webkit-user-drag: none;
 }
 .user-profile .fullname{
     font-size: 18px;
@@ -62,20 +74,22 @@ i.fas.fa-bars{
     font-weight: 600;
     text-transform: uppercase;
 }
+#slidebar ul span{
+    display: block;
+    padding: 10px;
+    background-color: #bbb;
+    color: #222;
+}
 #slidebar ul li{
     display: block;
-    padding: 10px 20px;
-    font-family: 'Poppins',sans-serif;
+    padding: 5px 10px;
+    transition: 0.5s;
     cursor: pointer;
-    background: #ddd;
-    margin: 5px 0;
 }
-#slidebar ul span{
-    padding: 10px 20px;
-    font-size: 25px;
-    font-weight: 600;
+#slidebar ul li:hover{
+    background-color: #ddd;
+    font-size: 18px;
 }
-
 
 
 

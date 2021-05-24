@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { RestaurantService } from 'src/app/Services/restaurant.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/Services/user.service';
+import { User } from 'src/app/Models/User';
 
 @Component({
   selector: 'app-menu',
@@ -13,7 +14,7 @@ import { UserService } from 'src/app/Services/user.service';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  @Input() restaurant : Restaurant;
+  restaurant : Restaurant = new Restaurant(0,'','','','','',0);
   fileSizeExceeded:boolean=false;
   restCategories:Category[]=[];
   pic:File;
@@ -21,12 +22,37 @@ export class MenuComponent implements OnInit {
   food_item : Food_Item = new Food_Item(0,'',0,'',0,'','',false,'',0,'','','',0);
   item : Food_Item = new Food_Item(0,'',0,'',0,'','',false,'',0,'','','',0);
   newCategory:Category=new Category(0,'','');
+  user:User=new User(0,'','','','','','','','','');
 
   constructor(private restService:RestaurantService,private userService:UserService,private router:Router) { }
 
   ngOnInit(): void {
-    this.getCategoriesByCnames();
-    this.getFoodItems("All");
+    this.getUserByToken();
+  }
+  
+  getUserByToken(){
+    this.userService.getUserByToken(sessionStorage.getItem("UserToken")).subscribe(data=>{
+      if(!data){
+        Swal.fire({title:'Unauthorized access',text:'Make sure to login!',icon:'error'});
+        this.router.navigate(['/Login']);
+      }else{
+        this.user = data;
+        if(this.user.role!=='Vendor')this.router.navigate(['Login']);
+        this.getRestaurantByUid(this.user.uid);
+      }
+    });
+  }
+
+  getRestaurantByUid(uid:number){
+    this.restService.getRestaurantByUid(uid).subscribe(data=>{
+      if(data){
+        this.restaurant = data;
+        this.getCategoriesByCnames();
+        this.getFoodItems("All");
+      }else{
+        this.restaurant = new Restaurant(0,'','','','','',0);
+      }
+    });
   }
 
   toggleMenuActionsModel(){

@@ -36,11 +36,11 @@ export class ItemsComponent implements OnInit {
     this.baskService.addItemToOrder(oid,this.food_item).subscribe(data=>{
       (data==='Success')?Swal.fire({title:'Congratulations!',text:'Item added in order successfully!',icon:'success'}):Swal.fire({title:"Failure",text:data,icon:'error'});
       if(data=='Success'){
-        this.baskService.getOrdersByUsername(this.user.username).subscribe(data=>{
-          if(data!=null){
-            this.orders=data;
-          }
-        });
+        // this.baskService.getOrdersByUsername(this.user.username).subscribe(data=>{
+        //   if(data!=null){
+        //     this.orders=data;
+        //   }
+        // });
       }
     });
   }
@@ -50,11 +50,11 @@ export class ItemsComponent implements OnInit {
     if(token==null)return;
     this.userService.getUserByToken(token).subscribe(data=>{
       this.user=data;
-      this.baskService.getOrdersByUsername(this.user.username).subscribe(data=>{
-        if(data!=null){
-          this.orders=data;
-        }
-      });
+      // this.baskService.getOrdersByUsername(this.user.username).subscribe(data=>{
+      //   if(data!=null){
+      //     this.orders=data;
+      //   }
+      // });
     });
   }
 
