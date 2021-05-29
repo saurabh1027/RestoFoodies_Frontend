@@ -82,6 +82,7 @@ export class RestaurantPendingComponent implements OnInit {
     this.baskService.getRestaurantOrdersByBid('Placed',bid,this.restaurant.name).subscribe(data=>{
       if(data){
         this.orders = data;
+        console.log(data)
       }
     });
   }
@@ -110,9 +111,9 @@ export class RestaurantPendingComponent implements OnInit {
     this.baskService.updateOrder(order).subscribe(data=>{
       if(data=='Success'){
         Swal.fire({title:'Congratulations!',icon:'success'});
-        this.getRestaurantPlacedOrdersByBid(this.branches[0].bid);
         this.items = [];
         this.order = new Order1(0,'','','','','','',0,0,'','');
+        this.getRestaurantPlacedOrdersByBid(this.branches[0].bid);
       }else{
         Swal.fire({title:'Sorry!',text:data,icon:'error'});
       }

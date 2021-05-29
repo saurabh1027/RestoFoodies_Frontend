@@ -6,6 +6,7 @@
         <div class="topbar">
             <span class="count" *ngIf='restaurants.length>1'>{{restaurants.length}} restaurants available</span>
             <span class="count" *ngIf='!(restaurants.length>1)'>{{restaurants.length}} restaurant available</span>
+            <button (click)='changeLocation()'>Change Location</button>
         </div>
         <div class="restaurants">
             <div class="restaurant" *ngFor='let r of restaurants'>

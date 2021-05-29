@@ -70,6 +70,7 @@
 
 
 #Bill{
+    user-select: none;
     width: 500px;
     min-width: 330px;
     min-height: 80vh;

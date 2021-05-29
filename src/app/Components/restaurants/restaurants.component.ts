@@ -40,6 +40,11 @@ export class RestaurantsComponent implements OnInit {
     }
   }
 
+  changeLocation(){
+    (this.loggedIn) ? this.user.location = '' : localStorage.removeItem('UserLocation');
+    this.router.navigate(['']);
+  }
+
   checkLocation(){
     (this.user.role!=="Customer") ? this.router.navigate(['Profile']):(
       (this.user.location) ? this.getRestaurantsByLocation(this.user.location) : (

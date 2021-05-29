@@ -27,8 +27,8 @@ export class ProfileComponent implements OnInit {
     this.userService.getUserByToken(sessionStorage.getItem("UserToken")).subscribe(data=>{
       if(!data)this.router.navigate(['Login']);
       this.user = data;
-      (this.user.role==='Vendor')?this.router.navigate(['Profile','Restaurant']):
-      (this.user.role==='Delivery')?this.router.navigate(['Profile' , 'Box']):
+      (this.user.role==='Vendor')?this.router.navigate(['Profile','Restaurant','My-List']):
+      (this.user.role==='Delivery')?this.router.navigate(['Profile' , 'Delivery']):
       (this.user.role === 'Admin')?this.router.navigate(['Profile' , 'Admin']):
       ((this.user.role==='Customer')?this.router.navigate(['My-Basket']):
         Swal.fire({title:'Unknown User Role',icon:'error'})

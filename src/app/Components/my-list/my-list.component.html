@@ -47,23 +47,62 @@
                 <span class="count">No. of items : {{count}}</span>
                 <button (click)='finishOrder()'>Finish</button>
             </div>
-            <div class="items">
-                <div class="item" *ngFor='let item of items'>
-                    {{item.fname}}
-                </div>
-                <div class="item" *ngFor='let item of items'>
-                    {{item.fname}}
-                </div>
-                <div class="item" *ngFor='let item of items'>
-                    {{item.fname}}
-                </div>
-                <div class="item" *ngFor='let item of items'>
-                    {{item.fname}}
-                </div>
-                <div class="item" *ngFor='let item of items'>
-                    {{item.fname}}
-                </div>
-            </div>
+            <table class="items">
+                <tr>
+                    <th>Item Name</th>
+                    <th>Price(&#8377;)</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                </tr>
+                <tr *ngFor='let item of items'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr *ngFor='let item of items'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr *ngFor='let item of items'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr *ngFor='let item of items'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr *ngFor='let item of items'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr *ngFor='let item of items'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr *ngFor='let item of items'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+                <tr *ngFor='let item of items'>
+                    <td>{{item.fname}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.status}}</td>
+                </tr>
+            </table>
         </div>
     </div>
 

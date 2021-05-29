@@ -1,217 +1,111 @@
 @import url('https://fonts.googleapis.com/css2?family=Averia+Serif+Libre&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
 *{
     font-family: 'poppins',sans-serif;
     box-sizing: border-box;
-    /* margin: 0;
-    padding: 0;
-    justify-items: center;
-    align-items: center;
-    text-align: center; */
+}
+.d-none{
+    display: none;
 }
 
 .container{
-    width: 100%;
-    height: 85vh;
-    display: flex;
-    border: 1px solid;
-    justify-content: space-between;
-}
-.container .profile{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-.container .profile img{
-    height: 100%;
-}
-.container .col{
-    width: 60%;
-    height: 100%;
-    min-width: 650px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 0 auto;
-}
-@media screen and (max-width:950px){
-    .container{
-        height: 65vh;
-    }
-    .container .profile{
-        display: none;
-    }
-    .container .col{
-        width: 100%;
-    }
-}
-.container .col .buttons{
-    display: flex;
-    justify-content: center;
-    height: 10%;
-    position: absolute;
-    top: 10%;
-    align-items: center;
-}
-
-
-/*--------------------------------------------------Profile-container-start---------------------------------------------*/
-/* .profile-container{
-    height: auto;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.profile-container .container{
-    height: auto;
-    width: 100%;
-}
-.profile-container .container img{
-    width: 100%;
-    -webkit-user-drag: none;
-}
-.profile-container .container .title{
-    position: absolute;
     user-select: none;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%,-60%);
-    font-size: 80px;
-    font-weight: 600;
-    text-align: center;
-    color: white;
-    font-family: 'Averia Serif Libre', cursive;
-}
-@media screen and (max-width:1200px){
-    .profile-container .container .title{
-        font-size: 65px;
-        top: 45%;
-    }
-}
-@media screen and (max-width:1000px){
-    .profile-container .container .title{
-        transform: translate(-50%,-40%);
-        top: 40%;
-    }
-}
-@media screen and (max-width:850px){
-    .profile-container .container .title{
-        font-size: 50px;
-        transform: translate(-50%,-30%);
-        top: 30%;
-    }
-}
-@media screen and (max-width:650px){
-    .profile-container .container .title{
-        font-size: 40px;
-        transform: translate(-50%,-25%);
-        top: 25%;
-    }
-}
-@media screen and (max-width:500px){
-    .profile-container .container .title{
-        font-size: 30px;
-        transform: translate(-50%,-20%);
-        top: 20%;
-    }
-}
-@media screen and (max-width:400px){
-    .profile-container .container .title{
-        font-size: 25px;
-    }
-} */
-/*--------------------------------------------Profile-container-end---------------------------------------------------*/
-
-
-/*---------------------------------------------Food-container-start--------------------------------------------------------*/
-/* .food-container{
     width: 100%;
-    padding: 5vh 5vw;
-    background-image: linear-gradient(to right, #111 0%, #222 25%, #111 50%, #222 75%, #111 100%);
+    min-height: 80vh;
+    padding: 2.5vh;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-    row-gap: 20px;
+    background-color: #353535;
 }
-.food-container p.title{
-    color: white;
-    font-family: 'Averia Serif Libre', cursive;
-    text-align: center;
-    font-size: 60px;
-}
-.food-container .top-food-items{
-    display: grid;
-    grid-template-rows: auto auto;
-    grid-template-columns: auto auto;
-    row-gap: 20px;
-    column-gap: 20px;
-}
-.food-container .top-food-items .item{
-    width: 300px;
-    height: 200px;
+.input{
     display: flex;
-    position: relative;
+    flex-direction: column;
+    row-gap: 10px;
+}
+.input input[type="text"]{
+    padding: 10px;
+    min-width: 90vw;
+    outline: none;
+}
+.input .locations{
+    background-color: #fff;
+    height: 50vh;
+    margin-bottom: 3vh;
+    overflow-y: auto;
+    padding: 10px;
+}
+.input .locations .nothing{
+    width: 100%;
+    height: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
-.food-container .top-food-items .item img{
-    width: 100%;
-}
-.food-container .explore{
-    padding: 5px 30px;
-    cursor: pointer;
-    font-size: 16px;
+.input .locations .nothing span{
+    font-size: 25px;
     font-weight: 600;
-    background: #fd1d1d;
-    text-transform: uppercase;
-    border: none;
-    outline: none;
-    letter-spacing: 1px;
-    color: #fff;
-    border-radius: 22px;
+    color: #777;
+    user-select: none;
 }
-@media screen and (max-width:800px){
-    .food-container .top-food-items .item{
-        width: 200px;
-        height: 132px;
-    }
-    .food-container p.title{
-        font-size: 50px;
-    }
+.input .locations li{
+    list-style: none;
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.5s;
 }
-@media screen and (max-width:500px){
-    .food-container .top-food-items{
-        grid-template-rows: auto auto auto auto;
-        grid-template-columns: auto;
-    }
-    .food-container .top-food-items .item{
-        width: 300px;
-        height: 200px;
-    }
-    .food-container p.title{
-        font-size: 40px;
-    }
+.input .locations li:nth-child(odd){
+    background-color: #aaa;
 }
-@media screen and (max-width:400px){
-    .food-container .top-food-items .item{
-        width: 200px;
-        height: 132px;
-    }
-    .food-container p.title{
-        font-size: 30px;
-    }
-} */
+.input .locations li:hover{
+    font-size: 18px;
+}
 
 
-/*---------------------------------------------Food-container-end--------------------------------------------------------*/
+
+
+
+
 
 /* -----------------------logo animation------------------------ */
 
+.logo span{
+    cursor: pointer;
+    font-family: 'Pacifico', cursive;
+    font-size: 70px;
+    color: lightblue;
+    position: relative;
+    display: inline-flex;
+}
+.logo span:nth-child(even){
+    color : #ccc;
+    letter-spacing: -1em;
+    line-height: 1em;
+    overflow: hidden;
+    transition: 0.5s ease-in-out;
+}
+.logo:hover span:nth-child(even){
+    letter-spacing: 0;
+}
+@media screen and (max-width:500px){
+    .logo span{
+        font-size: 60px;
+    }
+}
+@media screen and (max-width:400px){
+    .logo span{
+        font-size: 50px;
+    }
+}
+
+
+
+
+/* -----------------------logo animation------------------------ */
+/* 
 .logo h2{
     text-align: center;
     font-size: 50px;
@@ -272,4 +166,4 @@
 
 .logo img{
     height: 60px;
-}
+} */

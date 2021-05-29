@@ -1,4 +1,4 @@
-<div class = "logo">
+<!-- <div class = "logo">
     <h2>
         <span> R </span>
         <span> esto </span>
@@ -10,24 +10,34 @@
     </h2>
 </div>
 
-<br><br>
+<br><br> -->
+
 
 <div class="container">
-
-    <div class="col">
-
-        <!-- <div class="buttons">
-            <button>Login</button>
-            <button>Register</button>
-        </div> -->
-
-        <div class="input">
-            <input #location type="text" name='location' placeholder='Enter your delivery location.' (keyup)='updateLocations()'>
-            <ul class="locations">
-                <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
-            </ul>
-        </div>
-
+    <div class="logo">
+        <span> R </span>
+        <span> esto </span>
+        <span> F </span>
+        <span> oodies </span>
     </div>
 
+    <div class="input">
+        <input #location type="text" name='location' placeholder='Enter your delivery location.' (keyup)='updateLocations()'>
+        <ul class="locations">
+            <div class="nothing" *ngIf='!(resultedLocations.length>0)'>
+                <span>No Search Results</span>
+            </div>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+            <li *ngFor='let l of resultedLocations'(click)='setUserLocation(l)'>{{l}}</li>
+        </ul>
+    </div>
 </div>

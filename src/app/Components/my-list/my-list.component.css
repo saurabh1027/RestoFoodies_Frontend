@@ -23,6 +23,10 @@
     outline: none;
     min-width: 200px;
 }
+.list{
+    padding: 2vh 5vw;
+    min-height: 25vh;
+}
 .list .nothing{
     display: flex;
     justify-content: center;
@@ -55,10 +59,20 @@
     border: 1px solid #777;
     padding: 5px;
 }
+.orders tr button{
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: darkblue;
+    font-weight: 600;
+    text-decoration: underline;
+    font-size: 16px;
+}
 #Panel1{
     position: fixed;
     display: none;
-    align-items: center;
+    z-index: 1;
     justify-content: center;
     background: rgb(76 76 76 / 90%);
     top: 0;
@@ -70,6 +84,7 @@
 #Map{
     display: none;
     height: 90vh;
+    margin: 5vh 0;
     width: 90vw;
 }
 agm-map{
@@ -85,13 +100,16 @@ agm-map{
     color: #fff;
 }
 #OrderBox{
+    margin: 2.5vh 0;
     display: none;
-    height: 90vh;
-    width: 90vw;
+    min-height: 90vh;
+    overflow-y: auto;
+    user-select: none;
+    width: 80vw;
+    background-color: #fff;
 }
 #OrderBox .box{
     width: 100%;
-    background-color: #fff;
 }
 #OrderBox .box .header{
     height: 50px;
@@ -113,4 +131,16 @@ agm-map{
     background: #01639c;
     cursor: pointer;
     outline: none;
+}
+#OrderBox .box .items{
+    width: 90%;
+    margin: 5%;
+    text-align: center;
+    border: 1px solid #777;
+    border-collapse: collapse;
+}
+#OrderBox .box .items th,
+#OrderBox .box .items td{
+    padding: 10px;
+    border: 1px solid #777;
 }
