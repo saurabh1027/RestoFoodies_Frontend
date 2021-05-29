@@ -116,6 +116,7 @@ export class MyRestaurantsComponent implements OnInit {
   
   updateRestaurant(rest:Restaurant,files:FileList){
     if(files.length==1){
+      console.log(files)
       let file:File = files[0];
       this.restService.addRestaurantProfile(file).subscribe(data=>{
         if(data=='Success'){
@@ -123,7 +124,7 @@ export class MyRestaurantsComponent implements OnInit {
           this.restService.updateRestaurant(rest).subscribe(data=>{
             if(data=='Success'){
               Swal.fire({title:'Congratulations!',text:'Restaurant Updated Successfully.',icon:'success'});
-              this.toggleModel('RestoUpdateForm',"Panel",false);
+              this.toggleModel('RestoUpdateForm',"Panel1",false);
             }else{
               Swal.fire({title:'Sorry!',text:data,icon:'error'});
             }
@@ -136,7 +137,7 @@ export class MyRestaurantsComponent implements OnInit {
       this.restService.updateRestaurant(rest).subscribe(data=>{
         if(data=='Success'){
           Swal.fire({title:'Congratulations!',text:'Restaurant Updated Successfully.',icon:'success'});
-          this.toggleModel('RestoUpdateForm',"Panel",false);
+          this.toggleModel('RestoUpdateForm',"Panel1",false);
         }else{
           Swal.fire({title:'Sorry!',text:data,icon:'error'});
         }

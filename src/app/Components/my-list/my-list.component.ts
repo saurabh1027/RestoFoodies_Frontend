@@ -56,11 +56,11 @@ export class MyListComponent implements OnInit {
     if(bool){
       model.style.display = 'flex';
       body.classList.add('model');
-      document.getElementById('Panel1').style.display = 'flex';
+      document.getElementById('Panel2').style.display = 'flex';
     }else{
       model.style.display = 'none';
       body.classList.remove('model');
-      document.getElementById('Panel1').style.display = 'none';
+      document.getElementById('Panel2').style.display = 'none';
     }
   }
 
